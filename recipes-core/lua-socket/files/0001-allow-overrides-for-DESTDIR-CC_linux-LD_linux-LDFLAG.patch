@@ -1,0 +1,90 @@
+From 8490a354b5e4d8a15f9c337ea8b4832583899410 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Mon, 26 Oct 2015 19:44:23 -0700
+Subject: [PATCH] allow overrides for DESTDIR CC_linux, LD_linux LDFLAGS_linux
+ and CFLAGS_linux
+
+this helps it in compiling on linux. Ideally it should be done
+for all platforms besides linux too.
+
+Signed-off-by: Cliff Brake <cbrake@bec-systems.com>
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ src/makefile | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+Index: git/src/makefile
+===================================================================
+--- git.orig/src/makefile
++++ git/src/makefile
+@@ -48,7 +48,7 @@ LDIR_macosx?=share/lua/$(LUAV)
+ # /usr/local/include/lua$(LUAV)
+ # where lua headers are found for linux builds
+ LUAINC_linux_base?=/usr/include
+-LUAINC_linux?=$(LUAINC_linux_base)/lua/$(LUAV)
++LUAINC_linux?=$(LUAINC_linux_base)/lua$(LUAV)
+ LUAPREFIX_linux?=/usr/local
+ CDIR_linux?=lib/lua/$(LUAV)
+ LDIR_linux?=share/lua/$(LUAV)
+@@ -95,7 +95,7 @@ LDIR?=$(LDIR_$(PLAT))
+ 
+ # DESTDIR: (no default)
+ # used by package managers to install into a temporary destination
+-DESTDIR=
++#DESTDIR=
+ 
+ #------
+ # Definitions below can be overridden on the make command line, but
+@@ -114,6 +114,8 @@ INSTALL_TOP=$(DESTDIR)$(prefix)
+ INSTALL_TOP_LDIR=$(INSTALL_TOP)/$(LDIR)
+ INSTALL_TOP_CDIR=$(INSTALL_TOP)/$(CDIR)
+ 
++$(warning INSTALL_TOP is $(INSTALL_TOP))
++
+ INSTALL_SOCKET_LDIR=$(INSTALL_TOP_LDIR)/socket
+ INSTALL_SOCKET_CDIR=$(INSTALL_TOP_CDIR)/socket
+ INSTALL_MIME_LDIR=$(INSTALL_TOP_LDIR)/mime
+@@ -155,15 +157,15 @@ SOCKET_macosx=usocket.o
+ # for Linux
+ SO_linux=so
+ O_linux=o
+-CC_linux=gcc
+-DEF_linux=-DLUASOCKET_$(DEBUG) \
++CC_linux?=gcc
++DEF_linux?=-DLUASOCKET_$(DEBUG) \
+ 	-DLUASOCKET_API='__attribute__((visibility("default")))' \
+ 	-DUNIX_API='__attribute__((visibility("default")))' \
+ 	-DMIME_API='__attribute__((visibility("default")))'
+-CFLAGS_linux= -I$(LUAINC) $(DEF) -Wall -Wshadow -Wextra \
++CFLAGS_linux?= -I$(LUAINC) $(DEF) -Wall -Wshadow -Wextra \
+ 	-Wimplicit -O2 -ggdb3 -fpic -fvisibility=hidden
+-LDFLAGS_linux=-O -shared -fpic -o 
+-LD_linux=gcc
++LDFLAGS_linux?=-O -shared -fpic -o
++LD_linux?=gcc
+ SOCKET_linux=usocket.o
+ 
+ #------
+@@ -342,18 +344,18 @@ none:
+ all: $(SOCKET_SO) $(MIME_SO)
+ 
+ $(SOCKET_SO): $(SOCKET_OBJS)
+-	$(LD) $(SOCKET_OBJS) $(LDFLAGS)$@
++	$(LD) $(SOCKET_OBJS) $(LDFLAGS) $@
+ 
+ $(MIME_SO): $(MIME_OBJS)
+-	$(LD) $(MIME_OBJS) $(LDFLAGS)$@
++	$(LD) $(MIME_OBJS) $(LDFLAGS) $@
+ 
+ all-unix: all $(UNIX_SO) $(SERIAL_SO)
+ 
+ $(UNIX_SO): $(UNIX_OBJS)
+-	$(LD) $(UNIX_OBJS) $(LDFLAGS)$@
++	$(LD) $(UNIX_OBJS) $(LDFLAGS) $@
+ 
+ $(SERIAL_SO): $(SERIAL_OBJS)
+-	$(LD) $(SERIAL_OBJS) $(LDFLAGS)$@
++	$(LD) $(SERIAL_OBJS) $(LDFLAGS) $@
+ 
+ install: 
+ 	$(INSTALL_DIR) $(INSTALL_TOP_LDIR)

@@ -1,0 +1,64 @@
+From 992f393172586dc9ffd642c26cb0c809086f4c93 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Thu, 22 Oct 2015 22:45:16 -0700
+Subject: [PATCH 2/2] add missing header include for json.h
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ session/attr.c | 1 +
+ session/main.c | 1 +
+ session/soap.c | 1 +
+ state.c        | 1 +
+ 4 files changed, 4 insertions(+)
+
+diff --git a/session/attr.c b/session/attr.c
+index d1f8e81..437a630 100644
+--- a/session/attr.c
++++ b/session/attr.c
+@@ -15,6 +15,7 @@
+ #include <libubox/avl-cmp.h>
+ #include <libubox/blobmsg.h>
+ #include <libubox/blobmsg_json.h>
++#include <json-c/json.h>
+ 
+ #include "rpc.h"
+ #include "attr.h"
+diff --git a/session/main.c b/session/main.c
+index 9cb7127..6cfe22c 100644
+--- a/session/main.c
++++ b/session/main.c
+@@ -19,6 +19,7 @@
+ #include <libubox/uclient.h>
+ #include <libubox/blobmsg.h>
+ #include <libubox/blobmsg_json.h>
++#include <json-c/json.h>
+ 
+ #include "soap.h"
+ #include "rpc.h"
+diff --git a/session/soap.c b/session/soap.c
+index 7b83d3e..09ad1ac 100644
+--- a/session/soap.c
++++ b/session/soap.c
+@@ -16,6 +16,7 @@
+ #include <string.h>
+ #include <libubox/utils.h>
+ #include <roxml.h>
++#include <json-c/json.h>
+ 
+ #include "soap.h"
+ #include "rpc.h"
+diff --git a/state.c b/state.c
+index 7f61394..f92dc6a 100644
+--- a/state.c
++++ b/state.c
+@@ -13,6 +13,7 @@
+  */
+ #include <libubox/blobmsg.h>
+ #include <libubox/blobmsg_json.h>
++#include <json-c/json.h>
+ 
+ #include "state.h"
+ 
+-- 
+2.6.2
+

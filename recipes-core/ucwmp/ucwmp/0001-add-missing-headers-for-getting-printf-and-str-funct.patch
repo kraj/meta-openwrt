@@ -1,0 +1,41 @@
+From eb65639231fe04e44243ee234ea65dc154cea154 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Thu, 22 Oct 2015 22:44:12 -0700
+Subject: [PATCH 1/2] add missing headers for getting printf and str* function
+ defs
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ session/object.c | 1 +
+ session/soap.c   | 3 +++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/session/object.c b/session/object.c
+index 318ef1a..a6a1ec7 100644
+--- a/session/object.c
++++ b/session/object.c
+@@ -13,6 +13,7 @@
+  */
+ #include <string.h>
+ #include <stdlib.h>
++#include <stdio.h>
+ 
+ #include "rpc.h"
+ #include "object.h"
+diff --git a/session/soap.c b/session/soap.c
+index 4cf1871..7b83d3e 100644
+--- a/session/soap.c
++++ b/session/soap.c
+@@ -11,6 +11,9 @@
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  * GNU General Public License for more details.
+  */
++
++#include <stdio.h>
++#include <string.h>
+ #include <libubox/utils.h>
+ #include <roxml.h>
+ 
+-- 
+2.6.2
+

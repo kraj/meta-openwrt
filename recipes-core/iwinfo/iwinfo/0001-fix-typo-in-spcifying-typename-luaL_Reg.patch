@@ -1,0 +1,62 @@
+From 7ae276c377803ae19eba6473d4da2627cc367851 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Wed, 21 Oct 2015 18:05:29 -0700
+Subject: [PATCH] fix typo in spcifying typename luaL_Reg
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ iwinfo_lua.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/iwinfo_lua.c b/iwinfo_lua.c
+index 1a91001..d39a16c 100644
+--- a/iwinfo_lua.c
++++ b/iwinfo_lua.c
+@@ -755,7 +755,7 @@ LUA_WRAP_STRUCT_OP(wext,hardware_id)
+ 
+ #ifdef USE_WL
+ /* Broadcom table */
+-static const luaL_reg R_wl[] = {
++static const luaL_Reg R_wl[] = {
+ 	LUA_REG(wl,channel),
+ 	LUA_REG(wl,frequency),
+ 	LUA_REG(wl,frequency_offset),
+@@ -788,7 +788,7 @@ static const luaL_reg R_wl[] = {
+ 
+ #ifdef USE_MADWIFI
+ /* Madwifi table */
+-static const luaL_reg R_madwifi[] = {
++static const luaL_Reg R_madwifi[] = {
+ 	LUA_REG(madwifi,channel),
+ 	LUA_REG(madwifi,frequency),
+ 	LUA_REG(madwifi,frequency_offset),
+@@ -821,7 +821,7 @@ static const luaL_reg R_madwifi[] = {
+ 
+ #ifdef USE_NL80211
+ /* NL80211 table */
+-static const luaL_reg R_nl80211[] = {
++static const luaL_Reg R_nl80211[] = {
+ 	LUA_REG(nl80211,channel),
+ 	LUA_REG(nl80211,frequency),
+ 	LUA_REG(nl80211,frequency_offset),
+@@ -853,7 +853,7 @@ static const luaL_reg R_nl80211[] = {
+ #endif
+ 
+ /* Wext table */
+-static const luaL_reg R_wext[] = {
++static const luaL_Reg R_wext[] = {
+ 	LUA_REG(wext,channel),
+ 	LUA_REG(wext,frequency),
+ 	LUA_REG(wext,frequency_offset),
+@@ -884,7 +884,7 @@ static const luaL_reg R_wext[] = {
+ };
+ 
+ /* Common */
+-static const luaL_reg R_common[] = {
++static const luaL_Reg R_common[] = {
+ 	{ "type", iwinfo_L_type },
+ 	{ "__gc", iwinfo_L__gc  },
+ 	{ NULL, NULL }
+-- 
+2.6.1
+

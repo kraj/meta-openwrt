@@ -1,0 +1,33 @@
+From 648d42e1e1707e218a472168dfe5cc6f283505f8 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Wed, 21 Oct 2015 18:20:08 -0700
+Subject: [PATCH] fix order of linker cmdline to help linking when usin
+ -as-needed
+
+These are linker optimizations
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ Makefile | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 60341f7..7ad2b9a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -37,9 +37,9 @@ endif
+ 	$(CC) $(IWINFO_CFLAGS) $(FPIC) -c -o $@ $<
+ 
+ compile: clean $(IWINFO_LIB_OBJ) $(IWINFO_LUA_OBJ) $(IWINFO_CLI_OBJ)
+-	$(CC) $(IWINFO_LDFLAGS) $(IWINFO_LIB_LDFLAGS) -o $(IWINFO_LIB) $(IWINFO_LIB_OBJ)
+-	$(CC) $(IWINFO_LDFLAGS) $(IWINFO_LUA_LDFLAGS) -o $(IWINFO_LUA) $(IWINFO_LUA_OBJ)
+-	$(CC) $(IWINFO_LDFLAGS) $(IWINFO_CLI_LDFLAGS) -o $(IWINFO_CLI) $(IWINFO_CLI_OBJ)
++	$(CC) $(IWINFO_LIB_OBJ) $(IWINFO_LDFLAGS) $(IWINFO_LIB_LDFLAGS) -o $(IWINFO_LIB)
++	$(CC) $(IWINFO_LUA_OBJ) $(IWINFO_LDFLAGS) $(IWINFO_LUA_LDFLAGS) -o $(IWINFO_LUA)
++	$(CC) $(IWINFO_CLI_OBJ) $(IWINFO_LDFLAGS) $(IWINFO_CLI_LDFLAGS) -o $(IWINFO_CLI)
+ 
+ clean:
+ 	rm -f *.o $(IWINFO_LIB) $(IWINFO_LUA) $(IWINFO_CLI)
+-- 
+2.6.1
+

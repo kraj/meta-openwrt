@@ -1,0 +1,80 @@
+From 06fe2dc99dbf7be451676da8a13434c3c75a84df Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Thu, 22 Oct 2015 22:08:52 -0700
+Subject: [PATCH] remove 'inline' from read/close buf and file functions
+
+This causes build failures with gcc5, since it emits
+a symbol with undefined linkage into .so and then the .so fails to link
+
+/a/wheezy/home/kraj/work/pointwatch/build/tmp/sysroots/x86_64-linux/usr/bin/cmake
+-E cmake_link_script CMakeFiles/roxml-tool.dir/link.txt --verbose=1
+/a/wheezy/home/kraj/work/pointwatch/build/tmp/sysroots/x86_64-linux/usr/bin/arm-bec-linux-musleabi/arm-bec-linux-musleabi-gcc
+-march=armv5e -marm  -mthumb-interwork
+--sysroot=/a/wheezy/home/kraj/work/pointwatch/build/tmp/sysroots/gesbc9G20u
+-O2 -pipe -g -feliminate-unused-debug-types  -march=armv5e -marm
+-mthumb-interwork
+--sysroot=/a/wheezy/home/kraj/work/pointwatch/build/tmp/sysroots/gesbc9G20u
+-Wl,-O1 -Wl,--hash-style=gnu -Wl,--as-needed  -Wl,-O1
+-Wl,--hash-style=gnu -Wl,--as-needed
+CMakeFiles/roxml-tool.dir/src/roxml_shell.c.o  -o roxml -rdynamic
+libroxml.so.2
+-Wl,-rpath,/a/wheezy/home/kraj/work/pointwatch/build/tmp/work/armv5e-bec-linux-musleabi/libroxml/git-r0/build:
+libroxml.so.2: undefined reference to `roxml_close_buff'
+libroxml.so.2: undefined reference to `roxml_close_file'
+libroxml.so.2: undefined reference to `roxml_read_buff'
+libroxml.so.2: undefined reference to `roxml_read_file'
+collect2: error: ld returned 1 exit status
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ src/roxml_buff.c | 4 ++--
+ src/roxml_file.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/roxml_buff.c b/src/roxml_buff.c
+index 3023ea2..98a07bc 100644
+--- a/src/roxml_buff.c
++++ b/src/roxml_buff.c
+@@ -13,7 +13,7 @@
+ #include "roxml_parser.h"
+ #include "roxml_internal.h"
+ 
+-ROXML_INT inline int roxml_read_buff(int pos, int size, char *buffer, node_t *node)
++ROXML_INT int roxml_read_buff(int pos, int size, char *buffer, node_t *node)
+ {
+ 	int ret_len = 0;
+ 	char *r1 = buffer;
+@@ -26,7 +26,7 @@ ROXML_INT inline int roxml_read_buff(int pos, int size, char *buffer, node_t *no
+ 	return ret_len;
+ }
+ 
+-ROXML_INT inline void roxml_close_buff(node_t *n)
++ROXML_INT void roxml_close_buff(node_t *n)
+ {
+ 	return;
+ }
+diff --git a/src/roxml_file.c b/src/roxml_file.c
+index 86fec5c..74b5b98 100644
+--- a/src/roxml_file.c
++++ b/src/roxml_file.c
+@@ -15,7 +15,7 @@
+ #include "roxml_parser.h"
+ #include "roxml_internal.h"
+ 
+-ROXML_INT inline int roxml_read_file(int pos, int size, char *buffer, node_t *node)
++ROXML_INT int roxml_read_file(int pos, int size, char *buffer, node_t *node)
+ {
+ 	int ret_len = 0;
+ 
+@@ -25,7 +25,7 @@ ROXML_INT inline int roxml_read_file(int pos, int size, char *buffer, node_t *no
+ 	return ret_len;
+ }
+ 
+-ROXML_INT inline void roxml_close_file(node_t *root)
++ROXML_INT void roxml_close_file(node_t *root)
+ {
+ 	fclose(root->src.fil);
+ }
+-- 
+2.6.2
+

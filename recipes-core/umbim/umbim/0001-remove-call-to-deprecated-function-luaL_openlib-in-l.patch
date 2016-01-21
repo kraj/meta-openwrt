@@ -1,0 +1,70 @@
+From 36b919b4b458d11eef408a6464627260545391c4 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Wed, 21 Oct 2015 18:55:07 -0700
+Subject: [PATCH] remove call to deprecated function luaL_openlib in lua 5.2
+ and newer
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ lua/uloop.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
+
+diff --git a/lua/uloop.c b/lua/uloop.c
+index 2a0a516..096ee13 100644
+--- a/lua/uloop.c
++++ b/lua/uloop.c
+@@ -98,6 +98,24 @@ static const luaL_Reg timer_m[] = {
+ 	{ NULL, NULL }
+ };
+ 
++static void uloop_lua_registerlib(lua_State *L, const char *libname,
++				const luaL_Reg *l)
++{
++#if LUA_VERSION_NUM >= 502
++	if (libname)
++	{
++		lua_newtable(L);
++		luaL_setfuncs(L, l, 1);
++		lua_pushvalue(L, -1);
++		lua_setglobal(L, libname);
++	}
++	else
++		luaL_setfuncs(L, l, 1);
++#else
++	luaL_register(L, libname, l);
++#endif
++}
++
+ static int ul_timer(lua_State *L)
+ {
+ 	struct lua_uloop_timeout *tout;
+@@ -129,7 +147,7 @@ static int ul_timer(lua_State *L)
+ 	lua_pushvalue(L, -1);
+ 	lua_setmetatable(L, -3);
+ 	lua_pushvalue(L, -2);
+-	luaI_openlib(L, NULL, timer_m, 1);
++	uloop_lua_registerlib(L, NULL, timer_m);
+ 	lua_pushvalue(L, -2);
+ 
+ 	memset(tout, 0, sizeof(*tout));
+@@ -248,7 +266,7 @@ static int ul_ufd_add(lua_State *L)
+ 	lua_pushvalue(L, -1);
+ 	lua_setmetatable(L, -3);
+ 	lua_pushvalue(L, -2);
+-	luaI_openlib(L, NULL, ufd_m, 1);
++	uloop_lua_registerlib(L, NULL, ufd_m);
+ 	lua_pushvalue(L, -2);
+ 
+ 	memset(ufd, 0, sizeof(*ufd));
+@@ -363,7 +381,7 @@ static int ul_end(lua_State *L)
+ 	return 1;
+ }
+ 
+-static luaL_reg uloop_func[] = {
++static luaL_Reg uloop_func[] = {
+ 	{"init", ul_init},
+ 	{"run", ul_run},
+ 	{"timer", ul_timer},
+-- 
+2.6.1
+
