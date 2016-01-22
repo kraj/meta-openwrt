@@ -1,0 +1,32 @@
+From 2b362cdbd236c46e92dc5ccec53d4cc920ea1dc8 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Fri, 22 Jan 2016 05:07:43 +0000
+Subject: [PATCH] Define GLOB_ONLYDIR if not available
+
+musl does not define GLOB_ONLYDIR
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+Upstream-Status: Pending
+
+ libfstools/overlay.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/libfstools/overlay.c b/libfstools/overlay.c
+index cdac23e..0fbe788 100644
+--- a/libfstools/overlay.c
++++ b/libfstools/overlay.c
+@@ -30,6 +30,10 @@
+ #include "libfstools.h"
+ #include "volume.h"
+ 
++#ifndef GLOB_ONLYDIR
++#define GLOB_ONLYDIR    0x100
++#endif
++
+ #define SWITCH_JFFS2 "/tmp/.switch_jffs2"
+ 
+ static bool keep_sysupgrade;
+-- 
+2.7.0
+
