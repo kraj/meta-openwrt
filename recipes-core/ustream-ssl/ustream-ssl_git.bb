@@ -10,7 +10,7 @@ DEPENDS = "libubox"
 RDEPNDS_${PN} += "libcrypto libssl"
 
 SRCREV = "c2d73c22618e8ee444e8d346695eca908ecb72d3"
-SRC_URI = "git://nbd.name/ustream-ssl.git \
+SRC_URI = "git://git.openwrt.org/project/ustream-ssl.git \
           "
 
 inherit cmake pkgconfig

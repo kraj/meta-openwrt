@@ -9,7 +9,7 @@ SECTION = "base"
 DEPENDS = "libubox lua5.1"
 
 SRCREV = "2cd94fd505b293e657278e31deb32a7d66d20714"
-SRC_URI = "git://nbd.name/uci.git"
+SRC_URI = "git://git.openwrt.org/project/uci.git"
 
 inherit cmake pkgconfig openwrt
 
