@@ -17,6 +17,11 @@ inherit cmake pkgconfig
 
 S = "${WORKDIR}/git"
 
+do_install_append() {
+	install -d ${D}${includedir}/libubox
+	install -m 0644 ${S}/*.h ${D}${includedir}/libubox
+}
+
 FILES_SOLIBSDEV = ""
 
 FILES_${PN}  += "${libdir}/*"

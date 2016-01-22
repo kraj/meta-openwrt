@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=13;md5=572cd47ba0e377b2633
 SECTION = "base"
 DEPENDS = "json-c libubox ubus libnl uci"
 
-SRCREV = "b3f60b48501319e93e846bbf23881666cee947bc"
+SRCREV = "627e8b6991876b4abef6bb4a31dcdc35fcd622aa"
 SRC_URI = "git://git.openwrt.org/project/netifd.git"
 
 inherit cmake pkgconfig openwrt
