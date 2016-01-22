@@ -1,0 +1,33 @@
+From aeaaa18704672b7cb9ddce34cf8917717566fb84 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Fri, 22 Jan 2016 09:02:59 +0000
+Subject: [PATCH 2/2] Declare ParseTrace
+
+Fixes errors with newer gcc
+| parser.c:283:6: error: no previous declaration for 'ParseTrace'
+[-Werror=missing-declarations]
+|  void ParseTrace(FILE *TraceFILE, char *zTracePrompt){
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+Upstream-Status: Pending
+
+ parser.y | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/parser.y b/parser.y
+index f77779b..3cb3efb 100644
+--- a/parser.y
++++ b/parser.y
+@@ -36,6 +36,8 @@
+ #define alloc_op(type, num, str, ...) \
+ 	jp_alloc_op(s, type, num, str, ##__VA_ARGS__, NULL)
+ 
++void ParseTrace(FILE*, char*);
++
+ }
+ 
+ %syntax_error {
+-- 
+2.7.0
+
