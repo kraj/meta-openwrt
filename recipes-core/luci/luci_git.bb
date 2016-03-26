@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://ubusd.c;beginline=1;endline=12;md5=1b6a7aecd35bdd25de
 SECTION = "base"
 DEPENDS = "json-c libubox lua5.1"
 
-SRCREV = "86326e0deff92a485ffd47e22ac70194abb3fd66"
+SRCREV = "5b79e62c0a99bab8dfb8dce8124d9fecc11da54b"
 SRC_URI = "git://git.openwrt.org/project/luci.git"
 
 inherit cmake pkgconfig openwrt
