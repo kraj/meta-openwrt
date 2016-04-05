@@ -1,0 +1,26 @@
+Index: git/main.c
+===================================================================
+--- git.orig/main.c
++++ git/main.c
+@@ -17,7 +17,7 @@
+  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+
+-#define _BSD_SOURCE
++#define _DEFAULT_SOURCE
+ #define _GNU_SOURCE
+ #define _XOPEN_SOURCE	700
+ #include <sys/types.h>
+Index: git/file.c
+===================================================================
+--- git.orig/file.c
++++ git/file.c
+@@ -17,7 +17,7 @@
+  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+
+-#define _BSD_SOURCE
++#define _DEFAULT_SOURCE
+ #define _DARWIN_C_SOURCE
+ #define _XOPEN_SOURCE 700
+ 

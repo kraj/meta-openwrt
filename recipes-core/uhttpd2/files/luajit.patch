@@ -1,0 +1,30 @@
+Index: git/CMakeLists.txt
+===================================================================
+--- git.orig/CMakeLists.txt
++++ git/CMakeLists.txt
+@@ -41,7 +41,7 @@ IF(LUA_SUPPORT)
+ 
+ 	IF(NOT LUA_CFLAGS AND PKG_CONFIG)
+ 		EXECUTE_PROCESS(
+-			COMMAND pkg-config --silence-errors --cflags lua5.1
++			COMMAND pkg-config --silence-errors --cflags luajit
+ 			OUTPUT_VARIABLE LUA_CFLAGS
+ 			OUTPUT_STRIP_TRAILING_WHITESPACE
+ 		)
+@@ -49,14 +49,14 @@ IF(LUA_SUPPORT)
+ 
+ 	IF(NOT LUA_LIBS AND PKG_CONFIG)
+ 		EXECUTE_PROCESS(
+-			COMMAND pkg-config --silence-errors --libs lua5.1
++			COMMAND pkg-config --silence-errors --libs luajit
+ 			OUTPUT_VARIABLE LUA_LIBS
+ 			OUTPUT_STRIP_TRAILING_WHITESPACE
+ 		)
+ 	ENDIF()
+ 
+ 	IF(NOT LUA_LIBS)
+-		SET(LUA_LIBS "lua")
++		SET(LUA_LIBS "luajit")
+ 	ENDIF()
+ 
+ 	SET(PLUGINS ${PLUGINS} uhttpd_lua)
