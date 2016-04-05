@@ -18,4 +18,9 @@ S = "${WORKDIR}/git"
 
 FILES_SOLIBSDEV = ""
 
+do_install_append() {
+    install -d ${D}${includedir}/rpcd
+    install -m 0644 ${S}/include/rpcd/* ${D}${includedir}/rpcd/
+}
+
 FILES_${PN}  += "${libdir}/*"
