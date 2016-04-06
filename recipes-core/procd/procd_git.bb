@@ -9,7 +9,7 @@ SECTION = "base"
 DEPENDS = "libubox ubus json-c"
 
 SRCREV = "ef490722885a5c708c70dff656d094c7043ae081"
-SRC_URI = "git://git.openwrt.org/project/luci2/procd.git \
+SRC_URI = "git://git.openwrt.org/project/procd.git \
           "
 
 inherit cmake pkgconfig
