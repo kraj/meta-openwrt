@@ -9,7 +9,7 @@ SECTION = "base"
 DEPENDS = "json-c libubox ubus uci iwinfo"
 
 SRCREV = "f00890cd6eb47ad9bb5da0fb6c50aedc8406e7c5"
-SRC_URI = "git://git.openwrt.org/project/luci2/rpcd.git \
+SRC_URI = "git://git.openwrt.org/project/rpcd.git \
           "
 
 inherit cmake pkgconfig
