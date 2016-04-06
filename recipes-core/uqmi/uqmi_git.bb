@@ -15,6 +15,7 @@ SRC_URI = "git://git.openwrt.org/project/uqmi.git \
 inherit cmake pkgconfig
 
 S = "${WORKDIR}/git"
+B = "${S}"
 
 FILES_SOLIBSDEV = ""
 
