@@ -16,6 +16,8 @@ inherit cmake pkgconfig openwrt
 
 S = "${WORKDIR}/git"
 
+CFLAGS += "-D_DEFAULT_SOURCE"
+
 EXTRA_OECMAKE = "-DTLS_SUPPORT=ON -DLUA_SUPPORT=ON -DUBUS_SUPPORT=ON"
 FILES_SOLIBSDEV = ""
 
