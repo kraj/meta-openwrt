@@ -12,11 +12,6 @@ SRCREV = "ef490722885a5c708c70dff656d094c7043ae081"
 SRC_URI = "git://git.openwrt.org/project/procd.git \
           "
 
-inherit cmake pkgconfig
+inherit cmake openwrt pkgconfig
 
 S = "${WORKDIR}/git"
-
-FILES_SOLIBSDEV = ""
-
-FILES_${PN}  += "${libdir}/*"
-FILES_${PN}-dbg  += "${libdir}/lua/5.*/.debug"
