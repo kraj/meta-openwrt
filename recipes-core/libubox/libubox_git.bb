@@ -13,7 +13,7 @@ SRC_URI = "git://git.openwrt.org/project/libubox.git \
           "
 
 inherit cmake pkgconfig openwrt
-EXTRA_OECMAKE += "-DBUILD_EXAMPLES=ON -DBUILD_LUA=ON"
+EXTRA_OECMAKE += "-DBUILD_EXAMPLES=ON -DBUILD_LUA=ON -DCMAKE_SKIP_RPATH=ON"
 OECMAKE_C_FLAGS += "-I${STAGING_INCDIR}/lua5.1"
 S = "${WORKDIR}/git"
 
