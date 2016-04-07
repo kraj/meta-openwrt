@@ -8,4 +8,4 @@ Version: 5.1.5
 Requires:
 Libs: -L${libdir} -llua5.1
 Libs.private: -lm
-Cflags: -I${includedir}/lua5.1
+Cflags: -I${includedir}

@@ -9,7 +9,7 @@ SECTION = "base"
 DEPENDS = "json-c libubox ubus uci iwinfo"
 
 SRCREV = "f00890cd6eb47ad9bb5da0fb6c50aedc8406e7c5"
-SRC_URI = "git://git.openwrt.org/project/luci2/rpcd.git \
+SRC_URI = "git://git.openwrt.org/project/rpcd.git \
           "
 
 inherit cmake pkgconfig
@@ -17,5 +17,10 @@ inherit cmake pkgconfig
 S = "${WORKDIR}/git"
 
 FILES_SOLIBSDEV = ""
+
+do_install_append() {
+    install -d ${D}${includedir}/rpcd
+    install -m 0644 ${S}/include/rpcd/* ${D}${includedir}/rpcd/
+}
 
 FILES_${PN}  += "${libdir}/*"

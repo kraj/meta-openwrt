@@ -16,6 +16,8 @@ inherit cmake pkgconfig
 
 S = "${WORKDIR}/git"
 
+CFLAGS += "-D_DEFAULT_SOURCE"
+
 FILES_SOLIBSDEV = ""
 
 FILES_${PN}  += "${libdir}/*"

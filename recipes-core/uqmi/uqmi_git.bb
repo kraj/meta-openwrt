@@ -4,7 +4,7 @@
 DESCRIPTION = "OpenWrt uqmi utility"
 HOMEPAGE = "http://git.openwrt.org/?p=project/uqmi.git;a=summary"
 LICENSE = "GPL-2.0"
-LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=20;md5=8c7ce85ebfe23634010c75c30c3eb223"
+LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=20;md5=3f7041e5710007661d762bb6043a69c6"
 SECTION = "base"
 DEPENDS = "libubox json-c"
 
@@ -15,6 +15,7 @@ SRC_URI = "git://git.openwrt.org/project/uqmi.git \
 inherit cmake pkgconfig
 
 S = "${WORKDIR}/git"
+B = "${S}"
 
 FILES_SOLIBSDEV = ""
 
