@@ -1,0 +1,30 @@
+From 99307b0464413c7f0ef1b9bb9eeae19270435380 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Fri, 8 Apr 2016 21:52:30 +0000
+Subject: [PATCH] GLOB_TILDE is not defined in posix, therefore not implemented
+ in musl
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ src/juci.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/src/juci.c b/src/juci.c
+index e41c50b..0e86c47 100644
+--- a/src/juci.c
++++ b/src/juci.c
+@@ -40,6 +40,11 @@
+ 
+ #define JUCI_ACL_DIR_PATH "/usr/lib/juci/acl/"
+ 
++/* fixes build with musl libc */
++#ifndef GLOB_TILDE
++#define GLOB_TILDE 0
++#endif
++
+ int juci_debug_level = 0; 
+ 
+ int juci_load_passwords(struct juci *self, const char *pwfile); 
+-- 
+1.9.1
+
