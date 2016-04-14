@@ -11,18 +11,13 @@ cd openembeeded-core
 git clone git://github.com/openembedded/meta-openembedded.git
 git clone git://github.com/openembedded/bitbake.git
 git clone git://github.com/kraj/meta-openwrt.git
+git clone git://github.com/imyller/meta-nodejs.git
 
 $ . ./oe-init-build-env
-```
 
-Edit conf/bblayers.conf to add meta-musl to layer mix e.g.
-
-```python
-BBLAYERS ?= " \
-  /home/kraj/openembedded-core/meta-openwrt \
-  /home/kraj/openembedded-core/meta-openembedded/meta-oe \
-  /home/kraj/openembedded-core/meta \
-  "
+$ bitbake-layers add-layer ../meta-openembedded/meta-oe
+$ bitbake-layers add-layer ../meta-nodejs
+$ bitbake-layers add-layer ../meta-openwrt
 ```
 
 # Building
@@ -31,6 +26,10 @@ Below we build for qemuarm machine as an example, add
 one of OpenWRT recipes to images e.g. in conf/local.conf add
 
 CORE_IMAGE_EXTRA_INSTALL = "libubox-examples"
+
+To include juci instead of luci add
+
+CORE_IMAGE_EXTRA_INSTALL = "juci"
 
 ```shell
 $ TCLIBC=musl MACHINE=qemuarm bitbake core-image-minimal
@@ -67,6 +66,10 @@ revision: HEAD
 URI: git://github.com/openembedded/bitbake.git
 branch: master
 revision: HEAD
+
+URI: git://github.com/imyller/meta-nodejs.git
+branch: master
+revision: HEAD
 ```
 
 # Upstreaming
@@ -88,4 +91,6 @@ of course accepted as well, 'git fetch <remote>' works the same on all of them.
 We recommend github because it is free, easy to use, has been proven to be reliable
 and has a really good web GUI.
 
-Layer Maintainer: Khem Raj raj.khem@gmail.com
+Maintainer(s)
+
+* Khem Raj <mailto:raj.khem@gmail.com>
