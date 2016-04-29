@@ -7,7 +7,6 @@ SRC_URI = "git://nbd.name/uhttpd2.git;protocol=git;branch=master"
 SRC_URI += "file://ubus.default"
 SRC_URI += "file://uhttpd.config"
 SRC_URI += "file://uhttpd.init"
-SRC_URI += "file://luajit.patch"
 SRC_URI += "file://fix-bsd.patch"
 		   
 SRCREV = "b9178b9357798ae23a5724333cc6572d14f23958"
