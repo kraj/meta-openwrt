@@ -21,6 +21,9 @@ S = "${WORKDIR}/git"
 
 EXTRA_OECMAKE += "${EXTRA_OECONF}"
 
+# avoids build breaks when using no-static-libs.inc
+DISABLE_STATIC = ""
+
 PACKAGECONFIG ??= "extroot"
 
 PACKAGECONFIG[extroot] = "-DCMAKE_UBIFS_EXTROOT=ON,,libubox uci,"
