@@ -17,6 +17,9 @@ S = "${WORKDIR}/git"
 
 EXTRA_OECMAKE += "${EXTRA_OECONF}"
 
+# avoids build breaks when using no-static-libs.inc
+DISABLE_STATIC = ""
+
 PACKAGECONFIG ??= "ubox"
 
 PACKAGECONFIG[ubox] = "-DUSE_LIBUBOX=ON,,libubox,"
