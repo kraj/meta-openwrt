@@ -11,6 +11,8 @@ DEPENDS = "json-c libubox ubus uci iwinfo"
 SRCREV = "f00890cd6eb47ad9bb5da0fb6c50aedc8406e7c5"
 SRC_URI = "git://git.openwrt.org/project/rpcd.git \
            file://0001-file-Mark-data_len-to-be-signed-type.patch \
+           file://rpcd.config \
+           file://rpcd.init \
            "
 
 inherit cmake pkgconfig
@@ -22,6 +24,8 @@ FILES_SOLIBSDEV = ""
 do_install_append() {
     install -d ${D}${includedir}/rpcd
     install -m 0644 ${S}/include/rpcd/* ${D}${includedir}/rpcd/
+    install -Dm 0755 ${WORKDIR}/rpcd.config ${D}${sysconfdir}/config/rpcd
+    install -Dm 0755 ${WORKDIR}/rpcd.init ${D}${sysconfdir}/init.d/rpcd
 }
 
 FILES_${PN}  += "${libdir}/*"
