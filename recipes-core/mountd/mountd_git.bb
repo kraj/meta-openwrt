@@ -10,11 +10,18 @@ DEPENDS = "libubox uci"
 
 SRCREV = "8476a03b25d457e99f59e6372b8d9faebe2266f8"
 SRC_URI = "git://git.openwrt.org/project/mountd.git \
-          "
+           file://mountd.config \
+           file://mountd.init \
+"
 
 inherit cmake pkgconfig
 
 S = "${WORKDIR}/git"
+
+do_install_append() {
+    install -Dm 0755 ${WORKDIR}/mountd.config ${D}${sysconfdir}/config/mountd
+    install -Dm 0755 ${WORKDIR}/mountd.init ${D}${sysconfdir}/init.d/mountd
+}
 
 FILES_SOLIBSDEV = ""
 
