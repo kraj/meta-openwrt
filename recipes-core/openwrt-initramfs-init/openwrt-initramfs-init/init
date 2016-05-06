@@ -1,0 +1,12 @@
+#!/bin/sh
+export PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+mount -t sysfs none /sys
+mount -t proc none /proc
+mount -t devtmpfs none /dev
+
+# disable turn off display
+echo -e "\033[9;0]" > /dev/tty0
+
+# Start shell
+/bin/sh
