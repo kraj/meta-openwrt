@@ -10,8 +10,21 @@ DEPENDS = "libubox ubus json-c"
 
 SRCREV = "ef490722885a5c708c70dff656d094c7043ae081"
 SRC_URI = "git://git.openwrt.org/project/procd.git \
-          "
+           file://procd.sh \
+           file://reload_config \
+           file://hotplug.json \
+           file://hotplug-preinit.json \
+"
 
 inherit cmake openwrt pkgconfig
 
 S = "${WORKDIR}/git"
+
+do_install_append() {
+    install -Dm 0755 ${WORKDIR}/procd.sh ${D}${base_libdir}/functions/procd.sh
+    install -Dm 0755 ${WORKDIR}/reload_config ${D}${base_sbindir}/reload_config
+    install -Dm 0755 ${WORKDIR}/hotplug.json ${D}${sysconfdir}/hotplug.json
+    install -Dm 0755 ${WORKDIR}/hotplug-preinit.json ${D}${sysconfdir}/hotplug-preinit.json
+}
+
+FILES_${PN} += "${base_libdir}"
