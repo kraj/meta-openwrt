@@ -9,10 +9,18 @@ SECTION = "base"
 DEPENDS = "libubox lua5.1"
 
 SRCREV = "2cd94fd505b293e657278e31deb32a7d66d20714"
-SRC_URI = "git://git.openwrt.org/project/uci.git"
+SRC_URI = "git://git.openwrt.org/project/uci.git \
+           file://uci.sh \
+"
 
 inherit cmake pkgconfig openwrt
 
 OECMAKE_C_FLAGS += "-I${STAGING_INCDIR}/lua5.1"
 
 S = "${WORKDIR}/git"
+
+do_install_append() {
+    install -Dm 0755 ${WORKDIR}/uci.sh ${D}${base_libdir}/config/uci.sh
+}
+
+FILES_${PN} += "${base_libdir}"
