@@ -13,3 +13,4 @@ do_install_append() {
 
 FILES_${PN} += "${libdir}/*.so"
 FILES_SOLIBSDEV = ""
+INSANE_SKIP_${PN} = "dev-so"
