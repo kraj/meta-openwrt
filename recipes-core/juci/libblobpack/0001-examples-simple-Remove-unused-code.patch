@@ -1,0 +1,38 @@
+From 0e6f53e30f4e0f22c41019a30a92691772f0e0b6 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sat, 14 May 2016 00:41:41 -0700
+Subject: [PATCH] examples/simple: Remove unused code
+
+| examples/simple.c:64:39: error: unused variable 'pol' [-Werror,-Wunused-const-variable]
+| static const struct blob_field_policy pol[] = {
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ examples/simple.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/examples/simple.c b/examples/simple.c
+index 5bcdd29..0ec860b 100644
+--- a/examples/simple.c
++++ b/examples/simple.c
+@@ -60,7 +60,7 @@ enum {
+ 	FOO_LIST,
+ 	FOO_TESTDATA
+ };
+-
++/*
+ static const struct blob_field_policy pol[] = {
+ 	[FOO_MESSAGE] = {
+ 		.name = "message",
+@@ -75,7 +75,7 @@ static const struct blob_field_policy pol[] = {
+ 		.type = BLOB_FIELD_TABLE,
+ 	},
+ };
+-
++*/
+ #ifndef ARRAY_SIZE
+ #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+ #endif
+-- 
+2.8.2
+

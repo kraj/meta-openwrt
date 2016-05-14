@@ -1,0 +1,33 @@
+From 3d566e02d100319b5ba8163f7ad16e7a40d88bbd Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sat, 14 May 2016 10:58:01 -0700
+Subject: [PATCH] juci_ws_server.c: ubus_srv_ws_client_new() expects no
+ parameter
+
+Fixes
+
+| ../../git/src/juci_ws_server.c:134:85: error: too many arguments in call to 'ubus_srv_ws_client_new' [-Werror]
+|                         struct ubus_srv_ws_client *client = ubus_srv_ws_client_new(lws_get_socket_fd(wsi));
+|                                                             ~~~~~~~~~~~~~~~~~~~~~~                       ^
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ src/juci_ws_server.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/juci_ws_server.c b/src/juci_ws_server.c
+index 183777a..b23e3d2 100644
+--- a/src/juci_ws_server.c
++++ b/src/juci_ws_server.c
+@@ -131,7 +131,7 @@ static int _ubus_socket_callback(struct lws *wsi, enum lws_callback_reasons reas
+ 		case LWS_CALLBACK_ESTABLISHED: {
+ 			struct ubus_srv_ws *self = (struct ubus_srv_ws*)proto->user; 
+ 			pthread_mutex_lock(&self->qlock); 
+-			struct ubus_srv_ws_client *client = ubus_srv_ws_client_new(lws_get_socket_fd(wsi)); 
++			struct ubus_srv_ws_client *client = ubus_srv_ws_client_new(); 
+ 			ubus_id_alloc(&self->clients, &client->id, 0); 
+ 			*user = client; 
+ 			char hostname[255], ipaddr[255]; 
+-- 
+2.8.2
+

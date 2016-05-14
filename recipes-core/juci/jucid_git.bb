@@ -8,8 +8,10 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=ecb319022da02987a5c1a92120412393"
 SECTION = "apps"
 
 SRCREV = "b787f202a695eaba1fcc0feac1ff796fc37d4a43"
-SRC_URI = "git://github.com/mkschreder/jucid"
-SRC_URI += "file://0001-GLOB_TILDE-is-not-defined-in-posix-therefore-not-imp.patch"
+SRC_URI = "git://github.com/mkschreder/jucid \
+           file://0001-GLOB_TILDE-is-not-defined-in-posix-therefore-not-imp.patch \
+           file://0001-juci_ws_server.c-ubus_srv_ws_client_new-expects-no-p.patch \
+           "
 
 S = "${WORKDIR}/git"
 
