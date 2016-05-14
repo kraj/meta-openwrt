@@ -12,16 +12,7 @@ Index: git/package.json
 ===================================================================
 --- git.orig/package.json
 +++ git/package.json
-@@ -5,7 +5,7 @@
-     "JSON": "*",
-     "express": "*",
-     "body-parser": "*",
--    "grunt": "*",
-+    "grunt": "~0.4.1",
-     "grunt-angular-gettext": "*",
-     "request": "*",
-     "glob": "*",
-@@ -18,7 +18,7 @@
+@@ -16,7 +16,7 @@
      "array.prototype.find": "*",
  	"node-getopt": "*", 
  	"gettext-parser": "*",
