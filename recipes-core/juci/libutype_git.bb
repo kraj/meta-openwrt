@@ -9,7 +9,9 @@ LIC_FILES_CHKSUM = "file://README.md;md5=d41d8cd98f00b204e9800998ecf8427e"
 SECTION = "libs"
 
 SRCREV = "7a5c74c80c037ffebd4f10c61b31b186c8a22fed"
-SRC_URI = "git://github.com/mkschreder/libutype"
+SRC_URI = "git://github.com/mkschreder/libutype \
+           file://0001-Add-LDFLAGS-to-linker-cmdline.patch \
+"
 
 S = "${WORKDIR}/git"
 

@@ -1,0 +1,30 @@
+From 4bcbecdeb231836887302405c8ccc6c079992e93 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sat, 14 May 2016 11:23:49 -0700
+Subject: [PATCH] Add $(LDFLAGS) to linker cmdline
+
+So we can fix the hash-style mismatches
+which can happen if its linked with libraries
+which has a different hash-style
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 64048d1..eb947a4 100644
+--- a/Makefile
++++ b/Makefile
+@@ -20,7 +20,7 @@ $(BUILD_DIR):
+ 	mkdir -p $(BUILD_DIR)
+ 
+ $(SHARED_LIB): $(OBJECTS) 
+-	$(CC) -shared -Wl,--no-undefined -o $@ $^ -ldl
++	$(CC) -shared -Wl,--no-undefined -o $@ $^ -ldl $(LDFLAGS)
+ 
+ $(STATIC_LIB): $(OBJECTS)
+ 	$(AR) rcs -o $@ $^
+-- 
+2.8.2
+
