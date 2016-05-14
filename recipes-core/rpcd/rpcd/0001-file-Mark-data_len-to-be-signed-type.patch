@@ -1,0 +1,32 @@
+From 975b98f51347c08d8e13a0cb68abe81c930f740d Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sat, 14 May 2016 00:49:31 -0700
+Subject: [PATCH] file: Mark data_len to be signed type
+
+Fixes error like
+
+| /a/builder/mnt/build/tmp-musl/work/aarch64-oe-linux-musl/rpcd/git-r0/git/file.c:294:16: error: comparison of unsigned expression < 0 is always false [-Werror,-Wtautological-compare]
+|                 if (data_len < 0)
+|                     ~~~~~~~~ ^ ~
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/file.c b/file.c
+index d983518..ce6db2a 100644
+--- a/file.c
++++ b/file.c
+@@ -268,7 +268,7 @@ rpc_file_write(struct ubus_context *ctx, struct ubus_object *obj,
+ 	mode_t prev_mode, mode = 0666;
+ 	int fd, rv = 0;
+ 	void *data = NULL;
+-	size_t data_len = 0;
++	ssize_t data_len = 0;
+ 
+ 	blobmsg_parse(rpc_file_rw_policy, __RPC_F_RW_MAX, tb,
+ 	              blob_data(msg), blob_len(msg));
+-- 
+2.8.2
+

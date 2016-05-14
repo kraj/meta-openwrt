@@ -10,7 +10,8 @@ DEPENDS = "json-c libubox ubus uci iwinfo"
 
 SRCREV = "f00890cd6eb47ad9bb5da0fb6c50aedc8406e7c5"
 SRC_URI = "git://git.openwrt.org/project/rpcd.git \
-          "
+           file://0001-file-Mark-data_len-to-be-signed-type.patch \
+           "
 
 inherit cmake pkgconfig
 
