@@ -7,7 +7,7 @@ This layer provides OpenEmbedded metadata for [OpenWRT](http://www.openwrt.org/)
 
 ```shell
 git clone git://github.com/openembedded/openembedded-core.git
-cd openembeeded-core
+cd openembedded-core
 git clone git://github.com/openembedded/meta-openembedded.git
 git clone git://github.com/openembedded/bitbake.git
 git clone git://github.com/kraj/meta-openwrt.git
