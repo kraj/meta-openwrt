@@ -45,7 +45,7 @@ $ TCLIBC=musl runqemu qemuarm
 
 # Limitations
 
-Works with OE Release >= 2.0
+Works with OE Release >= 2.1
 
 Currently images are buildable/bootable for mips, arm, aarch64, ppc, x86, x86_64
 based qemu machines
