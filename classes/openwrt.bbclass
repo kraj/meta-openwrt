@@ -1,5 +1,5 @@
 OECMAKE_C_FLAGS += "-DLUA_COMPAT_5_1"
-EXTRA_OECMAKE += "-DLUAPATH=`lua5.1 -e "for k in string.gmatch(package.cpath .. \";\", \"([^;]+)/..so;\") do if k:sub(1,1) == \"/\" then print(k) break end end" | sed 's#${STAGING_DIR_NATIVE}##'`"
+EXTRA_OECMAKE += "-DLUAPATH=/usr/lib/lua/5.1"
 
 FILES_SOLIBSDEV = ""
 
