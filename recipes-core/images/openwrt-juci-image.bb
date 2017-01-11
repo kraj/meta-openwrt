@@ -1,7 +1,7 @@
 # Copyright (C) 2016 Khem Raj <raj.khem@gmail.com>
 # Released under the MIT license (see COPYING.MIT for the terms)
 
-DESCRIPTION = "JUCI based OpneWRT GUI Image"
+DESCRIPTION = "JUCI based OpenWRT GUI Image"
 HOMEPAGE = ""
 LICENSE = "MIT"
 
