@@ -12,11 +12,13 @@ git clone git://github.com/openembedded/meta-openembedded.git
 git clone git://github.com/openembedded/bitbake.git
 git clone git://github.com/kraj/meta-openwrt.git
 git clone git://github.com/imyller/meta-nodejs.git
+git clone git://github.com/imyller/meta-nodejs-contrib.git
 
 $ . ./oe-init-build-env
 
 $ bitbake-layers add-layer ../meta-openembedded/meta-oe
 $ bitbake-layers add-layer ../meta-nodejs
+$ bitbake-layers add-layer ../meta-nodejs-contrib
 $ bitbake-layers add-layer ../meta-openwrt
 ```
 
@@ -45,7 +47,7 @@ $ TCLIBC=musl runqemu qemuarm
 
 # Limitations
 
-Works with OE Release >= 2.1
+Works with OE Release >= 2.2
 
 Currently images are buildable/bootable for mips, arm, aarch64, ppc, x86, x86_64
 based qemu machines
@@ -68,6 +70,10 @@ branch: master
 revision: HEAD
 
 URI: git://github.com/imyller/meta-nodejs.git
+branch: master
+revision: HEAD
+
+URI: git://github.com/imyller/meta-nodejs-contrib.git
 branch: master
 revision: HEAD
 ```
