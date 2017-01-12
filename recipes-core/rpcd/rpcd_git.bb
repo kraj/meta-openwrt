@@ -7,6 +7,7 @@ LICENSE = "BSD"
 LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=18;md5=da5faf55ed0618f0dde1c88e76a0fc74"
 SECTION = "base"
 DEPENDS = "json-c libubox ubus uci iwinfo"
+RDEPENDS_${PN} += "iwinfo"
 
 SRCREV = "f00890cd6eb47ad9bb5da0fb6c50aedc8406e7c5"
 SRC_URI = "git://git.openwrt.org/project/rpcd.git \
