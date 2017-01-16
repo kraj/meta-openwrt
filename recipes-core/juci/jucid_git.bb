@@ -11,6 +11,8 @@ SRCREV = "b787f202a695eaba1fcc0feac1ff796fc37d4a43"
 SRC_URI = "git://github.com/mkschreder/jucid \
            file://0001-GLOB_TILDE-is-not-defined-in-posix-therefore-not-imp.patch \
            file://0001-juci_ws_server.c-ubus_srv_ws_client_new-expects-no-p.patch \
+           file://0001-main.c-define-_DEFAULT_SOURCE.patch \
+           file://0002-fix-makefile-in.patch \
            "
 
 S = "${WORKDIR}/git"

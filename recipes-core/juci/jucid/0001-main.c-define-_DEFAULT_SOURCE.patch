@@ -1,0 +1,38 @@
+From f1ad96615302b81756edf1e55dc3334d6a9045a3 Mon Sep 17 00:00:00 2001
+From: "Theodore A. Roth" <theodore_roth@trimble.com>
+Date: Fri, 13 Jan 2017 09:44:54 -0700
+Subject: [PATCH] main.c: define _DEFAULT_SOURCE
+
+Fixes:
+
+| In file included from /usr/include/time.h:27:0,
+|                  from ../../git/src/main.c:23:
+| /usr/include/features.h:148:3: error: #warning "_BSD_SOURCE and _SVID_SOURCE are deprecated, \
+|      use _DEFAULT_SOURCE" [-Werror=cpp]
+|  # warning "_BSD_SOURCE and _SVID_SOURCE are deprecated, use _DEFAULT_SOURCE"
+|    ^~~~~~~
+
+Signed-off-by: Theodore A. Roth <theodore_roth@trimble.com>
+---
+ src/main.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/src/main.c b/src/main.c
+index 76a2a4b..48ca6ea 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -15,10 +15,7 @@
+ 	GNU General Public License for more details.
+ */
+ 
+-#define _XOPEN_SOURCE
+-#define _XOPEN_SOURCE_EXTENDED
+-#define _BSD_SOURCE
+-#define _POSIX_C_SOURCE 199309L
++#define _DEFAULT_SOURCE
+ 
+ #include <time.h>
+ #include <stdio.h>
+-- 
+2.7.4
+
