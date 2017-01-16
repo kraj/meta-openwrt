@@ -1,0 +1,46 @@
+From 103f2a37cb0d247721d61c075bdd4037ef6b8b83 Mon Sep 17 00:00:00 2001
+From: "Theodore A. Roth" <theodore_roth@trimble.com>
+Date: Tue, 10 Jan 2017 11:37:26 -0700
+Subject: [PATCH] system-linux: Fix IFF_LOWER_UP define
+
+The following patch to the linux kernel:
+
+    https://lkml.org/lkml/2016/4/24/57
+
+causes the following build error:
+
+    | In file included from /usr/include/linux/if_tunnel.h:5:0,
+    |                  from system-linux.c:37:
+    | system-linux.c: In function 'cb_if_check_valid':
+    | system-linux.c:1455:45: error: 'IFF_LOWER_UP' undeclared (first \
+          use in this function)
+    |   device_set_link(chk->dev, ifi->ifi_flags & IFF_LOWER_UP ? true \
+          : false);
+
+It appears that __UAPI_DEF_IF_NET_DEVICE_FLAGS_LOWER_UP_DORMANT_ECHO is
+getting set to 1, but __UAPI_DEF_IF_NET_DEVICE_FLAGS is set to 0 which
+causes IFF_LOWER_UP to get defined with an empty value.
+
+Signed-off-by: Theodore A. Roth <theodore_roth@trimble.com>
+---
+ system-linux.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/system-linux.c b/system-linux.c
+index 52a1c17..03d33e8 100644
+--- a/system-linux.c
++++ b/system-linux.c
+@@ -1420,6 +1420,10 @@ struct if_check_data {
+ 	int ret;
+ };
+ 
++#if IFF_LOWER_UP == 0
++#undef IFF_LOWER_UP
++#endif
++
+ #ifndef IFF_LOWER_UP
+ #define IFF_LOWER_UP	0x10000
+ #endif
+-- 
+2.7.4
+

@@ -8,8 +8,11 @@ LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=13;md5=572cd47ba0e377b2633
 SECTION = "base"
 DEPENDS = "json-c libubox ubus libnl uci"
 
-SRCREV = "627e8b6991876b4abef6bb4a31dcdc35fcd622aa"
-SRC_URI = "git://git.openwrt.org/project/netifd.git"
+SRCREV = "64a655d8ffa9f0cea1bbdd35cac6b3b99b865270"
+SRC_URI = "\
+    git://git.openwrt.org/project/netifd.git \
+    file://100-Fix-IFF_LOWER_UP-define.patch \
+"
 
 inherit cmake pkgconfig openwrt
 
