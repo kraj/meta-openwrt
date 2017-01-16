@@ -3,7 +3,10 @@ HOMEPAGE = "http://wiki.openwrt.org/doc/uci"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://../Makefile;beginline=1;endline=5;md5=3ce05a39dbd458b46a410c5a9f266107"
 
-SRC_URI = "git://git.openwrt.org/project/luci2/ui.git;protocol=git;branch=master"
+SRC_URI = "\
+    git://git.openwrt.org/project/luci2/ui.git;protocol=git;branch=master \
+    file://100-luci2-fix-compiler-warning.patch \
+"
 
 SRCREV = "e452ca693af5278ff2ddc69b6f8ed0f346c98fb1"
 S = "${WORKDIR}/git/luci2/src/"

@@ -1,0 +1,43 @@
+From 49e6fb2a6cb89c267c8757f9e90e6fc31071d09f Mon Sep 17 00:00:00 2001
+From: "Theodore A. Roth" <theodore_roth@trimble.com>
+Date: Tue, 10 Jan 2017 13:23:14 -0700
+Subject: [PATCH] luci2: fix compiler warning
+
+Fix the following compiler warning.
+
+   luci2/src/io/main.c: In function 'md5sum':
+   luci2/src/io/main.c:144:3: error: this 'if' clause does not guard... \
+          [-Werror=misleading-indentation]
+      if (execl("/bin/busybox", "/bin/busybox", "md5sum", file, NULL));
+      ^~
+   luci2/src/io/main.c:145:4: note: ...this statement, but the latter is \
+           misleadingly indented as if it is guarded by the 'if'
+       return NULL;
+       ^~~~~~
+   cc1: all warnings being treated as errors
+
+Removing the semi-colon after the 'if()' doesn't affect how the code
+functions since the 'return' only ever happens when the 'execl()' call
+fails.
+
+Signed-off-by: Theodore A. Roth <theodore_roth@trimble.com>
+---
+ luci2/src/io/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/io/main.c b/io/main.c
+index 68aaece..8622837 100644
+--- a/io/main.c
++++ b/io/main.c
+@@ -141,7 +141,7 @@ md5sum(const char *file)
+ 		close(fds[0]);
+ 		close(fds[1]);
+ 
+-		if (execl("/bin/busybox", "/bin/busybox", "md5sum", file, NULL));
++		if (execl("/bin/busybox", "/bin/busybox", "md5sum", file, NULL))
+ 			return NULL;
+ 
+ 		break;
+-- 
+2.7.4
+
