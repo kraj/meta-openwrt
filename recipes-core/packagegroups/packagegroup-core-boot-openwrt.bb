@@ -22,7 +22,7 @@ VIRTUAL-RUNTIME_login_manager ?= "busybox"
 VIRTUAL-RUNTIME_init_manager ?= "procd"
 VIRTUAL-RUNTIME_keymaps ?= "keymaps"
 
-SYSVINIT_SCRIPTS = "${@base_contains('MACHINE_FEATURES', 'rtc', 'busybox-hwclock', '', d)} \
+SYSVINIT_SCRIPTS = "${@bb.utils.contains('MACHINE_FEATURES', 'rtc', 'busybox-hwclock', '', d)} \
                     modutils-initscripts \
                     init-ifupdown \
                    "
@@ -33,7 +33,7 @@ RDEPENDS_${PN} = "\
     busybox \
     fstools \
     uci \
-    ${@base_contains("MACHINE_FEATURES", "keyboard", "${VIRTUAL-RUNTIME_keymaps}", "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "keyboard", "${VIRTUAL-RUNTIME_keymaps}", "", d)} \
     ${VIRTUAL-RUNTIME_login_manager} \
     ${VIRTUAL-RUNTIME_init_manager} \
     ${VIRTUAL-RUNTIME_dev_manager} \
