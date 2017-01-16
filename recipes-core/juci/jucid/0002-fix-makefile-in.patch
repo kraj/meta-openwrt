@@ -1,0 +1,23 @@
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 1ae0fae..ee66301 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -1,4 +1,4 @@
+ bin_PROGRAMS=revorpcd
+ revorpcd_SOURCES=base64.c juci_luaobject.c juci_session.c juci_message.c juci_id.c juci_lua.c juci.c juci_ws_server.c juci_user.c juci_uci.c sha1.c main.c
+ revorpcd_CFLAGS=-std=gnu99 -Wall -Werror
+-revorpcd_LDADD=-lblobpack -lusys -lutype -lpthread -lwebsockets -lcrypt -luci @LIBLUA_LINK@
++revorpcd_LDADD=-lblobpack -lusys -lutype -lpthread -lwebsockets -lcrypt -luci -lm -llua5.1 -lluajit-5.1 -ldl
+diff --git a/src/Makefile.in b/src/Makefile.in
+index 7731d09..a006209 100644
+--- a/src/Makefile.in
++++ b/src/Makefile.in
+@@ -250,7 +250,7 @@ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+ revorpcd_SOURCES = base64.c juci_luaobject.c juci_session.c juci_message.c juci_id.c juci_lua.c juci.c juci_ws_server.c juci_user.c juci_uci.c sha1.c main.c
+ revorpcd_CFLAGS = -std=gnu99 -Wall -Werror
+-revorpcd_LDADD = -lblobpack -lusys -lutype -lpthread -lwebsockets -lcrypt -luci @LIBLUA_LINK@
++revorpcd_LDADD = -lblobpack -lusys -lutype -lpthread -lwebsockets -lcrypt -luci -lm -llua5.1 -lluajit-5.1 -ldl
+ all: all-am
+ 
+ .SUFFIXES:
