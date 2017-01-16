@@ -10,6 +10,8 @@ SRC_URI = "git://github.com/diegonehab/luasocket.git \
            file://0001-allow-overrides-for-DESTDIR-CC_linux-LD_linux-LDFLAG.patch \
           "
 
+TARGET_CC_ARCH += "${LDFLAGS}"
+
 S = "${WORKDIR}/git"
 
 CFLAGS += "-I${STAGING_INCDIR}/lua5.1"
