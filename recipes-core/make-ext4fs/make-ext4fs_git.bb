@@ -16,6 +16,8 @@ B = "${S}"
 
 CFLAGS += "-I${S}/include -I${S}/libsparse/include"
 
+TARGET_CC_ARCH += "${LDFLAGS}"
+
 do_install() {
 	install -Dm 0755 ${B}/make_ext4fs ${D}${bindir}/make_ext4fs
 }
