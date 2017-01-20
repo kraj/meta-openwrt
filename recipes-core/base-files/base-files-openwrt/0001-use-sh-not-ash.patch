@@ -1,0 +1,10 @@
+diff --git a/package/base-files/files/lib/functions/uci-defaults-new.sh b/package/base-files/files/lib/functions/uci-defaults-new.sh
+index 7222ff8..03084f5 100755
+--- a/package/base-files/files/lib/functions/uci-defaults-new.sh
++++ b/package/base-files/files/lib/functions/uci-defaults-new.sh
+@@ -1,4 +1,4 @@
+-#!/bin/ash
++#!/bin/sh
+ 
+ CFG=/etc/board.json
+ 
