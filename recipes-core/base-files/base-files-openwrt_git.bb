@@ -37,6 +37,7 @@ do_install () {
     chmod 0600 ${D}/etc/shadow
     chmod 1777 ${D}/tmp
 
+    mkdir -p ${D}/var/run
     mkdir -p ${D}/etc/rc.d
     for script in ${D}/etc/init.d/*
     do
