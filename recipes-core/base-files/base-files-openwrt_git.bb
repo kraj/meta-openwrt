@@ -3,7 +3,9 @@ HOMEPAGE = "http://wiki.openwrt.org/"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=94d55d512a9ba36caa9b7df079bae19f"
 
-SRC_URI = "git://git.openwrt.org/15.05/openwrt.git;protocol=git;branch=master"
+SRC_URI = "git://git.openwrt.org/15.05/openwrt.git;protocol=git;branch=master \
+           file://0001-use-sh-not-ash.patch \
+           "
 SRCREV = "1fea0d89f5b7867262213fc0ac459c4ab861e465"
 
 S = "${WORKDIR}/git"
