@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://procd.c;beginline=1;endline=13;md5=61e3657604f131a859
 SECTION = "base"
 DEPENDS = "libubox ubus json-c"
 
-SRCREV = "ef490722885a5c708c70dff656d094c7043ae081"
+SRCREV = "f7069032290a9720142b2ee2c6315d7e1f1a1bd3"
 SRC_URI = "git://git.openwrt.org/project/procd.git \
            file://procd.sh \
            file://reload_config \
