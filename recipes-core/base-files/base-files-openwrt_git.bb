@@ -36,6 +36,13 @@ do_install () {
     ln -sf /tmp/resolv.conf /tmp/fstab /tmp/TZ ${D}/etc/
     chmod 0600 ${D}/etc/shadow
     chmod 1777 ${D}/tmp
+
+    mkdir -p ${D}/etc/rc.d
+    for script in ${D}/etc/init.d/*
+    do
+        grep '#!/bin/sh /etc/rc.common' $script > /dev/null || continue
+        IPKG_INSTROOT=${D} /bin/bash ${D}/etc/rc.common $script enable || continue
+    done
 }
 
 FILES_${PN} = "/"
