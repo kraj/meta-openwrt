@@ -25,6 +25,11 @@ do_install_append() {
     install -Dm 0755 ${WORKDIR}/reload_config ${D}${base_sbindir}/reload_config
     install -Dm 0755 ${WORKDIR}/hotplug.json ${D}${sysconfdir}/hotplug.json
     install -Dm 0755 ${WORKDIR}/hotplug-preinit.json ${D}${sysconfdir}/hotplug-preinit.json
+
+    mkdir -p ${D}/sbin
+    ln -s /usr/sbin/procd ${D}/sbin/procd
+    ln -s /usr/sbin/init ${D}/sbin/init
+    ln -s /usr/sbin/askfirst ${D}/sbin/askfirst
 }
 
 FILES_${PN} += "${base_libdir}"
