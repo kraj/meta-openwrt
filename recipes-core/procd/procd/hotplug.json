@@ -71,10 +71,6 @@
                 [ "^ttyUSB", "^ttyACM" ]
             ]
         ],
-        [ "exec", "/sbin/hotplug-call", "tty" ],
-        [ "if",
-            [ "isdir", "/etc/hotplug.d/%SUBSYSTEM%" ],
-            [ "exec", "/sbin/hotplug-call", "%SUBSYSTEM%" ]
-        ]
+        [ "exec", "/sbin/hotplug-call", "tty" ]
     ],
 ]
