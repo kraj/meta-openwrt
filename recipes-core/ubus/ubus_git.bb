@@ -13,4 +13,9 @@ SRC_URI = "git://git.openwrt.org/project/ubus.git"
 
 inherit cmake pkgconfig openwrt
 
+do_install_append () {
+    install -dm 0755 ${D}/sbin
+    ln -s /usr/sbin/ubusd ${D}/sbin/ubusd
+}
+
 S = "${WORKDIR}/git"
