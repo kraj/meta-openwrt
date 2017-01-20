@@ -23,12 +23,13 @@ do_install_append () {
         ln -s /sbin/kmodloader ${D}/usr/sbin/lsmod
         ln -s /sbin/kmodloader ${D}/usr/sbin/modinfo
         ln -s /sbin/kmodloader ${D}/usr/sbin/modprobe
+
+        install -dm 0755 ${D}/sbin
+        ln -s /usr/sbin/kmodloader ${D}/sbin/kmodloader
+
+        mv ${D}/usr/lib/libvalidate.so ${D}/usr/lib/libvalidate.so.0.0.0
+        ln -s libvalidate.so.0.0.0 ${D}/usr/lib/libvalidate.so.0
+        ln -s libvalidate.so.0.0.0 ${D}/usr/lib/libvalidate.so
 }
 
-PACKAGES += "libvalidate"
-
-#FILES_${PN} = "${bindir} ${sysconfdir} /sbin /usr/sbin"
-#FILES_${PN}-dev = "/usr/include /usr/lib"
-#FILES_libvalidate = "${base_libdir}"
-
-#RDEPENDS_${PN} += "libvalidate ubus libubus libubox libuci"
+RDEPENDS_${PN} += "ubus libubox"
