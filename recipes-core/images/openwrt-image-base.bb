@@ -33,6 +33,7 @@ CORE_IMAGE_EXTRA_INSTALL += "\
     relayd \
     rpcd \
     strace \
+    ubox \
     ubus \
     uci \
     ugps \
