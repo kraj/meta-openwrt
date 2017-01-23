@@ -10,10 +10,9 @@ DEPENDS = "libubox ustream-ssl"
 
 SRCREV = "4edb1426cef9eb07aa52dab2c34ab51f64e10f74"
 SRC_URI = "git://git.openwrt.org/project/uclient.git \
-          "
+           file://0001-Disable-warnings-being-treated-as-errors.patch \
+"
 
 inherit cmake pkgconfig openwrt
-
-OECMAKE_C_FLAGS += "-Wno-error=discarded-qualifiers"
 
 S = "${WORKDIR}/git"
