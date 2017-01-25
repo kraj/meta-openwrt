@@ -30,6 +30,7 @@ do_install_append() {
     ln -s /usr/sbin/procd ${D}/sbin/procd
     ln -s /usr/sbin/init ${D}/sbin/init
     ln -s /usr/sbin/askfirst ${D}/sbin/askfirst
+    ln -s /usr/sbin/udevtrigger ${D}/sbin/udevtrigger
 }
 
 FILES_${PN} += "${base_libdir}"
