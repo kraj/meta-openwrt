@@ -21,6 +21,11 @@ S = "${WORKDIR}/git"
 
 do_install_append() {
     install -Dm 0755 ${WORKDIR}/uci.sh ${D}${base_libdir}/config/uci.sh
+
+    mkdir -p ${D}/sbin
+    mkdir -p ${D}/usr/sbin
+    ln -s /usr/bin/uci ${D}/usr/sbin/uci
+    ln -s /usr/bin/uci ${D}/sbin/uci
 }
 
 FILES_${PN} += "${base_libdir}"
