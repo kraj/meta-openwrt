@@ -29,6 +29,9 @@ do_install_append () {
 	mv ${D}/usr/bin ${D}/usr/sbin
         install ${B}/uhttpd_lua.so ${D}/usr/lib/
         install ${B}/uhttpd_ubus.so ${D}/usr/lib/
+
+        mkdir -p ${D}/etc/rc.d
+        ln -s ../init.d/uhttpd ${D}/etc/rc.d/S50uhttpd
 }
 
 
