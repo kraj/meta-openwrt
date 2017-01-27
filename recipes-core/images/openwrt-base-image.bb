@@ -24,7 +24,7 @@ CORE_IMAGE_EXTRA_INSTALL += "\
     libubox \
     lua5.1 \
     lua-socket \
-    luci2 \
+    luci \
     make-ext4fs \
     mdnsd \
     mountd \
