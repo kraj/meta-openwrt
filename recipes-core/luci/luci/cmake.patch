@@ -1,0 +1,172 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+new file mode 100644
+index 0000000..5a8f138
+--- /dev/null
++++ b/CMakeLists.txt
+@@ -0,0 +1,29 @@
++cmake_minimum_required(VERSION 3.0)
++
++PROJECT(luci)
++
++INCLUDE(GNUInstallDirs)
++
++IF(NOT LUAPATH)
++	SET(LUAPATH "${CMAKE_INSTALL_LIBDIR}/lua/5.1")
++ENDIF()
++
++IF(NOT LUA_CFLAGS)
++	FIND_PROGRAM(PKG_CONFIG pkg-config)
++	IF(PKG_CONFIG)
++		EXECUTE_PROCESS(
++			COMMAND pkg-config --silence-errors --cflags lua5.1
++			OUTPUT_VARIABLE LUA_CFLAGS
++			OUTPUT_STRIP_TRAILING_WHITESPACE
++		)
++	ENDIF()
++ENDIF()
++
++ADD_DEFINITIONS(${LUA_CFLAGS})
++
++ADD_SUBDIRECTORY(modules/luci-base)
++ADD_SUBDIRECTORY(modules/luci-mod-admin-full)
++ADD_SUBDIRECTORY(libs/luci-lib-nixio)
++ADD_SUBDIRECTORY(libs/luci-lib-ip)
++ADD_SUBDIRECTORY(themes/luci-theme-bootstrap)
++
+diff --git a/libs/luci-lib-ip/CMakeLists.txt b/libs/luci-lib-ip/CMakeLists.txt
+new file mode 100644
+index 0000000..56ba5bd
+--- /dev/null
++++ b/libs/luci-lib-ip/CMakeLists.txt
+@@ -0,0 +1,15 @@
++cmake_minimum_required(VERSION 3.0)
++
++PROJECT(luci-lib-ip C)
++
++FIND_PACKAGE(PkgConfig)
++
++ADD_LIBRARY(ip SHARED src/ip.c)
++SET_TARGET_PROPERTIES(ip PROPERTIES PREFIX "")
++
++TARGET_LINK_LIBRARIES(ip nl-3)
++
++INSTALL(TARGETS ip
++	LIBRARY DESTINATION "${LUAPATH}/luci"
++)
++
+diff --git a/libs/luci-lib-nixio/CMakeLists.txt b/libs/luci-lib-nixio/CMakeLists.txt
+new file mode 100644
+index 0000000..da9b3e4
+--- /dev/null
++++ b/libs/luci-lib-nixio/CMakeLists.txt
+@@ -0,0 +1,26 @@
++cmake_minimum_required(VERSION 3.0)
++
++PROJECT(luci-lib-nixio C)
++
++ADD_DEFINITIONS(-DNO_TLS)
++
++ADD_LIBRARY(nixio SHARED src/nixio.c src/socket.c src/sockopt.c src/bind.c src/address.c
++	src/protoent.c src/poll.c src/io.c src/file.c src/splice.c src/process.c
++	src/syslog.c src/bit.c src/binary.c src/fs.c src/user.c)
++SET_TARGET_PROPERTIES(nixio PROPERTIES PREFIX "")
++TARGET_LINK_LIBRARIES(nixio crypt ssl)
++
++INSTALL(DIRECTORY root/usr/lib/lua/
++	DESTINATION ${LUAPATH}
++	USE_SOURCE_PERMISSIONS
++)
++
++INSTALL(TARGETS nixio
++	LIBRARY DESTINATION ${LUAPATH}
++)
++
++INSTALL(DIRECTORY root/lib
++	DESTINATION "${CMAKE_INSTALL_PREFIX}/"
++	USE_SOURCE_PERMISSIONS
++)
++
+diff --git a/modules/luci-base/CMakeLists.txt b/modules/luci-base/CMakeLists.txt
+new file mode 100644
+index 0000000..d5feb61
+--- /dev/null
++++ b/modules/luci-base/CMakeLists.txt
+@@ -0,0 +1,26 @@
++cmake_minimum_required(VERSION 3.0)
++
++PROJECT(luci-base C)
++
++ADD_LIBRARY(parser SHARED src/template_parser.c src/template_utils.c src/template_lmo.c src/template_lualib.c)
++SET_TARGET_PROPERTIES(parser PROPERTIES PREFIX "")
++
++INSTALL(DIRECTORY luasrc/
++	DESTINATION "${LUAPATH}/luci"
++	USE_SOURCE_PERMISSIONS
++)
++
++INSTALL(TARGETS parser
++	LIBRARY DESTINATION "${LUAPATH}/luci/template"
++)
++
++INSTALL(DIRECTORY root/
++	DESTINATION "${CMAKE_INSTALL_PREFIX}/"
++	USE_SOURCE_PERMISSIONS
++)
++
++INSTALL(DIRECTORY htdocs/
++	DESTINATION "${CMAKE_INSTALL_PREFIX}/www"
++	USE_SOURCE_PERMISSIONS
++)
++
+diff --git a/modules/luci-mod-admin-full/CMakeLists.txt b/modules/luci-mod-admin-full/CMakeLists.txt
+new file mode 100644
+index 0000000..f843031
+--- /dev/null
++++ b/modules/luci-mod-admin-full/CMakeLists.txt
+@@ -0,0 +1,21 @@
++cmake_minimum_required(VERSION 3.0)
++
++PROJECT(luci-mod-admin-full C)
++
++ADD_EXECUTABLE(luci-bwc src/luci-bwc.c)
++TARGET_LINK_LIBRARIES(luci-bwc dl)
++
++INSTALL(DIRECTORY luasrc/
++	DESTINATION "${LUAPATH}/luci"
++	USE_SOURCE_PERMISSIONS
++)
++
++INSTALL(TARGETS luci-bwc
++	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
++)
++
++INSTALL(DIRECTORY htdocs/
++	DESTINATION "${CMAKE_INSTALL_PREFIX}/www"
++	USE_SOURCE_PERMISSIONS
++)
++
+diff --git a/themes/luci-theme-bootstrap/CMakeLists.txt b/themes/luci-theme-bootstrap/CMakeLists.txt
+new file mode 100644
+index 0000000..7a91aa7
+--- /dev/null
++++ b/themes/luci-theme-bootstrap/CMakeLists.txt
+@@ -0,0 +1,19 @@
++cmake_minimum_required(VERSION 3.0)
++
++PROJECT(luci-theme-bootstrap C)
++
++INSTALL(DIRECTORY luasrc/
++	DESTINATION "${LUAPATH}/luci"
++	USE_SOURCE_PERMISSIONS
++)
++
++INSTALL(DIRECTORY root/
++	DESTINATION "${CMAKE_INSTALL_PREFIX}/"
++	USE_SOURCE_PERMISSIONS
++)
++
++INSTALL(DIRECTORY htdocs/
++	DESTINATION "${CMAKE_INSTALL_PREFIX}/www"
++	USE_SOURCE_PERMISSIONS
++)
++
