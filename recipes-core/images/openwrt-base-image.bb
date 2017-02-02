@@ -22,7 +22,7 @@ CORE_IMAGE_EXTRA_INSTALL += "\
     jsonpath \
     libroxml \
     libubox \
-    lua \
+    lua5.1 \
     lua-socket \
     luci2 \
     make-ext4fs \
