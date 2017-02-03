@@ -31,6 +31,7 @@ RDEPENDS_${PN} = "\
     base-files-openwrt \
     base-passwd \
     busybox \
+    bridge-utils \
     fstools \
     uci \
     ${@bb.utils.contains("MACHINE_FEATURES", "keyboard", "${VIRTUAL-RUNTIME_keymaps}", "", d)} \
