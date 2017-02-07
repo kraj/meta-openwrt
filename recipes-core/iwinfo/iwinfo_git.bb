@@ -23,6 +23,8 @@ S = "${WORKDIR}/git"
 
 do_install() {
 	install -D -m 0755 ${B}/libiwinfo.so ${D}${libdir}/libiwinfo.so
+        install -D -m 0755 ${B}/iwinfo.so ${D}${libdir}/lua/5.1/iwinfo.so
+        install -D -m 0755 ${B}/iwinfo ${D}${bindir}/iwinfo
 	install -D -m 0644 ${S}/include/iwinfo.h ${D}${includedir}/iwinfo.h
 	install -D -m 0644 ${S}/include/iwinfo/utils.h ${D}${includedir}/iwinfo/utils.h
 }
