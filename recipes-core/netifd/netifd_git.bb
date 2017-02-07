@@ -9,7 +9,7 @@ SECTION = "base"
 DEPENDS = "json-c libubox ubus libnl uci"
 
 SRCREV_netifd = "64a655d8ffa9f0cea1bbdd35cac6b3b99b865270"
-SRCREV_openwrt = "v15.05.1"
+SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 SRC_URI = "\
     git://git.openwrt.org/project/netifd.git;name=netifd \
