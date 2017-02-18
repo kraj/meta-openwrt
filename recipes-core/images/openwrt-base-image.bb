@@ -8,6 +8,7 @@ CORE_IMAGE_BASE_INSTALL = '\
     packagegroup-core-boot-openwrt \
     kernel-modules \
     \
+    ${MACHINE_EXTRA_RDEPENDS} \
     ${CORE_IMAGE_EXTRA_INSTALL} \
     '
 
@@ -58,7 +59,6 @@ rootfs_wifi_config() {
     install -d ${IMAGE_ROOTFS}/etc/config
 
     install -m 0644 ${SRCDIR}/network_wireless.config ${IMAGE_ROOTFS}/etc/config/network
-    install -m 0644 ${SRCDIR}/wireless.config ${IMAGE_ROOTFS}/etc/config/wireless
 }
 
 rootfs_wired_config() {
