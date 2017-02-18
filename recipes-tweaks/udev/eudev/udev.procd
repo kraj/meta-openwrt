@@ -1,0 +1,30 @@
+#!/bin/sh /etc/rc.common
+
+START=05
+STOP=95
+
+USE_PROCD=1
+
+PROG=/sbin/udevd
+
+start_service() {
+    procd_open_instance
+    procd_set_param command $PROG
+    procd_set_param respawn
+    procd_close_instance
+}
+
+service_started() {
+    /sbin/udevadm control --env=STARTUP=1
+    /sbin/udevadm trigger --action=add
+    /sbin/udevadm settle
+}
+
+stop() {
+	service_stop $PROG
+}
+
+reload() {
+	service_reload $PROG
+}
+
