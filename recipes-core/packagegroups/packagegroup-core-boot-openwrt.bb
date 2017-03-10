@@ -32,6 +32,7 @@ RDEPENDS_${PN} = "\
     base-passwd \
     busybox \
     bridge-utils \
+    tcpdump \
     fstools \
     uci \
     ${@bb.utils.contains("MACHINE_FEATURES", "keyboard", "${VIRTUAL-RUNTIME_keymaps}", "", d)} \
