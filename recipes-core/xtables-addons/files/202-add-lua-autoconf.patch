@@ -1,0 +1,10 @@
+diff -ruN xtables-addons-2.12.orig/configure.ac xtables-addons-2.12/configure.ac
+--- xtables-addons-2.12.orig/configure.ac	2017-03-06 09:21:33.783860920 -0700
++++ xtables-addons-2.12/configure.ac	2017-03-06 10:28:53.063830722 -0700
+@@ -75,5 +75,5 @@
+ AC_SUBST([xtlibdir])
+ AC_CONFIG_FILES([Makefile Makefile.iptrules Makefile.mans geoip/Makefile
+ 	extensions/Makefile extensions/ACCOUNT/Makefile
+-	extensions/pknock/Makefile])
++	extensions/pknock/Makefile extensions/LUA/Makefile])
+ AC_OUTPUT
