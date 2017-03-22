@@ -6,8 +6,6 @@ RDEPENDS_${PN} += "perl"
 
 inherit autotools module-base
 
-INC_PR = "r0"
-
 SRC_URI = " \
         ${SOURCEFORGE_MIRROR}/project/${PN}/Xtables-addons/${PN}-${PV}.tar.xz \
         file://100-add-rtsp-conntrack.patch \
@@ -20,7 +18,7 @@ SRC_URI = " \
 SRC_URI[md5sum] = "aed5ce0873709ac243f1177fc81ff452"
 SRC_URI[sha256sum] = "c4865aa1c64c5ff173ff7b5d69425466c71f0f9b5eb5299c52c68bdcd46fa63b"
 
-EXTRA_OECONF = "--with-kbuild=${STAGING_KERNEL_DIR} --with-xtlibdir=/usr/lib/iptables"
+EXTRA_OECONF = "--with-kbuild=${STAGING_KERNEL_DIR} --with-xtlibdir=${libdir}/iptables"
 
 addtask make_scripts after do_patch before do_compile
 do_make_scripts[lockfiles] = "${TMPDIR}/kernel-scripts.lock"
