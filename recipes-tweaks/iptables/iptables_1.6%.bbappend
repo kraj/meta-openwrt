@@ -1,6 +1,6 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-EXTRA_OECONF += "--enable-shared --disable-static"
+EXTRA_OECONF += "--enable-shared --disable-static --with-xtlibdir=/usr/lib/iptables"
 
 SRC_URI += "file://600-shared-libext.patch"
 
