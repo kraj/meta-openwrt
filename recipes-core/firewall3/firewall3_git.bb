@@ -4,14 +4,13 @@
 DESCRIPTION = "OpenWrt firewall configuration utility"
 HOMEPAGE = "http://git.openwrt.org/?p=project/firewall3.git;a=summary"
 LICENSE = "BSD"
-LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=17;md5=587cc5ad76f548db3e8674df450dc88f"
+LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=17;md5=2a8ffaa9ef41014f236ab859378e8900"
 SECTION = "base"
 DEPENDS = "libubox uci ubus iptables"
 RDEPENDS_${PN} = "ipset xtables-addons"
 
-SRCREV = "18a503d0125aebc3a8d62dad1c02e6bb1da92eb6"
+SRCREV = "82ccd9e34fe87d31d9909fed754950b2c75bc6ac"
 SRC_URI = "git://git.openwrt.org/project/firewall3.git \
-           file://0001-Quickfix-for-iptables-2.6.x.patch \
            git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;protocol=git;branch=chaos_calmer \
           "
 
