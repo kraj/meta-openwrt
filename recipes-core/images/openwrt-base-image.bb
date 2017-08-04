@@ -2,8 +2,6 @@ SUMMARY = "OpenWrt Base Image"
 
 LICENSE = "MIT"
 
-inherit core-image image_types_uboot
-
 CORE_IMAGE_BASE_INSTALL = '\
     packagegroup-core-boot-openwrt \
     kernel-modules \
