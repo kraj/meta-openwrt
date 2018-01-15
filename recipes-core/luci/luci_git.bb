@@ -9,9 +9,9 @@ SECTION = "base"
 DEPENDS = "json-c libubox libnl lua5.1 iwinfo openssl"
 RDEPENDS_${PN} = "lua5.1"
 
-SRCREV = "d89b022b97b4516bef708212135780b818b9d4a2"
+SRCREV = "ff21f2f0a38dbac7411118377d3300a668db7146"
 
-SRC_URI = "git://github.com/openwrt/luci.git;branch=for-15.05"
+SRC_URI = "git://github.com/openwrt/luci.git;branch=lede-17.01"
 SRC_URI += "file://cmake.patch"
 
 inherit cmake openwrt pkgconfig

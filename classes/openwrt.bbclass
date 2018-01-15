@@ -11,5 +11,5 @@ OECMAKE_C_FLAGS += "-I${STAGING_INCDIR}/lua5.1"
 CFLAGS += "-I${STAGING_INCDIR}/lua5.1"
 
 # Use this git SRCREV for all recipes that pull files out of openwrt repository
-# Equivalent to tag v15.05.1
-OPENWRT_SRCREV = "0c335d6ea00af9b32225f72d491e560c1a7cf4ab"
+# Equivalent to tag v17.01.4
+OPENWRT_SRCREV = "444add156f2a6d92fc15005c5ade2208a978966c"

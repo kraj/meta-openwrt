@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=12;md5=ce0be9da20a926574bf
 SECTION = "base"
 DEPENDS = "json-c libubox ubus"
 
-SRCREV = "ae8773477c31b741ba8b47f8898e4c0a1c834b85"
+SRCREV = "0e8b948ff8dd1cb1763180c99b522390529c7841"
 SRC_URI = "git://git.openwrt.org/project/mdnsd.git \
           "
 

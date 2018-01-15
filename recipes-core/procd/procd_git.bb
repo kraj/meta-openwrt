@@ -8,13 +8,12 @@ LIC_FILES_CHKSUM = "file://procd.c;beginline=1;endline=13;md5=61e3657604f131a859
 SECTION = "base"
 DEPENDS = "libubox ubus json-c"
 
-SRCREV = "f7069032290a9720142b2ee2c6315d7e1f1a1bd3"
-SRC_URI = "git://git.openwrt.org/project/procd.git \
+SRCREV = "188353099cf6fc88f145cfcb84a4db3f6523528a"
+SRC_URI = "git://git.openwrt.org/project/procd.git;branch=lede-17.01 \
            file://procd.sh \
            file://reload_config \
            file://hotplug.json \
            file://hotplug-preinit.json \
-           file://0100-use-sysmacros-where-needed.patch \
 "
 
 inherit cmake openwrt pkgconfig
