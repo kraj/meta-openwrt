@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=17;md5=86aad799085683e0a2e
 SECTION = "base"
 DEPENDS = "libubox"
 
-SRCREV = "83dba5d525a3b7c2ae4fcb24961143bfcfc93ba7"
+SRCREV = "ad0b25ad74345d367c62311e14b279f5ccb8ef13"
 SRC_URI = "git://git.openwrt.org/project/relayd.git \
           "
 

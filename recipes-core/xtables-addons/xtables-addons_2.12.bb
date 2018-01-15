@@ -4,7 +4,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=751419260aa954499f7abaabaa882bbe"
 DEPENDS = "virtual/kernel iptables"
 RDEPENDS_${PN} += "perl"
 
-inherit autotools module-base
+inherit autotools module-base pkgconfig
 
 SRC_URI = " \
         ${SOURCEFORGE_MIRROR}/project/${PN}/Xtables-addons/${PN}-${PV}.tar.xz \
@@ -13,6 +13,7 @@ SRC_URI = " \
         file://201-fix-lua-packetscript.patch \
         file://202-add-lua-autoconf.patch \
         file://300-geoip-endian-detection.patch \
+	file://400-fix-IFF_LOWER_UP-musl.patch \
         "
 
 SRC_URI[md5sum] = "aed5ce0873709ac243f1177fc81ff452"

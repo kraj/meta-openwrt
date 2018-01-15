@@ -1,0 +1,24 @@
+Index: git/libblkid-tiny/mkdev.c
+===================================================================
+--- git.orig/libblkid-tiny/mkdev.c
++++ git/libblkid-tiny/mkdev.c
+@@ -16,6 +16,7 @@
+ 
+ #include <sys/stat.h>
+ #include <sys/types.h>
++#include <sys/sysmacros.h>
+ 
+ #include <stdio.h>
+ #include <string.h>
+Index: git/libubi/libubi.c
+===================================================================
+--- git.orig/libubi/libubi.c
++++ git/libubi/libubi.c
+@@ -32,6 +32,7 @@
+ #include <sys/ioctl.h>
+ #include <sys/stat.h>
+ #include <sys/types.h>
++#include <sys/sysmacros.h>
+ #include "libubi.h"
+ #include "libubi_int.h"
+ 

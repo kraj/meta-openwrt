@@ -2,12 +2,12 @@ DESCRIPTION = "OpenWrt system helper toolbox"
 HOMEPAGE = "http://wiki.openwrt.org/doc/techref/ubox"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://kmodloader.c;beginline=1;endline=13;md5=61e3657604f131a859b57a40f27a9d8e"
+SRCREV = "16f7e16181e2f3e9cf3e2ce56a7e291844900d09"
 
 DEPENDS = "ubus libubox uci"
 
 SRC_URI = "\
-    git://nbd.name/luci2/ubox.git;protocol=git;branch=master \
-    file://100-insmod-segfault.patch \
+    git://git.lede-project.org/project/ubox.git \
     file://log.init \
 "
 
@@ -30,13 +30,13 @@ do_install_append () {
         ln -s /usr/sbin/logread ${D}/sbin/logread
         ln -s /usr/sbin/validate_data ${D}/sbin/validate_data
 
-        mv ${D}/usr/lib/libvalidate.so ${D}/usr/lib/libvalidate.so.0.0.0
-        ln -s libvalidate.so.0.0.0 ${D}/usr/lib/libvalidate.so.0
-        ln -s libvalidate.so.0.0.0 ${D}/usr/lib/libvalidate.so
-
         mkdir -p ${D}/etc/rc.d
         ln -s ../init.d/log ${D}/etc/rc.d/S12log
         ln -s ../init.d/log ${D}/etc/rc.d/K89log
 }
 
 RDEPENDS_${PN} += "ubus libubox"
+
+FILES_SOLIBSDEV = ""
+
+FILES_${PN}  += "${libdir}/*"
