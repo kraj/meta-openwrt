@@ -11,6 +11,8 @@ DEPENDS = "json-c libubox ubus libnl uci"
 SRCREV_pn-netifd = "650758b16e5185505a3fbc1307949340af70b611"
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
+CONFLICTS += "ifupdown"
+
 SRC_URI = "\
     git://git.openwrt.org/project/netifd.git;name=netifd \
     git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;branch=lede-17.01 \

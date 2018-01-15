@@ -6,6 +6,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=94d55d512a9ba36caa9b7df079bae19f"
 SRC_URI = "git://github.com/openwrt/openwrt.git;protocol=git;branch=lede-17.01 \
            file://0001-use-sh-not-ash.patch \
            file://00_preinit.conf \
+           file://0100-config_generate-no-bridge.patch \
            "
 SRCREV = "${OPENWRT_SRCREV}"
 
@@ -56,8 +57,6 @@ do_install () {
         grep '#!/bin/sh /etc/rc.common' $script > /dev/null || continue
         IPKG_INSTROOT=${D} /bin/bash ${D}/etc/rc.common $script enable || continue
     done
-
-    rm -f ${D}/etc/config/network
 }
 
 FILES_${PN} = "/"
