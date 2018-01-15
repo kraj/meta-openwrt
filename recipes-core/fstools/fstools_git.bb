@@ -13,6 +13,7 @@ SECTION = "base"
 SRCREV = "96415afecef35766332067f4205ef3b2c7561d21"
 SRC_URI = "git://git.openwrt.org/project/fstools.git \
            file://0001-Define-GLOB_ONLYDIR-if-not-available.patch \
+           file://0100-Use-sysmacro-where-needed.patch \
           "
 
 inherit cmake pkgconfig
