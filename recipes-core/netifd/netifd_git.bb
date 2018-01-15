@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=13;md5=572cd47ba0e377b2633
 SECTION = "base"
 DEPENDS = "json-c libubox ubus libnl uci"
 
-SRCREV_netifd = "64a655d8ffa9f0cea1bbdd35cac6b3b99b865270"
+SRCREV_pn-netifd = "64a655d8ffa9f0cea1bbdd35cac6b3b99b865270"
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 SRC_URI = "\
