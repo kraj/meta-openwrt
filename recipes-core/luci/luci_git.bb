@@ -21,7 +21,7 @@ includedir="/usr/include"
 
 OECMAKE_C_FLAGS += "-I${STAGING_INCDIR}/libnl3"
 
-FILES_${PN} += "/www /usr/lib"
+FILES_${PN} += "/www /usr/lib /usr/share/acl.d"
 
 S = "${WORKDIR}/git/"
 

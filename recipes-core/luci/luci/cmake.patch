@@ -1,9 +1,8 @@
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-new file mode 100644
-index 0000000..5a8f138
+Index: git/CMakeLists.txt
+===================================================================
 --- /dev/null
-+++ b/CMakeLists.txt
-@@ -0,0 +1,29 @@
++++ git/CMakeLists.txt
+@@ -0,0 +1,31 @@
 +cmake_minimum_required(VERSION 3.0)
 +
 +PROJECT(luci)
@@ -31,13 +30,14 @@ index 0000000..5a8f138
 +ADD_SUBDIRECTORY(modules/luci-mod-admin-full)
 +ADD_SUBDIRECTORY(libs/luci-lib-nixio)
 +ADD_SUBDIRECTORY(libs/luci-lib-ip)
++ADD_SUBDIRECTORY(libs/luci-lib-jsonc)
 +ADD_SUBDIRECTORY(themes/luci-theme-bootstrap)
++ADD_SUBDIRECTORY(applications/luci-app-firewall)
 +
-diff --git a/libs/luci-lib-ip/CMakeLists.txt b/libs/luci-lib-ip/CMakeLists.txt
-new file mode 100644
-index 0000000..56ba5bd
+Index: git/libs/luci-lib-ip/CMakeLists.txt
+===================================================================
 --- /dev/null
-+++ b/libs/luci-lib-ip/CMakeLists.txt
++++ git/libs/luci-lib-ip/CMakeLists.txt
 @@ -0,0 +1,15 @@
 +cmake_minimum_required(VERSION 3.0)
 +
@@ -54,11 +54,10 @@ index 0000000..56ba5bd
 +	LIBRARY DESTINATION "${LUAPATH}/luci"
 +)
 +
-diff --git a/libs/luci-lib-nixio/CMakeLists.txt b/libs/luci-lib-nixio/CMakeLists.txt
-new file mode 100644
-index 0000000..da9b3e4
+Index: git/libs/luci-lib-nixio/CMakeLists.txt
+===================================================================
 --- /dev/null
-+++ b/libs/luci-lib-nixio/CMakeLists.txt
++++ git/libs/luci-lib-nixio/CMakeLists.txt
 @@ -0,0 +1,26 @@
 +cmake_minimum_required(VERSION 3.0)
 +
@@ -86,11 +85,10 @@ index 0000000..da9b3e4
 +	USE_SOURCE_PERMISSIONS
 +)
 +
-diff --git a/modules/luci-base/CMakeLists.txt b/modules/luci-base/CMakeLists.txt
-new file mode 100644
-index 0000000..d5feb61
+Index: git/modules/luci-base/CMakeLists.txt
+===================================================================
 --- /dev/null
-+++ b/modules/luci-base/CMakeLists.txt
++++ git/modules/luci-base/CMakeLists.txt
 @@ -0,0 +1,26 @@
 +cmake_minimum_required(VERSION 3.0)
 +
@@ -118,11 +116,10 @@ index 0000000..d5feb61
 +	USE_SOURCE_PERMISSIONS
 +)
 +
-diff --git a/modules/luci-mod-admin-full/CMakeLists.txt b/modules/luci-mod-admin-full/CMakeLists.txt
-new file mode 100644
-index 0000000..f843031
+Index: git/modules/luci-mod-admin-full/CMakeLists.txt
+===================================================================
 --- /dev/null
-+++ b/modules/luci-mod-admin-full/CMakeLists.txt
++++ git/modules/luci-mod-admin-full/CMakeLists.txt
 @@ -0,0 +1,21 @@
 +cmake_minimum_required(VERSION 3.0)
 +
@@ -145,11 +142,10 @@ index 0000000..f843031
 +	USE_SOURCE_PERMISSIONS
 +)
 +
-diff --git a/themes/luci-theme-bootstrap/CMakeLists.txt b/themes/luci-theme-bootstrap/CMakeLists.txt
-new file mode 100644
-index 0000000..7a91aa7
+Index: git/themes/luci-theme-bootstrap/CMakeLists.txt
+===================================================================
 --- /dev/null
-+++ b/themes/luci-theme-bootstrap/CMakeLists.txt
++++ git/themes/luci-theme-bootstrap/CMakeLists.txt
 @@ -0,0 +1,19 @@
 +cmake_minimum_required(VERSION 3.0)
 +
@@ -168,5 +164,38 @@ index 0000000..7a91aa7
 +INSTALL(DIRECTORY htdocs/
 +	DESTINATION "${CMAKE_INSTALL_PREFIX}/www"
 +	USE_SOURCE_PERMISSIONS
++)
++
+Index: git/applications/luci-app-firewall/CMakeLists.txt
+===================================================================
+--- /dev/null
++++ git/applications/luci-app-firewall/CMakeLists.txt
+@@ -0,0 +1,8 @@
++cmake_minimum_required(VERSION 3.0)
++
++PROJECT(luci-app-firewall C)
++
++INSTALL(DIRECTORY luasrc/
++	DESTINATION "${LUAPATH}/luci"
++	USE_SOURCE_PERMISSIONS
++)
+Index: git/libs/luci-lib-jsonc/CMakeLists.txt
+===================================================================
+--- /dev/null
++++ git/libs/luci-lib-jsonc/CMakeLists.txt
+@@ -0,0 +1,15 @@
++cmake_minimum_required(VERSION 3.0)
++
++PROJECT(luci-lib-jsonc C)
++
++FIND_PACKAGE(PkgConfig)
++
++ADD_LIBRARY(jsonc SHARED src/jsonc.c)
++SET_TARGET_PROPERTIES(jsonc PROPERTIES PREFIX "")
++
++TARGET_LINK_LIBRARIES(jsonc json-c)
++
++INSTALL(TARGETS jsonc
++	LIBRARY DESTINATION "${LUAPATH}/luci"
 +)
 +
