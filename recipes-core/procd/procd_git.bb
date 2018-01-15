@@ -14,6 +14,7 @@ SRC_URI = "git://git.openwrt.org/project/procd.git \
            file://reload_config \
            file://hotplug.json \
            file://hotplug-preinit.json \
+           file://0100-use-sysmacros-where-needed.patch \
 "
 
 inherit cmake openwrt pkgconfig
