@@ -10,11 +10,11 @@ LICENSE = "LGPL-2.1 & GPL-2.0 & PD"
 LIC_FILES_CHKSUM = "file://ubi.c;beginline=1;endline=17;md5=8ccc371d64f0b3a8d91065b678dc7095"
 SECTION = "base"
 
-SRCREV = "96415afecef35766332067f4205ef3b2c7561d21"
-SRC_URI = "git://git.openwrt.org/project/fstools.git \
-           file://0001-Define-GLOB_ONLYDIR-if-not-available.patch \
-           file://0100-Use-sysmacro-where-needed.patch \
+SRCREV = "37762ff488752c1686b359816aec75831b49c55f"
+SRC_URI = "git://git.openwrt.org/project/fstools.git;branch=lede-17.01 \
+	   file://0001-Define-GLOB_ONLYDIR-if-not-available.patch \
           "
+DEPENDS += "util-linux"
 
 inherit cmake pkgconfig
 

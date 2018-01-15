@@ -8,12 +8,12 @@ LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=13;md5=572cd47ba0e377b2633
 SECTION = "base"
 DEPENDS = "json-c libubox ubus libnl uci"
 
-SRCREV_pn-netifd = "64a655d8ffa9f0cea1bbdd35cac6b3b99b865270"
+SRCREV_pn-netifd = "650758b16e5185505a3fbc1307949340af70b611"
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 SRC_URI = "\
     git://git.openwrt.org/project/netifd.git;name=netifd \
-    git://github.com/openwrt/archive.git;name=openwrt;destsuffix=git/openwrt/;branch=chaos_calmer \
+    git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;branch=lede-17.01 \
     file://network.config \
     file://100-Fix-IFF_LOWER_UP-define.patch \
 "

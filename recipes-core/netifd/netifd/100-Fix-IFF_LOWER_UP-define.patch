@@ -26,11 +26,20 @@ Signed-off-by: Theodore A. Roth <theodore_roth@trimble.com>
  system-linux.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/system-linux.c b/system-linux.c
-index 52a1c17..03d33e8 100644
---- a/system-linux.c
-+++ b/system-linux.c
-@@ -1420,6 +1420,10 @@ struct if_check_data {
+Index: git/system-linux.c
+===================================================================
+--- git.orig/system-linux.c
++++ git/system-linux.c
+@@ -16,6 +16,8 @@
+  */
+ #define _GNU_SOURCE
+ 
++#undef __UAPI_DEF_IF_NET_DEVICE_FLAGS_LOWER_UP_DORMANT_ECHO
++#define __UAPI_DEF_IF_NET_DEVICE_FLAGS_LOWER_UP_DORMANT_ECHO 0
+ #include <sys/socket.h>
+ #include <sys/ioctl.h>
+ #include <sys/stat.h>
+@@ -1437,6 +1439,10 @@ struct if_check_data {
  	int ret;
  };
  
@@ -41,6 +50,3 @@ index 52a1c17..03d33e8 100644
  #ifndef IFF_LOWER_UP
  #define IFF_LOWER_UP	0x10000
  #endif
--- 
-2.7.4
-

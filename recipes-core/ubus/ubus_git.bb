@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://ubusd.c;beginline=1;endline=12;md5=1b6a7aecd35bdd25de
 SECTION = "base"
 DEPENDS = "json-c libubox"
 
-SRCREV = "8bb34756ce2bd684745d3a49a134dae03073b452"
+SRCREV = "34c6e818e431cc53478a0f7c7c1eca07d194d692"
 SRC_URI = "git://git.openwrt.org/project/ubus.git"
 
 inherit cmake pkgconfig openwrt

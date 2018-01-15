@@ -2,7 +2,7 @@ inherit openwrt
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-SRC_URI += "git://github.com/openwrt/archive.git;name=openwrt;destsuffix=git/openwrt/;protocol=git;branch=chaos_calmer"
+SRC_URI += "git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;protocol=git;branch=lede-17.01"
 SRC_URI += "file://99-dnsmasq.rules"
 
 SRCREV_openwrt = "${OPENWRT_SRCREV}"

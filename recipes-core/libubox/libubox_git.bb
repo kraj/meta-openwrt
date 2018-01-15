@@ -8,8 +8,8 @@ LIC_FILES_CHKSUM = "file://uloop.c;beginline=1;endline=17;md5=f151c0422668fa4c8f
 SECTION = "base"
 DEPENDS += "json-c lua5.1"
 
-SRCREV = "7f671b1e68a6664b5baf3e3cffc1bb0880984267"
-SRC_URI = "git://git.openwrt.org/project/libubox.git \
+SRCREV = "1dafcd7813f147811a6bbdb00eec603fe732aac1"
+SRC_URI = "git://git.openwrt.org/project/libubox.git;branch=lede-17.01 \
           "
 
 inherit cmake pkgconfig openwrt

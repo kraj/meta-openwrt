@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://uci.c;beginline=1;endline=18;md5=fe0ec3006d61d1ac4e74
 SECTION = "base"
 DEPENDS = "libubox uci"
 
-SRCREV = "8476a03b25d457e99f59e6372b8d9faebe2266f8"
+SRCREV = "7826ca5d6aca691dcb6f98ab203a090d42e79337"
 SRC_URI = "git://git.openwrt.org/project/mountd.git \
            file://mountd.config \
            file://mountd.init \

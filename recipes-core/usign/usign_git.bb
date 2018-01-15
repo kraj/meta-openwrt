@@ -7,7 +7,7 @@ LICENSE = "BSD"
 LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=17;md5=a51760fc5328fc7e0e27a5af562c6cfa"
 SECTION = "base"
 
-SRCREV = "3f3aeceb15f9056cc4eb2f7e610d1cb067337c24"
+SRCREV = "ef6419142a3b0fbcddcccf536e3c1880302c6f89"
 SRC_URI = "git://git.openwrt.org/project/usign.git \
           "
 

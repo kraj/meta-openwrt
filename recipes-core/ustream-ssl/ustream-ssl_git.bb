@@ -9,7 +9,7 @@ SECTION = "base"
 DEPENDS = "libubox openssl"
 RDEPNDS_${PN} += "libcrypto libssl"
 
-SRCREV = "c2d73c22618e8ee444e8d346695eca908ecb72d3"
+SRCREV = "ec80adaa1b47f28d426fa19c692011ce60b992d6"
 SRC_URI = "git://git.openwrt.org/project/ustream-ssl.git \
           "
 

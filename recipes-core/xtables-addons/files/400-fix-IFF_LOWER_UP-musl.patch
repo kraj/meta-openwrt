@@ -1,0 +1,26 @@
+Index: xtables-addons-2.12/extensions/pknock/xt_pknock.c
+===================================================================
+--- xtables-addons-2.12.orig/extensions/pknock/xt_pknock.c
++++ xtables-addons-2.12/extensions/pknock/xt_pknock.c
+@@ -7,6 +7,8 @@
+  * This program is released under the terms of GNU GPL version 2.
+  */
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#undef __UAPI_DEF_IF_NET_DEVICE_FLAGS_LOWER_UP_DORMANT_ECHO
++#define __UAPI_DEF_IF_NET_DEVICE_FLAGS_LOWER_UP_DORMANT_ECHO 0
+ #include <linux/module.h>
+ #include <linux/version.h>
+ #include <linux/skbuff.h>
+Index: xtables-addons-2.12/extensions/pknock/libxt_pknock.c
+===================================================================
+--- xtables-addons-2.12.orig/extensions/pknock/libxt_pknock.c
++++ xtables-addons-2.12/extensions/pknock/libxt_pknock.c
+@@ -7,6 +7,8 @@
+  *
+  * This program is released under the terms of GNU GPL version 2.
+  */
++#undef __UAPI_DEF_IF_NET_DEVICE_FLAGS_LOWER_UP_DORMANT_ECHO
++#define __UAPI_DEF_IF_NET_DEVICE_FLAGS_LOWER_UP_DORMANT_ECHO 0
+ #include <getopt.h>
+ #include <stdio.h>
+ #include <string.h>

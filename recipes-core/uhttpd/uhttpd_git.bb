@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=18;md5=ba30601dd30339f7ff3
 SECTION = "base"
 DEPENDS = "libubox ubus json-c ustream-ssl"
 
-SRCREV = "fe01ef3f52adae9da38ef47926cd50974af5d6b7"
+SRCREV = "a235636a2687fafb9c474e4b134a59ff66425c92"
 SRC_URI = "git://git.openwrt.org/project/uhttpd.git \
           "
 
