@@ -13,7 +13,7 @@ SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 SRC_URI = "\
     git://git.openwrt.org/project/netifd.git;name=netifd \
-    git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;branch=chaos_calmer \
+    git://github.com/openwrt/archive.git;name=openwrt;destsuffix=git/openwrt/;branch=chaos_calmer \
     file://network.config \
     file://100-Fix-IFF_LOWER_UP-define.patch \
 "
