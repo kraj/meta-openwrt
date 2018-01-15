@@ -30,13 +30,13 @@ do_install_append () {
         ln -s /usr/sbin/logread ${D}/sbin/logread
         ln -s /usr/sbin/validate_data ${D}/sbin/validate_data
 
-        mv ${D}/usr/lib/libvalidate.so ${D}/usr/lib/libvalidate.so.0.0.0
-        ln -s libvalidate.so.0.0.0 ${D}/usr/lib/libvalidate.so.0
-        ln -s libvalidate.so.0.0.0 ${D}/usr/lib/libvalidate.so
-
         mkdir -p ${D}/etc/rc.d
         ln -s ../init.d/log ${D}/etc/rc.d/S12log
         ln -s ../init.d/log ${D}/etc/rc.d/K89log
 }
 
 RDEPENDS_${PN} += "ubus libubox"
+
+FILES_SOLIBSDEV = ""
+
+FILES_${PN}  += "${libdir}/*"
