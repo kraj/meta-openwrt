@@ -28,7 +28,6 @@ CORE_IMAGE_EXTRA_INSTALL += "\
     lua-socket \
     luci \
     make-ext4fs \
-    mdnsd \
     mountd \
     netifd \
     procd \
@@ -41,6 +40,7 @@ CORE_IMAGE_EXTRA_INSTALL += "\
     ugps \
     uhttpd2 \
     umbim \
+    umdnsd \
     uqmi \
     usbmode \
     usign \
