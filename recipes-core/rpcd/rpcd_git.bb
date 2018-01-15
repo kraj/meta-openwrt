@@ -11,7 +11,6 @@ RDEPENDS_${PN} += "iwinfo"
 
 SRCREV = "cfe1e75c91bc1bac82e6caab3e652b0ebee59524"
 SRC_URI = "git://git.openwrt.org/project/rpcd.git \
-           file://0001-file-Mark-data_len-to-be-signed-type.patch \
            file://rpcd.config \
            file://rpcd.init \
            "
