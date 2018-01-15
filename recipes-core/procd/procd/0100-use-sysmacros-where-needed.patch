@@ -1,0 +1,36 @@
+Index: git/initd/early.c
+===================================================================
+--- git.orig/initd/early.c
++++ git/initd/early.c
+@@ -14,6 +14,7 @@
+ 
+ #include <sys/mount.h>
+ #include <sys/types.h>
++#include <sys/sysmacros.h>
+ #include <sys/stat.h>
+ 
+ #include <stdio.h>
+Index: git/plug/hotplug.c
+===================================================================
+--- git.orig/plug/hotplug.c
++++ git/plug/hotplug.c
+@@ -15,6 +15,7 @@
+ #include <sys/stat.h>
+ #include <sys/socket.h>
+ #include <sys/types.h>
++#include <sys/sysmacros.h>
+ 
+ #include <linux/types.h>
+ #include <linux/netlink.h>
+Index: git/initd/mkdev.c
+===================================================================
+--- git.orig/initd/mkdev.c
++++ git/initd/mkdev.c
+@@ -16,6 +16,7 @@
+ 
+ #include <sys/stat.h>
+ #include <sys/types.h>
++#include <sys/sysmacros.h>
+ 
+ #include <stdio.h>
+ #include <string.h>

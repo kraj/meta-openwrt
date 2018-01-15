@@ -50,7 +50,7 @@ CORE_IMAGE_EXTRA_INSTALL += "\
     ${@bb.utils.contains('COMBINED_FEATURES', 'wifi', 'hostapd', '',d)} \
 "
 
-IMAGE_FSTYPES += "cpio.gz.u-boot"
+IMAGE_FSTYPES += "ext4"
 
 SRCDIR = "${THISDIR}/${PN}"
 

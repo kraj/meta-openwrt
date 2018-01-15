@@ -11,7 +11,7 @@ RDEPENDS_${PN} = "ipset xtables-addons"
 
 SRCREV = "82ccd9e34fe87d31d9909fed754950b2c75bc6ac"
 SRC_URI = "git://git.openwrt.org/project/firewall3.git \
-           git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;protocol=git;branch=chaos_calmer \
+           git://github.com/openwrt/archive.git;name=openwrt;destsuffix=git/openwrt/;protocol=git;branch=chaos_calmer \
           "
 
 inherit cmake pkgconfig openwrt
