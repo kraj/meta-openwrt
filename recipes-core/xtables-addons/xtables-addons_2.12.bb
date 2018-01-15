@@ -4,7 +4,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=751419260aa954499f7abaabaa882bbe"
 DEPENDS = "virtual/kernel iptables"
 RDEPENDS_${PN} += "perl"
 
-inherit autotools module-base
+inherit autotools module-base pkgconfig
 
 SRC_URI = " \
         ${SOURCEFORGE_MIRROR}/project/${PN}/Xtables-addons/${PN}-${PV}.tar.xz \
