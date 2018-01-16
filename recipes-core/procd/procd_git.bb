@@ -8,12 +8,13 @@ LIC_FILES_CHKSUM = "file://procd.c;beginline=1;endline=13;md5=61e3657604f131a859
 SECTION = "base"
 DEPENDS = "libubox ubus json-c"
 
-SRCREV = "188353099cf6fc88f145cfcb84a4db3f6523528a"
+
+SRCREV_pn-procd = "188353099cf6fc88f145cfcb84a4db3f6523528a"
+SRCREV_openwrt = "${OPENWRT_SRCREV}"
+
 SRC_URI = "git://git.openwrt.org/project/procd.git;branch=lede-17.01 \
-           file://procd.sh \
-           file://reload_config \
-           file://hotplug.json \
-           file://hotplug-preinit.json \
+	git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;branch=lede-17.01 \
+	file://00_preinit.conf \
 "
 
 inherit cmake openwrt pkgconfig
@@ -21,16 +22,27 @@ inherit cmake openwrt pkgconfig
 S = "${WORKDIR}/git"
 
 do_install_append() {
-    install -Dm 0755 ${WORKDIR}/procd.sh ${D}${base_libdir}/functions/procd.sh
-    install -Dm 0755 ${WORKDIR}/reload_config ${D}${base_sbindir}/reload_config
-    install -Dm 0755 ${WORKDIR}/hotplug.json ${D}${sysconfdir}/hotplug.json
-    install -Dm 0755 ${WORKDIR}/hotplug-preinit.json ${D}${sysconfdir}/hotplug-preinit.json
+    install -Dm 0644 ${S}/openwrt/package/system/procd/files/procd.sh ${D}${base_libdir}/functions/procd.sh
+    install -Dm 0755 ${S}/openwrt/package/system/procd/files/reload_config ${D}${base_sbindir}/reload_config
+    install -Dm 0644 ${S}/openwrt/package/system/procd/files/hotplug.json ${D}${sysconfdir}/hotplug.json
+    install -Dm 0644 ${S}/openwrt/package/system/procd/files/hotplug-preinit.json ${D}${sysconfdir}/hotplug-preinit.json
+    install -Dm 0755 ${S}/openwrt/package/base-files/files/sbin/hotplug-call ${D}${base_sbindir}/hotplug-call
+    install -Dm 0755 ${S}/openwrt/package/base-files/files/etc/preinit ${D}${sysconfdir}/preinit
 
-    mkdir -p ${D}/sbin
+    install -dm 0755 ${D}${base_libdir}/preinit
+    cp -R --preserve=mode  ${S}/openwrt/package/base-files/files/lib/preinit/* ${D}${base_libdir}/preinit/
+    install -Dm 0644 ${WORKDIR}/00_preinit.conf ${D}${base_libdir}/preinit/00_preinit.conf
+
+    sed -i "s#%PATH%#/usr/sbin:/usr/bin:/sbin:/bin#g" \
+          ${D}${sysconfdir}/preinit \
+          ${D}${base_libdir}/preinit/00_preinit.conf \
+          ${D}${base_sbindir}/hotplug-call
+
+    install -dm 0755 ${D}/sbin
     ln -s /usr/sbin/procd ${D}/sbin/procd
     ln -s /usr/sbin/init ${D}/sbin/init
     ln -s /usr/sbin/askfirst ${D}/sbin/askfirst
     ln -s /usr/sbin/udevtrigger ${D}/sbin/udevtrigger
 }
 
-FILES_${PN} += "${base_libdir}"
+FILES_${PN} += "${base_libdir}/*"
