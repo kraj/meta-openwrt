@@ -8,6 +8,8 @@ LIC_FILES_CHKSUM = "file://procd.c;beginline=1;endline=13;md5=61e3657604f131a859
 SECTION = "base"
 DEPENDS = "libubox ubus json-c"
 
+RDEPENDS_${PN} += " fstools"
+
 # NB: Is both VIRTUAL-RUNTIME-init_manager and VIRTUAL_RUNTIME-dev_manager (like systemd/systemd-udev)
 
 inherit cmake openwrt pkgconfig update-alternatives
