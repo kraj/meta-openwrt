@@ -8,13 +8,11 @@ LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=18;md5=ba30601dd30339f7ff3
 SECTION = "base"
 DEPENDS = "libubox ubus json-c ustream-ssl"
 
+inherit cmake pkgconfig openwrt-services
+
 SRCREV = "a235636a2687fafb9c474e4b134a59ff66425c92"
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 SRC_URI = "git://git.openwrt.org/project/uhttpd.git \
-          "
-
-inherit cmake pkgconfig openwrt
-
 	git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;branch=lede-17.01 \
 	"
 

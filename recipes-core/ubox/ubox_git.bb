@@ -14,7 +14,7 @@ SRC_URI = "\
 SRCREV = "31f0ff358b360ee461d845c1b3b5e5d38fa27925"
 S = "${WORKDIR}/git"
 
-inherit cmake
+inherit cmake openwrt-services
 
 do_install_append () {
         install -Dm 0755 ${WORKDIR}/log.init ${D}/etc/init.d/log
@@ -29,10 +29,6 @@ do_install_append () {
         ln -s /usr/sbin/logd ${D}/sbin/logd
         ln -s /usr/sbin/logread ${D}/sbin/logread
         ln -s /usr/sbin/validate_data ${D}/sbin/validate_data
-
-        mkdir -p ${D}/etc/rc.d
-        ln -s ../init.d/log ${D}/etc/rc.d/S12log
-        ln -s ../init.d/log ${D}/etc/rc.d/K89log
 }
 
 RDEPENDS_${PN} += "ubus libubox"

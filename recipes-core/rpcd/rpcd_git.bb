@@ -15,7 +15,7 @@ SRC_URI = "git://git.openwrt.org/project/rpcd.git \
            file://rpcd.init \
            "
 
-inherit cmake pkgconfig
+inherit cmake pkgconfig openwrt-services
 
 S = "${WORKDIR}/git"
 
@@ -26,9 +26,6 @@ do_install_append() {
     install -m 0644 ${S}/include/rpcd/* ${D}${includedir}/rpcd/
     install -Dm 0755 ${WORKDIR}/rpcd.config ${D}${sysconfdir}/config/rpcd
     install -Dm 0755 ${WORKDIR}/rpcd.init ${D}${sysconfdir}/init.d/rpcd
-
-    mkdir -p ${D}${sysconfdir}/rc.d
-    ln -s ../init.d/rpcd ${D}${sysconfdir}/rc.d/S12rpcd
 
     mkdir -p ${D}/sbin
     ln -s /usr/sbin/rpcd ${D}/sbin/rpcd
