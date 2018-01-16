@@ -7,6 +7,7 @@ LICENSE = "BSD"
 LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=18;md5=ba30601dd30339f7ff3d0ad681d45679"
 SECTION = "base"
 DEPENDS = "libubox ubus json-c ustream-ssl"
+RDEPENDS_${PN} += "openssl"
 
 inherit cmake pkgconfig openwrt-services
 
