@@ -4,27 +4,23 @@ LICENSE = "MIT"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-inherit packagegroup
-
-VIRTUAL-RUNTIME_network_manager ?= "netifd"
+inherit packagegroup openwrt openwrt-services
 
 PACKAGES = "\
-	packagegroup-core-full-openwrt \
-	packagegroup-core-full-openwrt-base \
-	packagegroup-core-full-openwrt-network \
-	packagegroup-core-full-openwrt-luci \
-	packagegroup-core-full-openwrt-sys-services \
+	packagegroup-openwrt-base \
+	packagegroup-openwrt-base-base \
+	packagegroup-openwrt-base-network \
+	packagegroup-openwrt-base-luci \
 	"
 
 RDEPENDS_${PN} = "\
-	packagegroup-core-full-openwrt-base \
-	packagegroup-core-full-openwrt-network \
-	packagegroup-core-full-openwrt-luci \
-	packagegroup-core-full-openwrt-sys-services \
+	packagegroup-openwrt-base-base \
+	packagegroup-openwrt-base-network \
+	packagegroup-openwrt-base-luci \
 	"
 
 RDEPENDS_${PN}-base = "\
-    packagegroup-core-boot-openwrt \
+    packagegroup-core-boot \
     rpcd \
     ubox \
     ubus \
@@ -39,12 +35,8 @@ RDEPENDS_${PN}-network = "\
     iptables \
     ${@bb.utils.contains('COMBINED_FEATURES', 'wifi', 'iwinfo', '',d)} \
     ${VIRTUAL-RUNTIME_network_manager} \
-    relayd \
-    tcpdump \
     uclient \
-    umbim \
     umdnsd \
-    uqmi \
     ustream-ssl \
     ${@bb.utils.contains('COMBINED_FEATURES', 'wifi', 'iw', '',d)} \
     ${@bb.utils.contains('COMBINED_FEATURES', 'wifi', 'hostapd', '',d)} \
@@ -52,11 +44,6 @@ RDEPENDS_${PN}-network = "\
 
 RDEPENDS_${PN}-luci = "\
     lua5.1 \
-    lua-socket \
     luci \
     uhttpd \
-    "
-
-RDEPENDS_${PN}-sys-services = "\
-    ubox \
     "

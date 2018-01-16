@@ -2,11 +2,10 @@ SUMMARY = "OpenWrt Base Image"
 
 LICENSE = "MIT"
 
-inherit core-image openwrt-services
+inherit core-image openwrt openwrt-kmods openwrt-services
 
 CORE_IMAGE_BASE_INSTALL = '\
-    packagegroup-core-boot-openwrt \
-    kernel-modules \
+    packagegroup-core-boot \
     \
     ${MACHINE_EXTRA_RDEPENDS} \
     ${CORE_IMAGE_EXTRA_INSTALL} \
@@ -15,14 +14,9 @@ CORE_IMAGE_BASE_INSTALL = '\
 IMAGE_INSTALL ?= "${CORE_IMAGE_BASE_INSTALL}"
 
 CORE_IMAGE_EXTRA_INSTALL += "\
-    packagegroup-core-full-openwrt \
+    packagegroup-openwrt-base \
     make-ext4fs \
-    mountd \
     strace \
-    ugps \
-    usbmode \
 "
 
 IMAGE_FSTYPES += "ext4"
-
-SRCDIR = "${THISDIR}/${PN}"
