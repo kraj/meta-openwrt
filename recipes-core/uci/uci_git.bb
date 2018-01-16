@@ -11,6 +11,7 @@ DEPENDS = "libubox lua5.1"
 SRCREV = "141b64ef84f43c954e665865b1bbf216fbf7c05f"
 SRC_URI = "git://git.openwrt.org/project/uci.git;branch=lede-17.01 \
            file://uci.sh \
+	   file://0100-prevent-redefinition-of-stddef.path \
 "
 
 inherit cmake pkgconfig openwrt

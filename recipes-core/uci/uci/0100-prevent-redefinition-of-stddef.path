@@ -1,0 +1,11 @@
+Index: git/uci.h
+===================================================================
+--- git.orig/uci.h
++++ git/uci.h
+@@ -19,6 +19,7 @@
+ extern "C" {
+ #endif
+ 
++#include <stddef.h>
+ #include "uci_config.h"
+ 
