@@ -7,6 +7,7 @@ LICENSE = "GPL-2.0"
 LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=13;md5=572cd47ba0e377b26331e67e9f3bc4b3"
 SECTION = "base"
 DEPENDS = "json-c libubox ubus libnl uci"
+RDEPENDS_${PN} += " bridge-utils kernel-module-bridge "
 
 SRCREV_pn-netifd = "650758b16e5185505a3fbc1307949340af70b611"
 inherit cmake pkgconfig openwrt openwrt-services
