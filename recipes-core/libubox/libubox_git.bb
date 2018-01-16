@@ -23,9 +23,14 @@ do_install_append() {
 	install -m 0755 ${S}/examples/uloop-example.lua ${D}${bindir}
 	install -m 0755 ${S}/examples/uloop_pid_test.sh ${D}${bindir}
 	install -m 0644 ${S}/*.h ${D}${includedir}/libubox
+	install -m 0755 ${B}/lua/uloop.so ${D}/usr/lib/lua/5.1/uloop.so
 }
 
+FILES_SOLIBDEV = ""
+
 PACKAGES =+ "${PN}-examples"
+
+FILES_${PN} += "${libdir}/* ${datadir}/*"
 
 FILES_${PN}-examples += "${bindir}/*-example \
                          ${bindir}/uloop-example.lua \

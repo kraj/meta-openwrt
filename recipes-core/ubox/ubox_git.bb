@@ -29,10 +29,11 @@ do_install_append () {
         ln -s /usr/sbin/logd ${D}/sbin/logd
         ln -s /usr/sbin/logread ${D}/sbin/logread
         ln -s /usr/sbin/validate_data ${D}/sbin/validate_data
+        ln -s /usr/sbin/getrandom ${D}/sbin/getrandom
 }
 
 RDEPENDS_${PN} += "ubus libubox"
 
 FILES_SOLIBSDEV = ""
 
-FILES_${PN}  += "${libdir}/*"
+FILES_${PN}  += "${libdir}/*.so"
