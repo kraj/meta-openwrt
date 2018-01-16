@@ -6,21 +6,28 @@ HOMEPAGE = "http://git.openwrt.org/?p=project/mountd.git;a=summary"
 LICENSE = "GPL-2.0+"
 LIC_FILES_CHKSUM = "file://uci.c;beginline=1;endline=18;md5=fe0ec3006d61d1ac4e74c21e0a2726c5"
 SECTION = "base"
-DEPENDS = "libubox uci"
+DEPENDS = "libubox uci virtual/kernel"
+RRDEPENDS_${PN} = "kernel-module-fs-auto_fs4"
 
-SRCREV = "7826ca5d6aca691dcb6f98ab203a090d42e79337"
-SRC_URI = "git://git.openwrt.org/project/mountd.git \
-           file://mountd.config \
-           file://mountd.init \
-"
+inherit openwrt openwrt-services
+
+SRCREV_mountd = "7826ca5d6aca691dcb6f98ab203a090d42e79337"
+SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 inherit cmake pkgconfig
+
+OECMAKE_C_FLAGS += "--std=gnu99 -Wno-error"
+
+SRC_URI = "git://git.openwrt.org/project/mountd.git;name=mountd \
+	   git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;branch=lede-17.01 \
+	   file://0100-prevent-stddef-redefinition.patch \
+"
 
 S = "${WORKDIR}/git"
 
 do_install_append() {
-    install -Dm 0755 ${WORKDIR}/mountd.config ${D}${sysconfdir}/config/mountd
-    install -Dm 0755 ${WORKDIR}/mountd.init ${D}${sysconfdir}/init.d/mountd
+    install -Dm 0755 ${S}/openwrt/package/system/mountd/files/mountd.config ${D}${sysconfdir}/config/mountd
+    install -Dm 0755 ${S}/openwrt/package/system/mountd/files/mountd.init ${D}${sysconfdir}/init.d/mountd
 }
 
 FILES_SOLIBSDEV = ""
