@@ -1,4 +1,4 @@
-inherit openwrt openwrt-services
+inherit openwrt openwrt-services useradd
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
@@ -8,6 +8,11 @@ SRC_URI += "file://99-dnsmasq.rules"
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 RDEPENDS_dnsmasq += "jsonpath"
+
+USERADD_PACKAGES = "${PN}"
+
+USERADD_PARAM_${PN} = "--system -d /var/lib/dnsmasq --no-create-home \
+  --shell /bin/false --user-group dnsmasq"
 
 do_install_append() {
     install -d ${D}${sysconfdir}
