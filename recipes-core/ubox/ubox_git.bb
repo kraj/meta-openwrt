@@ -11,7 +11,7 @@ SRC_URI = "\
     file://log.init \
 "
 
-SRCREV = "31f0ff358b360ee461d845c1b3b5e5d38fa27925"
+SRCREV = "16f7e16181e2f3e9cf3e2ce56a7e291844900d09"
 S = "${WORKDIR}/git"
 
 inherit cmake openwrt-services
