@@ -9,9 +9,9 @@ SECTION = "base"
 DEPENDS = "json-c libubox ubus libnl uci"
 RDEPENDS_${PN} += " bridge-utils kernel-module-bridge "
 
-SRCREV_pn-netifd = "650758b16e5185505a3fbc1307949340af70b611"
 inherit cmake pkgconfig openwrt openwrt-services
 
+SRCREV_netifd = "650758b16e5185505a3fbc1307949340af70b611"
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 CONFLICTS += "ifupdown"
