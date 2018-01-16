@@ -17,19 +17,17 @@ S = "${WORKDIR}/git"
 inherit cmake openwrt-services
 
 do_install_append () {
-        install -Dm 0755 ${WORKDIR}/log.init ${D}/etc/init.d/log
-        ln -s /sbin/kmodloader ${D}/usr/sbin/rmmod
-        ln -s /sbin/kmodloader ${D}/usr/sbin/insmod
-        ln -s /sbin/kmodloader ${D}/usr/sbin/lsmod
-        ln -s /sbin/kmodloader ${D}/usr/sbin/modinfo
-        ln -s /sbin/kmodloader ${D}/usr/sbin/modprobe
-
+        ${@bb.utils.contains('VIRTUAL-RUNTIME_syslog', 'ubox', 'install -Dm 0755 ${WORKDIR}/log.init ${D}/etc/init.d/log', '', d)}
+        ${@bb.utils.contains('VIRTUAL-RUNTIME_kmod_manager', 'ubox', 'ln -s /sbin/kmodloader ${D}/usr/sbin/rmmod', '', d)}
+        ${@bb.utils.contains('VIRTUAL-RUNTIME_kmod_manager', 'ubox', 'ln -s /sbin/kmodloader ${D}/usr/sbin/insmod', '', d)}
+        ${@bb.utils.contains('VIRTUAL-RUNTIME_kmod_manager', 'ubox', 'ln -s /sbin/kmodloader ${D}/usr/sbin/lsmod', '', d)}
+        ${@bb.utils.contains('VIRTUAL-RUNTIME_kmod_manager', 'ubox', 'ln -s /sbin/kmodloader ${D}/usr/sbin/modinfo', '', d)}
+        ${@bb.utils.contains('VIRTUAL-RUNTIME_kmod_manager', 'ubox', 'ln -s /sbin/kmodloader ${D}/usr/sbin/modprobe', '', d)}
         install -dm 0755 ${D}/sbin
-        ln -s /usr/sbin/kmodloader ${D}/sbin/kmodloader
-        ln -s /usr/sbin/logd ${D}/sbin/logd
-        ln -s /usr/sbin/logread ${D}/sbin/logread
-        ln -s /usr/sbin/validate_data ${D}/sbin/validate_data
-        ln -s /usr/sbin/getrandom ${D}/sbin/getrandom
+        ${@bb.utils.contains('VIRTUAL-RUNTIME_kmod_manager', 'ubox', 'ln -s /usr/sbin/kmodloader ${D}/sbin/kmodloader', '', d)}
+        ${@bb.utils.contains('VIRTUAL-RUNTIME_syslog', 'ubox', 'ln -s /usr/sbin/logd ${D}/sbin/logd', '', d)}
+        ${@bb.utils.contains('VIRTUAL-RUNTIME_syslog', 'ubox', 'ln -s /usr/sbin/logread ${D}/sbin/logread', '', d)}
+        ${@bb.utils.contains('VIRTUAL-RUNTIME_syslog', 'ubox', 'ln -s /usr/sbin/validate_data ${D}/sbin/validate_data', '', d)}
 }
 
 RDEPENDS_${PN} += "ubus libubox"
