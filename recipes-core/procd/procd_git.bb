@@ -8,6 +8,12 @@ LIC_FILES_CHKSUM = "file://procd.c;beginline=1;endline=13;md5=61e3657604f131a859
 SECTION = "base"
 DEPENDS = "libubox ubus json-c"
 
+# NB: Is both VIRTUAL-RUNTIME-init_manager and VIRTUAL_RUNTIME-dev_manager (like systemd/systemd-udev)
+
+inherit cmake openwrt pkgconfig update-alternatives
+
+RPROVIDES_${PN} = "procd"
+RREPLACES_${PN} = "systemd sysvinit udev eudev"
 
 SRCREV_pn-procd = "188353099cf6fc88f145cfcb84a4db3f6523528a"
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
@@ -16,8 +22,6 @@ SRC_URI = "git://git.openwrt.org/project/procd.git;branch=lede-17.01 \
 	git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;branch=lede-17.01 \
 	file://00_preinit.conf \
 "
-
-inherit cmake openwrt pkgconfig
 
 S = "${WORKDIR}/git"
 
@@ -46,3 +50,15 @@ do_install_append() {
 }
 
 FILES_${PN} += "${base_libdir}/*"
+
+ALTERNATIVE_${PN} = "init"
+
+ALTERNATIVE_PRIORITY = "40"
+
+ALTERNATIVE_LINK_NAME[init] = "${base_sbindir}/init"
+
+python () {
+    if not bb.utils.contains('DISTRO_FEATURES', 'procd', True, False, d):
+        raise bb.parse.SkipPackage("'procd' not in DISTRO_FEATURES")
+}
+
