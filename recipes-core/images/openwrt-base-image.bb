@@ -2,7 +2,7 @@ SUMMARY = "OpenWrt Base Image"
 
 LICENSE = "MIT"
 
-inherit core-image
+inherit core-image openwrt-services
 
 CORE_IMAGE_BASE_INSTALL = '\
     packagegroup-core-boot-openwrt \

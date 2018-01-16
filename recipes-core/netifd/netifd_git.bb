@@ -9,6 +9,8 @@ SECTION = "base"
 DEPENDS = "json-c libubox ubus libnl uci"
 
 SRCREV_pn-netifd = "650758b16e5185505a3fbc1307949340af70b611"
+inherit cmake pkgconfig openwrt openwrt-services
+
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 CONFLICTS += "ifupdown"
@@ -19,8 +21,6 @@ SRC_URI = "\
     file://network.config \
     file://100-Fix-IFF_LOWER_UP-define.patch \
 "
-
-inherit cmake pkgconfig openwrt
 
 S = "${WORKDIR}/git"
 
@@ -42,10 +42,6 @@ do_install_append() {
     chown -R root:root ${D}/*
 
     install -Dm 0755 ${WORKDIR}/network.config ${D}${sysconfdir}/config/network
-
-    mkdir -p ${D}${sysconfdir}/rc.d
-    ln -s ../init.d/network ${D}${sysconfdir}/rc.d/S20network
-    ln -s ../init.d/network ${D}${sysconfdir}/rc.d/K90network
 
     mkdir -p ${D}/sbin
     ln -s /usr/sbin/netifd ${D}/sbin/netifd

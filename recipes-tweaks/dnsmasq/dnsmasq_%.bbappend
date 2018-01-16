@@ -1,4 +1,4 @@
-inherit openwrt
+inherit openwrt openwrt-services
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
@@ -25,6 +25,4 @@ do_install_append() {
 
     # dnsmasq installs in /usr/bin, openwrt looks for it in /usr/sbin
     ln -s ${bindir}/dnsmasq ${D}${sbindir}/dnsmasq
-
-    ln -s ../init.d/dnsmasq ${D}${sysconfdir}/rc.d/S60dnsmasq
 }

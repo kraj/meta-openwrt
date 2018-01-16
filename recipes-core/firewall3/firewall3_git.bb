@@ -14,7 +14,7 @@ SRC_URI = "git://git.openwrt.org/project/firewall3.git \
            git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;protocol=git;branch=lede-17.01 \
           "
 
-inherit cmake pkgconfig openwrt
+inherit cmake pkgconfig openwrt openwrt-services
 
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
@@ -38,6 +38,4 @@ do_install_append() {
     install -m 0644 ${WORKDIR}/git/openwrt/package/network/config/firewall/files/firewall.user ${D}${sysconfdir}/firewall.user
 
     ln -s ${sbindir}/firewall3 ${D}${base_sbindir}/fw3
-
-    ln -s ../init.d/firewall ${D}${sysconfdir}/rc.d/S19firewall
 }
