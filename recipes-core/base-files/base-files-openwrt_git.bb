@@ -5,7 +5,6 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=94d55d512a9ba36caa9b7df079bae19f"
 
 SRC_URI = "git://github.com/openwrt/openwrt.git;protocol=git;branch=lede-17.01 \
            file://0001-use-sh-not-ash.patch \
-           file://00_preinit.conf \
            file://0100-config_generate-no-bridge.patch \
            "
 SRCREV = "${OPENWRT_SRCREV}"
@@ -41,14 +40,12 @@ do_install () {
     chmod 0600 ${D}/etc/shadow
     chmod 1777 ${D}/tmp
 
-    install -dm 0755 ${D}/lib/preinit
-    install -m 0644 ${WORKDIR}/00_preinit.conf ${D}/lib/preinit/00_preinit.conf
-
     sed -i "s#%PATH%#/usr/sbin:/usr/bin:/sbin:/bin#g" \
-          ${D}/sbin/hotplug-call \
-          ${D}/etc/preinit \
-          ${D}/etc/profile \
-          ${D}/lib/preinit/00_preinit.conf
+          ${D}/etc/profile
+
+    rm -f ${D}/etc/preinit
+    rm -rf ${D}/lib/preinit
+    rm -f ${D}/sbin/hotplug-call
 
     mkdir -p ${D}/var/run
     mkdir -p ${D}/etc/rc.d
