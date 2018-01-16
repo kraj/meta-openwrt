@@ -9,10 +9,14 @@ SECTION = "base"
 DEPENDS = "libubox ubus json-c ustream-ssl"
 
 SRCREV = "a235636a2687fafb9c474e4b134a59ff66425c92"
+SRCREV_openwrt = "${OPENWRT_SRCREV}"
 SRC_URI = "git://git.openwrt.org/project/uhttpd.git \
           "
 
 inherit cmake pkgconfig openwrt
+
+	git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;branch=lede-17.01 \
+	"
 
 S = "${WORKDIR}/git"
 
@@ -22,3 +26,11 @@ EXTRA_OECMAKE = "-DTLS_SUPPORT=ON -DLUA_SUPPORT=ON -DUBUS_SUPPORT=ON"
 FILES_SOLIBSDEV = ""
 
 FILES_${PN}  += "${libdir}/*"
+
+do_install_append() {
+    install -Dm 0755 ${S}/openwrt/package/network/services/uhttpd/files/uhttpd.init ${D}${sysconfdir}/init.d/uhttpd
+    install -Dm 0644 ${S}/openwrt/package/network/services/uhttpd/files/uhttpd.config ${D}${sysconfdir}/config/uhttpd
+    install -Dm 0644 ${S}/openwrt/package/network/services/uhttpd/files/ubus.default ${D}${sysconfdir}/uci-defaults/00_uhttpd_ubus
+    install -dm 0755 ${D}/usr/sbin
+    ln -s /usr/bin/uhttpd ${D}/usr/sbin/uhttpd
+}
