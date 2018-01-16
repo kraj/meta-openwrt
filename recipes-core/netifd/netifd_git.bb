@@ -19,7 +19,6 @@ CONFLICTS += "ifupdown"
 SRC_URI = "\
     git://git.openwrt.org/project/netifd.git;name=netifd \
     git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;branch=lede-17.01 \
-    file://network.config \
     file://100-Fix-IFF_LOWER_UP-define.patch \
 "
 
@@ -42,8 +41,11 @@ do_install_append() {
     cp -a ${S}/scripts/* ${D}/lib/netifd
     chown -R root:root ${D}/*
 
-    install -Dm 0755 ${WORKDIR}/network.config ${D}${sysconfdir}/config/network
-
-    mkdir -p ${D}/sbin
+    install -dm 0755 ${D}/sbin
     ln -s /usr/sbin/netifd ${D}/sbin/netifd
+
+    # Be prepared for both procd and systemd style module loading
+    install -dm 0755 ${D}/etc/modules.d ${D}/etc/modules-load.d
+    echo "bridge" >${D}/etc/modules.d/30-bridge
+    echo "bridge" >${D}/etc/modules-load.d/bridge.conf
 }
