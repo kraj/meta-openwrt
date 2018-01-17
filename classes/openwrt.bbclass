@@ -14,12 +14,4 @@ CFLAGS += "-I${STAGING_INCDIR}/lua5.1"
 # Equivalent to tag v17.01.4
 OPENWRT_SRCREV = "444add156f2a6d92fc15005c5ade2208a978966c"
 
-VIRTUAL-RUNTIME_dev_manager ?= "procd"
-VIRTUAL-RUNTIME_login_manager ?= "busybox"
-VIRTUAL-RUNTIME_init_manager ?= "procd"
-VIRTUAL-RUNTIME_kmod_manager ?= "ubox"
-VIRTUAL-RUNTIME_syslog ?= "ubox"
-VIRTUAL-RUNTIME_base-utils ?= "busybox"
-VIRTUAL-RUNTIME_network_manager ?= "netifd"
-
-DISTRO_FEATURES_BACKFILL_CONSIDERED_append = "sysvinit systemd"
+inherit openwrt-virtual-runtimes

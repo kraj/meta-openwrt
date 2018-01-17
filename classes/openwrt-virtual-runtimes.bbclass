@@ -4,7 +4,4 @@ VIRTUAL-RUNTIME_init_manager ?= "procd"
 VIRTUAL-RUNTIME_kmod_manager ?= "ubox"
 VIRTUAL-RUNTIME_syslog ?= "ubox"
 VIRTUAL-RUNTIME_base-utils ?= "busybox"
-
-DISTRO_FEATURES_BACKFILL_CONSIDERED_append = "sysvinit systemd"
-
-INHERIT += "openwrt-kmods openwrt-services"
+VIRTUAL-RUNTIME_network_manager ?= "netifd"
