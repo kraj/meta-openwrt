@@ -4,7 +4,7 @@ inherit packagegroup openwrt openwrt-services
 PACKAGES = "\
 	packagegroup-openwrt-full \
 	packagegroup-openwrt-full-base \
-	packagegroup-core-full-openwrt-network \
+	packagegroup-openwrt-full-network \
 	"
 
 RDEPENDS_${PN} = "\
