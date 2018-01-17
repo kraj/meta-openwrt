@@ -16,11 +16,10 @@ SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 inherit cmake pkgconfig
 
-OECMAKE_C_FLAGS += "--std=gnu99 -Wno-error"
-
 SRC_URI = "git://git.openwrt.org/project/mountd.git;name=mountd \
 	   git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;branch=lede-17.01 \
 	   file://0100-prevent-stddef-redefinition.patch \
+	   file://0200-prevent-musl-endian-h-parenthese-warning.patch \
 "
 
 S = "${WORKDIR}/git"
