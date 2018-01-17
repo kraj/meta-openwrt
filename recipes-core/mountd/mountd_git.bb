@@ -27,6 +27,8 @@ S = "${WORKDIR}/git"
 do_install_append() {
     install -Dm 0755 ${S}/openwrt/package/system/mountd/files/mountd.config ${D}${sysconfdir}/config/mountd
     install -Dm 0755 ${S}/openwrt/package/system/mountd/files/mountd.init ${D}${sysconfdir}/init.d/mountd
+    install -dm 0755 ${D}/sbin
+    ln -sf /usr/sbin/mountd ${D}/sbin/mountd
 }
 
 FILES_SOLIBSDEV = ""
