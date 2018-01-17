@@ -26,17 +26,21 @@ $ bitbake-layers add-layer ../meta-openwrt
 
 # Building
 
-Below we build for qemuarm machine as an example, add
-one of OpenWRT recipes to images e.g. in conf/local.conf add
+Below we build for qemuarm machine as an example.
+to local.conf add:
 
-CORE_IMAGE_EXTRA_INSTALL = "libubox-examples"
+INHERIT += " openwrt-distro-defaults "
 
+**NB**: juci is likely currently not working
 To include juci instead of luci add
-
 CORE_IMAGE_EXTRA_INSTALL = "juci"
+
+You can then use, for example, one of:
 
 ```shell
 $ TCLIBC=musl MACHINE=qemuarm bitbake core-image-minimal
+$ TCLIBC=musl MACHINE=qemuarm bitbake openwrt-image-base
+$ TCLIBC=musl MACHINE=qemuarm bitbake openwrt-image-full
 $ TCLIBC=musl MACHINE=qemux86 bitbake core-image-weston
 $ TCLIBC=musl MACHINE=qemux86 bitbake core-image-sato
 
