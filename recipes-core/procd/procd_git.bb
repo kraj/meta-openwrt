@@ -44,11 +44,13 @@ do_install_append() {
           ${D}${base_libdir}/preinit/00_preinit.conf \
           ${D}${base_sbindir}/hotplug-call
 
-    install -dm 0755 ${D}/sbin
+    install -dm 0755 ${D}/sbin ${D}/lib
     ln -s /usr/sbin/procd ${D}/sbin/procd
     ln -s /usr/sbin/init ${D}/sbin/init
     ln -s /usr/sbin/askfirst ${D}/sbin/askfirst
     ln -s /usr/sbin/udevtrigger ${D}/sbin/udevtrigger
+    mv ${D}${libdir}/libsetlbf.so ${D}${base_libdir}/libsetlbf.so
+    rm -rf ${D}${libdir}
 }
 
 FILES_${PN} += "${base_libdir}/*"
