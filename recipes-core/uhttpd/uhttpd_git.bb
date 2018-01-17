@@ -9,7 +9,7 @@ SECTION = "base"
 DEPENDS = "libubox ubus json-c ustream-ssl"
 RDEPENDS_${PN} += "openssl"
 
-inherit cmake pkgconfig openwrt-services
+inherit cmake pkgconfig openwrt-services openwrt
 
 SRCREV = "a235636a2687fafb9c474e4b134a59ff66425c92"
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
