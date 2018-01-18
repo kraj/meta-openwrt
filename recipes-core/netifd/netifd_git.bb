@@ -7,19 +7,20 @@ LICENSE = "GPL-2.0"
 LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=13;md5=572cd47ba0e377b26331e67e9f3bc4b3"
 SECTION = "base"
 DEPENDS = "json-c libubox ubus libnl uci"
-RDEPENDS_${PN} += " bridge-utils kernel-module-bridge "
+RDEPENDS_${PN} += " bridge-utils kernel-module-bridge base-files-scripts-openwrt "
 
 inherit cmake pkgconfig openwrt openwrt-services
 
 SRCREV_netifd = "650758b16e5185505a3fbc1307949340af70b611"
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
-CONFLICTS += "ifupdown"
+CONFLICTS += " ifupdown busybox-ifupdown"
 
 SRC_URI = "\
     git://git.openwrt.org/project/netifd.git;name=netifd \
     git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;branch=lede-17.01 \
     file://100-Fix-IFF_LOWER_UP-define.patch \
+    file://network.config \
 "
 
 S = "${WORKDIR}/git"
@@ -34,17 +35,32 @@ FILES_${PN} += "\
     /lib/netifd/netifd-proto.sh \
     /lib/netifd/proto/dhcp.sh \
     /lib/network/config.sh \
+    /lib/functions/network.sh \
+    ${@bb.utils.contains('IMAGE_INSTALL', 'base-files ', '', '${sysconfdir}/config/network', d)} \
+    ${@bb.utils.contains('COMBINED_FEATURES', 'wifi', '/sbin/wifi', '', d)} \
 "
 
+CONFFILES_${PN}_append = "\
+ 	${sysconfdir}/config/network \
+ 	$(sysconfdir)/config/wireless \
+ 	"
+
 do_install_append() {
-    cp -a ${S}/openwrt/package/network/config/netifd/files/* ${D}
-    cp -a ${S}/scripts/* ${D}/lib/netifd
-    chown -R root:root ${D}/*
+    cp -dR --preserve=mode,links ${S}/openwrt/package/network/config/netifd/files/* ${D}/
+    cp -dR --preserve=mode,links ${S}/scripts/* ${D}${base_libdir}/netifd/
+
+    install -Dm 0644 ${S}/openwrt/package/base-files/files/lib/functions/network.sh ${D}${base_libdir}/functions/network.sh
+    install -Dm 0755 ${S}/openwrt/package/base-files/files/etc/uci-defaults/12_network-generate-ula ${D}${sysconfdir}/uci-defaults/12_network-generate-ula
+    ${@bb.utils.contains('COMBINED_FEATURES', 'wifi', 'install -Dm 0755 ${S}/openwrt/package/base-files/files/sbin/wifi ${D}${base_sbindir}/wifi', '', d)}
+    install -dm 0755 ${D}${sysconfdir}/config
+    # If config_generate is not present we need a default network config
+    ${@bb.utils.contains('IMAGE_INSTALL', 'base-files ', '', 'install -Dm 0644 ${WORKDIR}/network.config ${D}${sysconfdir}/config/network', d)}
+    # FIXME: Handle wireless case without config_generate
 
     install -dm 0755 ${D}/sbin
-    ln -s /usr/sbin/netifd ${D}/sbin/netifd
+    ln -sf /usr/sbin/netifd ${D}/sbin/netifd
 
-    # Be prepared for both procd and systemd style module loading
+    # Be prepared for both procd and systemd/sysvinit style module loading
     install -dm 0755 ${D}/etc/modules.d ${D}/etc/modules-load.d
     echo "bridge" >${D}/etc/modules.d/30-bridge
     echo "bridge" >${D}/etc/modules-load.d/bridge.conf
