@@ -84,11 +84,13 @@ do_install_append() {
 
 FILES_${PN} = "/"
 
-ALTERNATIVE_${PN} = "init"
+ALTERNATIVE_${PN} = "init inittab"
 
 ALTERNATIVE_PRIORITY = "40"
 
 ALTERNATIVE_LINK_NAME[init] = "${base_sbindir}/init"
+
+ALTERNATIVE_LINK_NAME[inittab] = "${sysconfdir}/inittab"
 
 python () {
     if not bb.utils.contains('DISTRO_FEATURES', 'procd', True, False, d):
