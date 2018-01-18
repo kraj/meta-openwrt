@@ -7,7 +7,7 @@ LICENSE = "BSD"
 LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=18;md5=ba30601dd30339f7ff3d0ad681d45679"
 SECTION = "base"
 DEPENDS = "libubox ubus json-c ustream-ssl"
-RDEPENDS_${PN} += "openssl"
+RDEPENDS_${PN} += "openssl base-files-scripts-openwrt"
 
 inherit cmake pkgconfig openwrt-services openwrt
 
@@ -24,7 +24,7 @@ CFLAGS += "-D_DEFAULT_SOURCE"
 EXTRA_OECMAKE = "-DTLS_SUPPORT=ON -DLUA_SUPPORT=ON -DUBUS_SUPPORT=ON"
 FILES_SOLIBSDEV = ""
 
-FILES_${PN}  += "${libdir}/*"
+FILES_${PN}  += "${libdir}/* /www"
 
 do_install_append() {
     install -Dm 0755 ${S}/openwrt/package/network/services/uhttpd/files/uhttpd.init ${D}${sysconfdir}/init.d/uhttpd
@@ -32,4 +32,5 @@ do_install_append() {
     install -Dm 0644 ${S}/openwrt/package/network/services/uhttpd/files/ubus.default ${D}${sysconfdir}/uci-defaults/00_uhttpd_ubus
     install -dm 0755 ${D}/usr/sbin
     ln -s /usr/bin/uhttpd ${D}/usr/sbin/uhttpd
+    install -dm 0755 ${D}/www
 }
