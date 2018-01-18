@@ -21,7 +21,7 @@ do_compile[noexec] = "1"
 PACKAGECONFIG_append = "openwrt"
 
 do_install_append () { 
-    if [ "${@bb.utils.contains('PACKAGECONFIG_pn-${PN}', 'openwrt', 'true', 'false', d)}" = "true" ]; then
+    if [ "${@bb.utils.contains('PACKAGECONFIG', 'openwrt', 'true', 'false', d)}" = "true" ]; then
         # We need to munge openwrt base-files before copying
         # Some file come from regular OE base-files and others
         # belong in other recipes, or are not applicable
@@ -124,11 +124,11 @@ do_install_append () {
 FILES_${PN} = "/"
 
 RDEPENDS_${PN} += "\
-	${@bb.utils.contains('PACKAGECONFIG_pn-${PN}', 'openwrt', '${PN}-scripts-openwrt', '', d)} \
+	${@bb.utils.contains('PACKAGECONFIG', 'openwrt', '${PN}-scripts-openwrt', '', d)} \
 	"
 
 RSUGGESTS_${PN} += "\
-	${@bb.utils.contains('PACKAGECONFIG_pn-${PN}', 'openwrt', '${PN}-scripts-sysupgrade procd ubox', '', d)} \
+	${@bb.utils.contains('PACKAGECONFIG', 'openwrt', '${PN}-scripts-sysupgrade procd ubox', '', d)} \
 	"
 
 CONFFILES_${PN} += "\
