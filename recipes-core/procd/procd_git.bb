@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://procd.c;beginline=1;endline=13;md5=61e3657604f131a859
 SECTION = "base"
 DEPENDS = "libubox ubus json-c"
 
-RDEPENDS_${PN} += " fstools base-files-scripts-openwrt"
+RDEPENDS_${PN} += " fstools base-files-scripts-openwrt ${PN}-inittab"
 
 # NB: Is both VIRTUAL-RUNTIME-init_manager and VIRTUAL_RUNTIME-dev_manager (like systemd/systemd-udev)
 
@@ -52,8 +52,6 @@ do_install_append() {
     install -Dm 0755 ${BF}/etc/init.d/done ${D}${sysconfdir}/init.d/done
     install -Dm 0755 ${BF}/etc/init.d/sysctl ${D}${sysconfdir}/init.d/sysctl
     install -Dm 0755 ${BF}/etc/init.d/umount ${D}${sysconfdir}/init.d/umount
-    # FIXME: Serial ports need to reflect actual machine
-    install -Dm 0644 ${BF}/etc/inittab ${D}${sysconfdir}/inittab
     install -Dm 0755 ${BF}/usr/libexec/login.sh ${D}/usr/libexec/login.sh
     install -dm 0755 ${D}/rc.d
     # FIXME: Need to split openwrt base-files 'boot' script so that
@@ -86,13 +84,11 @@ do_install_append() {
 
 FILES_${PN} = "/"
 
-ALTERNATIVE_${PN} = "init inittab"
+ALTERNATIVE_${PN} = "init"
 
 ALTERNATIVE_PRIORITY = "40"
 
-ALTERNATIVE_LINK_NAME[init] = "${base_sbindir}/init"
-
-ALTERNATIVE_LINK_NAME[inittab] = "${sysconfdir}/inittab"
+ALTERNATIVE_TARGET[init] = "${base_sbindir}/init"
 
 python () {
     if not bb.utils.contains('DISTRO_FEATURES', 'procd', True, False, d):
