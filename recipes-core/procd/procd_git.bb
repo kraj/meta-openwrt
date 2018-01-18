@@ -21,6 +21,7 @@ SRC_URI = "git://git.openwrt.org/project/procd.git;branch=lede-17.01 \
 	git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;branch=lede-17.01 \
 	file://00_preinit.conf \
         file://banner.failsafe \
+	file://10_sysinfo \
 "
 
 S = "${WORKDIR}/git"
@@ -36,6 +37,7 @@ do_install_append() {
     install -Dm 0544 ${WORKDIR}/banner.failsafe ${D}${sysconfdir}/banner.failsafe
 
     install -Dm 0644 -t ${D}${base_libdir}/preinit ${BF}/lib/preinit/*
+    install -Dm 0644 ${WORKDIR}/10_sysinfo ${D}${base_libdir}/preinit/10_sysinfo
     install -Dm 0644 ${WORKDIR}/00_preinit.conf ${D}${base_libdir}/preinit/00_preinit.conf
 
     # Early init + dev manager / coldplug
