@@ -9,12 +9,10 @@ SECTION = "base"
 DEPENDS = "json-c libubox ubus libnl uci"
 RDEPENDS_${PN} += " bridge-utils kernel-module-bridge base-files-scripts-openwrt "
 
-inherit cmake pkgconfig openwrt openwrt-services
+inherit cmake pkgconfig openwrt openwrt-services update-alternatives
 
 SRCREV_netifd = "650758b16e5185505a3fbc1307949340af70b611"
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
-
-CONFLICTS += " ifupdown busybox-ifupdown"
 
 SRC_URI = "\
     git://git.openwrt.org/project/netifd.git;name=netifd \
@@ -41,9 +39,16 @@ FILES_${PN} += "\
 "
 
 CONFFILES_${PN}_append = "\
- 	${sysconfdir}/config/network \
- 	$(sysconfdir)/config/wireless \
- 	"
+	${sysconfdir}/config/network \
+	$(sysconfdir)/config/wireless \
+	"
+
+ALTERNATIVE_${PN} = "ifup ifdown"
+
+ALTERNATIVE_PRIORITY = "40"
+
+ALTERNATIVE_LINK_NAME[ifup] = "${base_sbindir}/ifup"
+ALTERNATIVE_LINK_NAME[ifdown] = "${base_sbindir}/ifdown"
 
 do_install_append() {
     cp -dR --preserve=mode,links ${S}/openwrt/package/network/config/netifd/files/* ${D}/
