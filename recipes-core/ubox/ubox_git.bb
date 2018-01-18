@@ -34,4 +34,4 @@ RDEPENDS_${PN} += "ubus libubox"
 
 FILES_SOLIBSDEV = ""
 
-FILES_${PN}  += "${libdir}/*.so"
+FILES_${PN}  += "${libdir}/*.so ${base_sbindir}"
