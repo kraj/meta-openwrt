@@ -1,0 +1,9 @@
+================= FAILSAFE MODE active ================
+special commands:
+* mount_root	 mount root-partition with config files
+
+after mount_root:
+* passwd			 change root's password
+* /etc/config		    directory with config files
+=======================================================
+

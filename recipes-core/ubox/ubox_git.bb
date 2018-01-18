@@ -7,7 +7,7 @@ SRCREV = "16f7e16181e2f3e9cf3e2ce56a7e291844900d09"
 DEPENDS = "ubus libubox uci"
 
 SRC_URI = "\
-    git://git.lede-project.org/project/ubox.git \
+    git://git.openwrt.org/project/ubox.git \
     file://log.init \
 "
 
@@ -34,4 +34,4 @@ RDEPENDS_${PN} += "ubus libubox"
 
 FILES_SOLIBSDEV = ""
 
-FILES_${PN}  += "${libdir}/*.so"
+FILES_${PN}  += "${libdir}/*.so ${base_sbindir}"
