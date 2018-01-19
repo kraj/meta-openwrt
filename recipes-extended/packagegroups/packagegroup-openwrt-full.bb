@@ -1,4 +1,6 @@
 SUMMARY = "Extras Openwrt system requirements"
+LICENSE = "MIT"
+
 inherit packagegroup openwrt openwrt-services
 
 PACKAGES = "\
