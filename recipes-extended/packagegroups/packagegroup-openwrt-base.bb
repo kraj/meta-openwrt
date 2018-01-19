@@ -20,26 +20,15 @@ RDEPENDS_${PN} = "\
 	"
 
 RDEPENDS_${PN}-base = "\
-    packagegroup-core-boot \
-    rpcd \
-    ubox \
-    ubus \
-    uci \
+    packagegroup-openwrt-minimal \
     usign \
     "
 
 RDEPENDS_${PN}-network = "\
     dnsmasq \
     \
-    firewall3 \
-    iptables \
     ${@bb.utils.contains('COMBINED_FEATURES', 'wifi', 'iwinfo', '',d)} \
-    ${VIRTUAL-RUNTIME_network_manager} \
-    uclient \
     umdnsd \
-    ustream-ssl \
-    ${@bb.utils.contains('COMBINED_FEATURES', 'wifi', 'iw', '',d)} \
-    ${@bb.utils.contains('COMBINED_FEATURES', 'wifi', 'hostapd', '',d)} \
     "
 
 RDEPENDS_${PN}-luci = "\
