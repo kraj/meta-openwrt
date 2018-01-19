@@ -9,7 +9,7 @@ SECTION = "base"
 DEPENDS = "libubox uci virtual/kernel"
 RRDEPENDS_${PN} = "kernel-module-fs-auto_fs4"
 
-inherit openwrt openwrt-services
+inherit openwrt openwrt-services openwrt-base-files
 
 SRCREV_mountd = "7826ca5d6aca691dcb6f98ab203a090d42e79337"
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
@@ -17,7 +17,6 @@ SRCREV_openwrt = "${OPENWRT_SRCREV}"
 inherit cmake pkgconfig
 
 SRC_URI = "git://git.openwrt.org/project/mountd.git;name=mountd \
-	   git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;branch=lede-17.01 \
 	   file://0100-prevent-stddef-redefinition.patch \
 	   file://0200-prevent-musl-endian-h-parenthese-warning.patch \
 "

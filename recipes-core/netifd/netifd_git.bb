@@ -9,14 +9,13 @@ SECTION = "base"
 DEPENDS = "json-c libubox ubus libnl uci"
 RDEPENDS_${PN} += " bridge-utils kernel-module-bridge base-files-scripts-openwrt "
 
-inherit cmake pkgconfig openwrt openwrt-services update-alternatives
+inherit cmake pkgconfig openwrt openwrt-services update-alternatives openwrt-base-files
 
 SRCREV_netifd = "650758b16e5185505a3fbc1307949340af70b611"
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 SRC_URI = "\
     git://git.openwrt.org/project/netifd.git;name=netifd \
-    git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;branch=lede-17.01 \
     file://100-Fix-IFF_LOWER_UP-define.patch \
     file://network.config \
 "

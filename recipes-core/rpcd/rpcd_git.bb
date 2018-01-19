@@ -9,14 +9,13 @@ SECTION = "base"
 DEPENDS = "json-c libubox ubus uci iwinfo"
 RDEPENDS_${PN} += "iwinfo"
 
-inherit cmake pkgconfig openwrt-services openwrt
+inherit cmake pkgconfig openwrt-services openwrt openwrt-base-files
 
 SRCREV_pn-rpcd = "cfe1e75c91bc1bac82e6caab3e652b0ebee59524"
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 SRC_URI = "\
 	git://git.openwrt.org/project/rpcd.git \
-	git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;branch=lede-17.01 \
 	"
 
 S = "${WORKDIR}/git"

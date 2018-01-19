@@ -1,4 +1,4 @@
-inherit openwrt
+inherit openwrt openwrt-base-files
 
 DESCRIPTION = "Subpackages from base-files from OpenWrt core"
 HOMEPAGE = "http://wiki.openwrt.org/"

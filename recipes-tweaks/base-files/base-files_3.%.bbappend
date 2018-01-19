@@ -1,18 +1,20 @@
-inherit openwrt
+inherit openwrt openwrt-base-files
 
 DESCRIPTION = "Base files from openembedded and openwrt project"
 HOMEPAGE = "http://wiki.openwrt.org/"
-LICENSE = "GPLv2"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=94d55d512a9ba36caa9b7df079bae19f"
+
+LIC_FILES_CHKSUM_remove = " file://openwrt/LICENSE;md5=94d55d512a9ba36caa9b7df079bae19f "
+LIC_FILES_CHKSUM_append = " file://git/openwrt/LICENSE;md5=94d55d512a9ba36caa9b7df079bae19f "
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-openwrt:"
 
-SRC_URI += "git://github.com/openwrt/openwrt.git;protocol=git;branch=lede-17.01 \
+SRC_URI += "\
         file://0001-use-sh-not-ash.patch \
 	"
 SRCREV = "${OPENWRT_SRCREV}"
 
-S = "${WORKDIR}/git"
+S = "${WORKDIR}"
+SG = "${WORKDIR}/git/openwrt"
 STMP = "${WORKDIR}/stmp"
 
 do_configure[noexec] = "1"
@@ -27,7 +29,7 @@ do_install_append () {
         # belong in other recipes, or are not applicable
         rm -rf ${STMP}
         mkdir -p ${STMP}
-        cp -dR --preserve=mode,links ${S}/package/base-files/files/* ${STMP}/
+        cp -dR --preserve=mode,links ${SG}/package/base-files/files/* ${STMP}/
 
         # procd - earlyinit
         rm -f ${STMP}/etc/inittab
