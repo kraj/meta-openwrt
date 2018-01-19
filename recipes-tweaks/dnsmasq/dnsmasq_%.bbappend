@@ -1,9 +1,12 @@
-inherit openwrt openwrt-services useradd
+inherit openwrt openwrt-services useradd openwrt-base-files
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-SRC_URI += "git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;protocol=git;branch=lede-17.01"
 SRC_URI += "file://99-dnsmasq.rules"
+
+
+LIC_FILES_CHKSUM_remove = " file://openwrt/LICENSE;md5=94d55d512a9ba36caa9b7df079bae19f "
+LIC_FILES_CHKSUM_append = " file://../git/openwrt/LICENSE;md5=94d55d512a9ba36caa9b7df079bae19f "
 
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 

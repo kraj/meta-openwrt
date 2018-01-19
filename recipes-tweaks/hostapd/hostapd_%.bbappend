@@ -1,9 +1,8 @@
-inherit openwrt
+inherit openwrt openwrt-base-files
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
 SRC_URI += "file://300-noscan.patch"
-SRC_URI += "git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;protocol=git;branch=lede-17.04"
 
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 

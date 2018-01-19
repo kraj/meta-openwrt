@@ -12,13 +12,12 @@ RDEPENDS_${PN} += " fstools base-files-scripts-openwrt ${PN}-inittab"
 
 # NB: Is both VIRTUAL-RUNTIME-init_manager and VIRTUAL_RUNTIME-dev_manager (like systemd/systemd-udev)
 
-inherit cmake openwrt openwrt-services pkgconfig
+inherit cmake openwrt openwrt-services pkgconfig openwrt-base-files
 
 SRCREV_pn-procd = "188353099cf6fc88f145cfcb84a4db3f6523528a"
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 SRC_URI = "git://git.openwrt.org/project/procd.git;branch=lede-17.01 \
-	git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;branch=lede-17.01 \
 	file://00_preinit.conf \
         file://banner.failsafe \
 	file://10_sysinfo \

@@ -11,10 +11,9 @@ RDEPENDS_${PN} = "ipset xtables-addons"
 
 SRCREV = "a4d98aea373e04f3fdc3c492c1688ba52ce490a9"
 SRC_URI = "git://git.openwrt.org/project/firewall3.git \
-           git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt/;protocol=git;branch=lede-17.01 \
           "
 
-inherit cmake pkgconfig openwrt openwrt-services
+inherit cmake pkgconfig openwrt openwrt-services openwrt-base-files
 
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
