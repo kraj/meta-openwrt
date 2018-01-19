@@ -13,7 +13,7 @@ SRCREV = "ec80adaa1b47f28d426fa19c692011ce60b992d6"
 SRC_URI = "git://git.openwrt.org/project/ustream-ssl.git \
           "
 
-inherit cmake pkgconfig
+inherit cmake pkgconfig openwrt
 
 S = "${WORKDIR}/git"
 
@@ -25,8 +25,6 @@ do_install_append() {
 	mv ${D}/usr/lib/libustream-ssl.so ${D}/lib/libustream-ssl.so
 	rmdir ${D}/usr/lib
 }
-
-FILES_SOLIBSDEV = ""
 
 FILES_${PN}  += "${base_libdir}/*"
 FILES_${PN}-dbg  += "${libdir}/lua/5.*/.debug"

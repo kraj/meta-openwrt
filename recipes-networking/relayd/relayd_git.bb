@@ -12,10 +12,8 @@ SRCREV = "ad0b25ad74345d367c62311e14b279f5ccb8ef13"
 SRC_URI = "git://git.openwrt.org/project/relayd.git \
           "
 
-inherit cmake pkgconfig
+inherit cmake pkgconfig openwrt
 
 S = "${WORKDIR}/git"
-
-FILES_SOLIBSDEV = ""
 
 FILES_${PN}  += "${libdir}/*"

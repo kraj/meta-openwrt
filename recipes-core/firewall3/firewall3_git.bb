@@ -22,8 +22,6 @@ S = "${WORKDIR}/git"
 
 EXTRA_OECMAKE = "${@bb.utils.contains('DISTRO_FEATURES', 'ipv6', '-DDISABLE_IPV6=OFF', '-DDISABLE_IPV6=ON', d)}"
 
-FILES_SOLIBSDEV = ""
-
 FILES_${PN}  += "${libdir}/*"
 
 do_install_append() {

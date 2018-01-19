@@ -3,6 +3,8 @@ HOMEPAGE = "https://github.com/diegonehab/luasocket"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=ab6706baf6d39a6b0fa2613a3b0831e7"
 
+inherit openwrt
+
 DEPENDS += "lua5.1-native lua5.1"
 
 SRCREV = "d1ec29be7f982db75864155dd61a058902e1cae2"
@@ -21,8 +23,6 @@ CC_linux='${CC}' LD_linux='${CC}' LUAV=5.1"
 do_install() {
 	oe_runmake install
 }
-
-FILES_SOLIBSDEV = ""
 
 FILES_${PN}  += "${libdir}/* ${datadir}/lua/5.*/"
 FILES_${PN}-dbg  += "${libdir}/lua/5.*/.debug ${libdir}/lua/5.*/*/.debug"

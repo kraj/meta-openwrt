@@ -12,10 +12,8 @@ SRCREV = "af9c293c1f1d8a97fbd8adf9c6070ead4920ca84"
 SRC_URI = "git://git.openwrt.org/project/umbim.git \
           "
 
-inherit cmake pkgconfig
+inherit cmake pkgconfig openwrt
 
 S = "${WORKDIR}/git"
-
-FILES_SOLIBSDEV = ""
 
 FILES_${PN}  += "${libdir}/*"

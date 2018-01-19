@@ -16,7 +16,7 @@ SRC_URI = "git://git.openwrt.org/project/fstools.git;branch=lede-17.01 \
           "
 DEPENDS += "util-linux"
 
-inherit cmake pkgconfig
+inherit cmake pkgconfig openwrt
 
 S = "${WORKDIR}/git"
 
@@ -28,8 +28,6 @@ DISABLE_STATIC = ""
 PACKAGECONFIG ??= "extroot"
 
 PACKAGECONFIG[extroot] = "-DCMAKE_UBIFS_EXTROOT=ON,,libubox uci,"
-
-FILES_SOLIBSDEV = ""
 
 FILES_${PN}  += "${libdir}/*"
 

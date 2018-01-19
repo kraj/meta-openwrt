@@ -31,6 +31,4 @@ do_install_append() {
     ln -sf /usr/sbin/mountd ${D}/sbin/mountd
 }
 
-FILES_SOLIBSDEV = ""
-
 FILES_${PN}  += "${libdir}/*"
