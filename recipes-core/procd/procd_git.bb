@@ -46,7 +46,7 @@ do_install_append() {
     # Init
     install -Dm 0644 ${PD}/procd.sh ${D}${base_libdir}/functions/procd.sh
     install -Dm 0755 ${PD}/reload_config ${D}${base_sbindir}/reload_config
-    install -Dm 0644 ${BF}/lib/functions/preinit.sh ${D}${base_libdir}/functions/service.sh
+    install -Dm 0644 ${BF}/lib/functions/service.sh ${D}${base_libdir}/functions/service.sh
     install -Dm 0755 ${BF}/etc/rc.common ${D}${sysconfdir}/rc.common
     install -Dm 0755 ${BF}/etc/rc.local ${D}${sysconfdir}/rc.local
     install -Dm 0755 ${BF}/etc/init.d/done ${D}${sysconfdir}/init.d/done
