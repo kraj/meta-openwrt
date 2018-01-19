@@ -11,10 +11,8 @@ DEPENDS = "libusb libubox"
 SRCREV = "993a9a542791953c4804f7ddbb3a07756738e37a"
 SRC_URI = "git://git.openwrt.org/project/usbmode.git"
 
-inherit cmake pkgconfig
+inherit cmake pkgconfig openwrt
 S = "${WORKDIR}/git"
-
-FILES_SOLIBSDEV = ""
 
 FILES_${PN}  += "${libdir}/*"
 FILES_${PN}-dbg  += "${libdir}/lua/5.*/.debug"

@@ -26,8 +26,6 @@ do_install_append() {
 	install -m 0755 ${B}/lua/uloop.so ${D}/usr/lib/lua/5.1/uloop.so
 }
 
-FILES_SOLIBDEV = ""
-
 PACKAGES =+ "${PN}-examples"
 
 FILES_${PN} += "${libdir}/* ${datadir}/*"

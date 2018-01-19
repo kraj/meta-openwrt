@@ -14,7 +14,7 @@ SRC_URI = "git://git.openwrt.org/project/ucwmp.git \
            file://0002-add-missing-header-include-for-json.h.patch \
           "
 
-inherit cmake pkgconfig
+inherit cmake pkgconfig openwrt
 
 S = "${WORKDIR}/git"
 

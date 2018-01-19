@@ -12,12 +12,10 @@ SRCREV = "971e6703eb9bed936cc62cd335105bd2acca14ef"
 SRC_URI = "git://git.openwrt.org/project/ugps.git \
           "
 
-inherit cmake pkgconfig
+inherit cmake pkgconfig openwrt
 
 S = "${WORKDIR}/git"
 
 CFLAGS += "-D_DEFAULT_SOURCE"
-
-FILES_SOLIBSDEV = ""
 
 FILES_${PN}  += "${libdir}/*"

@@ -12,10 +12,8 @@ SRCREV = "0e8b948ff8dd1cb1763180c99b522390529c7841"
 SRC_URI = "git://git.openwrt.org/project/mdnsd.git \
           "
 
-inherit cmake pkgconfig openwrt-services
+inherit cmake pkgconfig openwrt-services openwrt
 
 S = "${WORKDIR}/git"
-
-FILES_SOLIBSDEV = ""
 
 FILES_${PN}  += "${libdir}/*"

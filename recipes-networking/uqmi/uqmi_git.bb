@@ -12,11 +12,9 @@ SRCREV = "c61815319c1c0e76898048a19151f30844a6989c"
 SRC_URI = "git://git.openwrt.org/project/uqmi.git \
           "
 
-inherit cmake pkgconfig
+inherit cmake pkgconfig openwrt
 
 S = "${WORKDIR}/git"
 B = "${S}"
-
-FILES_SOLIBSDEV = ""
 
 FILES_${PN}  += "${libdir}/*"

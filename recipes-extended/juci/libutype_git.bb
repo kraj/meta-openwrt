@@ -15,13 +15,14 @@ SRC_URI = "git://github.com/mkschreder/libutype \
 
 S = "${WORKDIR}/git"
 
+inherit openwrt
+
 EXTRA_OEMAKE = "DESTDIR=${D} BUILD_DIR=${B}"
 
 do_install() {
 	oe_runmake install
 }
 
-FILES_SOLIBSDEV = ""
 FILES_${PN} = "${libdir}/*.so"
 
 RDEPENDS_${PN} += "libusys"

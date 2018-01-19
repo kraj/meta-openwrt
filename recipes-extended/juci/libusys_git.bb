@@ -11,6 +11,8 @@ SECTION = "libs"
 DEPENDS += "libutype"
 RDEPENDS_${PN} += "libutype"
 
+inherit openwrt
+
 SRCREV = "27c5f81c80a3ea113378f56d4fc0e8fd903e7abe"
 SRC_URI = "git://github.com/mkschreder/libusys"
 
@@ -24,6 +26,5 @@ do_install() {
 	oe_runmake install
 }
 
-FILES_SOLIBSDEV = ""
 FILES_${PN} = "${libdir}/*.so"
 

@@ -14,12 +14,13 @@ SRC_URI = "git://github.com/mkschreder/libblobpack \
 
 S = "${WORKDIR}/git"
 
+inherit openwrt
+
 do_install() {
 	install -d ${D}${libdir} ${D}${includedir}/blobpack
 	install -m 0755 ${B}/libblobpack.so ${D}${libdir}
 	install -m 0644 ${S}/*.h ${D}${includedir}/blobpack
 }
 
-FILES_SOLIBSDEV = ""
 FILES_${PN} = "${libdir}/*.so"
 
