@@ -35,4 +35,5 @@ RDEPENDS_${PN}-network = "\
     ustream-ssl \
     ${@bb.utils.contains('COMBINED_FEATURES', 'wifi', 'iw', '',d)} \
     ${@bb.utils.contains('COMBINED_FEATURES', 'wifi', 'hostapd', '',d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'ipv6', 'odhcp6c', '', d)} \
     "
