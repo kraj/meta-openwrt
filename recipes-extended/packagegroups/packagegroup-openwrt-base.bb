@@ -28,6 +28,7 @@ RDEPENDS_${PN}-network = "\
     dnsmasq \
     \
     ${@bb.utils.contains('COMBINED_FEATURES', 'wifi', 'iwinfo', '',d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'ipv6', 'odhcpd', '', d)} \
     umdnsd \
     "
 
