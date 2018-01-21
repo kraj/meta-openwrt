@@ -8,12 +8,13 @@ LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=17;md5=86aad799085683e0a2e
 SECTION = "base"
 DEPENDS = "libubox"
 
-SRCREV = "ad0b25ad74345d367c62311e14b279f5ccb8ef13"
 SRC_URI = "git://git.openwrt.org/project/relayd.git \
           "
 
-inherit cmake pkgconfig openwrt
+SRCREV = "ad0b25ad74345d367c62311e14b279f5ccb8ef13"
 
 S = "${WORKDIR}/git"
+
+inherit cmake pkgconfig openwrt
 
 FILES_${PN}  += "${libdir}/*"
