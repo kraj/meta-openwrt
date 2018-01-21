@@ -8,14 +8,16 @@ LIC_FILES_CHKSUM = "file://uloop.c;beginline=1;endline=17;md5=f151c0422668fa4c8f
 SECTION = "base"
 DEPENDS += "json-c lua5.1"
 
-SRCREV = "1dafcd7813f147811a6bbdb00eec603fe732aac1"
 SRC_URI = "git://git.openwrt.org/project/libubox.git;branch=lede-17.01 \
           "
+SRCREV = "1dafcd7813f147811a6bbdb00eec603fe732aac1"
+
+S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig openwrt
+
 EXTRA_OECMAKE += "-DBUILD_EXAMPLES=ON -DBUILD_LUA=ON -DCMAKE_SKIP_RPATH=ON"
 OECMAKE_C_FLAGS += "-I${STAGING_INCDIR}/lua5.1"
-S = "${WORKDIR}/git"
 
 do_install_append() {
 	install -d ${D}${bindir} ${D}${includedir}/libubox
@@ -31,6 +33,6 @@ PACKAGES =+ "${PN}-examples"
 FILES_${PN} += "${libdir}/* ${datadir}/*"
 
 FILES_${PN}-examples += "${bindir}/*-example \
-                         ${bindir}/uloop-example.lua \
-                         ${bindir}/uloop_pid_test.sh"
-
+                        ${bindir}/uloop-example.lua \
+                        ${bindir}/uloop_pid_test.sh \
+                        "
