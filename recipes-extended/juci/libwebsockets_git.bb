@@ -9,12 +9,13 @@ SECTION = "libs"
 
 DEPENDS += "zlib openssl"
 
-SRCREV = "d459a6fadc7127f85c3bf46bf2b982199e68d023"
 SRC_URI = "git://github.com/warmcat/libwebsockets"
+SRCREV = "d459a6fadc7127f85c3bf46bf2b982199e68d023"
+
+PACKAGES += "${PN}-test"
 
 S = "${WORKDIR}/git"
-inherit cmake
-PACKAGES += "${PN}-test"
+
 FILES_${PN}-dev += "${libdir}/cmake"
 FILES_${PN}-test += "${datadir}/"
 

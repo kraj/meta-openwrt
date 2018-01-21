@@ -12,14 +12,15 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://COPYING;md5=9bed33188dd18fa8fec97a710e234273"
 SECTION = "libs"
 
-SRCREV = "0e56d7ed756509eb6a4806bd31c088e14b74a853"
 SRC_URI = "git://github.com/luaposix/luaposix"
+
+SRCREV = "0e56d7ed756509eb6a4806bd31c088e14b74a853"
+
+inherit openwrt
 
 S = "${WORKDIR}/git"
 
 B = "${S}"
-
-inherit openwrt
 
 export LUA = "lua"
 
