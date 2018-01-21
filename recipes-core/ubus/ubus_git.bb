@@ -8,8 +8,11 @@ LIC_FILES_CHKSUM = "file://ubusd.c;beginline=1;endline=12;md5=1b6a7aecd35bdd25de
 SECTION = "base"
 DEPENDS = "json-c libubox"
 
-SRCREV = "34c6e818e431cc53478a0f7c7c1eca07d194d692"
 SRC_URI = "git://git.openwrt.org/project/ubus.git"
+
+SRCREV = "34c6e818e431cc53478a0f7c7c1eca07d194d692"
+
+S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig openwrt
 
@@ -17,5 +20,3 @@ do_install_append () {
     install -dm 0755 ${D}/sbin
     ln -s /usr/sbin/ubusd ${D}/sbin/ubusd
 }
-
-S = "${WORKDIR}/git"
