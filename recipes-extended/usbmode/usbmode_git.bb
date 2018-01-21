@@ -8,11 +8,13 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/PD;md5=b3597d1
 SECTION = "base"
 DEPENDS = "libusb libubox"
 
-SRCREV = "993a9a542791953c4804f7ddbb3a07756738e37a"
 SRC_URI = "git://git.openwrt.org/project/usbmode.git"
 
-inherit cmake pkgconfig openwrt
+SRCREV = "993a9a542791953c4804f7ddbb3a07756738e37a"
+
 S = "${WORKDIR}/git"
+
+inherit cmake pkgconfig openwrt
 
 FILES_${PN}  += "${libdir}/*"
 FILES_${PN}-dbg  += "${libdir}/lua/5.*/.debug"
