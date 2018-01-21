@@ -29,7 +29,9 @@ $ bitbake-layers add-layer ../meta-openwrt
 Below we build for qemuarm machine as an example.
 to local.conf add:
 
+```
 INHERIT += " openwrt-distro-defaults "
+```
 
 **NB**: juci is likely currently not working
 To include juci instead of luci add
