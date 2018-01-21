@@ -1,21 +1,16 @@
 # Copyright (C) 2015 Khem Raj <raj.khem@gmail.com>
+# Copyright (C) 2018 Daniel Dickinson <cshored@thecshore.com>
 # Released under the MIT license (see COPYING.MIT for the terms)
 
-DESCRIPTION = "procd is the new OpenWrt process management daemon written in C"
+SUMMARY = "procd is the new OpenWrt process management daemon written in C"
+DESCRIPTION = "procd is both both VIRTUAL-RUNTIME-init_manager and \
+              VIRTUAL_RUNTIME-dev_manager (like systemd/systemd-udev) \
+              "
 HOMEPAGE = "http://wiki.openwrt.org/doc/techref/procd"
 LICENSE = "BSD"
 LIC_FILES_CHKSUM = "file://procd.c;beginline=1;endline=13;md5=61e3657604f131a859b57a40f27a9d8e"
 SECTION = "base"
 DEPENDS = "libubox ubus json-c"
-
-RDEPENDS_${PN} += " fstools base-files-scripts-openwrt ${PN}-inittab"
-
-# NB: Is both VIRTUAL-RUNTIME-init_manager and VIRTUAL_RUNTIME-dev_manager (like systemd/systemd-udev)
-
-inherit cmake openwrt openwrt-services pkgconfig openwrt-base-files
-
-SRCREV_pn-procd = "188353099cf6fc88f145cfcb84a4db3f6523528a"
-SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 SRC_URI = "git://git.openwrt.org/project/procd.git;branch=lede-17.01 \
 	file://00_preinit.conf \
@@ -23,9 +18,15 @@ SRC_URI = "git://git.openwrt.org/project/procd.git;branch=lede-17.01 \
 	file://10_sysinfo \
 "
 
+SRCREV_pn-procd = "188353099cf6fc88f145cfcb84a4db3f6523528a"
+
 S = "${WORKDIR}/git"
 PD = "${S}/openwrt/package/system/procd/files"
 BF = "${S}/openwrt/package/base-files/files"
+
+inherit cmake openwrt openwrt-services pkgconfig openwrt-base-files
+
+SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 do_install_append() {
     # Early init
@@ -81,12 +82,17 @@ do_install_append() {
     rmdir ${D}/usr/lib
 }
 
+RDEPENDS_${PN} += "\
+                  fstools \
+                  base-files-scripts-openwrt \
+                  ${PN}-inittab \
+                  "
+
 FILES_${PN} = "/"
 
 ALTERNATIVE_${PN} = "init"
 
 ALTERNATIVE_PRIORITY = "40"
-
 ALTERNATIVE_TARGET[init] = "${base_sbindir}/init"
 
 python () {
