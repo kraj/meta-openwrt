@@ -7,16 +7,15 @@ HOMEPAGE = "https://github.com/mkschreder/libusys"
 LICENSE = "BSD"
 LIC_FILES_CHKSUM = "file://src/uloop.c;beginline=1;endline=17;md5=9bed33188dd18fa8fec97a710e234273"
 SECTION = "libs"
-
 DEPENDS += "libutype"
-RDEPENDS_${PN} += "libutype"
 
-inherit openwrt
-
-SRCREV = "27c5f81c80a3ea113378f56d4fc0e8fd903e7abe"
 SRC_URI = "git://github.com/mkschreder/libusys"
 
+SRCREV = "27c5f81c80a3ea113378f56d4fc0e8fd903e7abe"
+
 S = "${WORKDIR}/git"
+
+inherit openwrt
 
 EXTRA_OEMAKE = "DESTDIR=${D} BUILD_DIR=${B}"
 
@@ -28,3 +27,4 @@ do_install() {
 
 FILES_${PN} = "${libdir}/*.so"
 
+RDEPENDS_${PN} += "libutype"
