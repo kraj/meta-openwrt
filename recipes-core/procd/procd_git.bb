@@ -52,7 +52,7 @@ do_install_append() {
     install -Dm 0755 ${BF}/etc/init.d/sysctl ${D}${sysconfdir}/init.d/sysctl
     install -Dm 0755 ${BF}/etc/init.d/umount ${D}${sysconfdir}/init.d/umount
     install -Dm 0755 ${BF}/usr/libexec/login.sh ${D}/usr/libexec/login.sh
-    install -dm 0755 ${D}/rc.d
+    install -dm 0755 ${D}/etc/rc.d
     # FIXME: Need to split openwrt base-files 'boot' script so that
     # things that need to be done by procd even when not on a full
     # openwrt image get done without errors
