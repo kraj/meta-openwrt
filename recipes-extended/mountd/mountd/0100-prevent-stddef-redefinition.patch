@@ -1,3 +1,14 @@
+Author: Daniel F. Dickinson <cshored@thecshore.com>
+Date:   Tue Jan 16 03:01:57 2018 -0500
+
+    mountd: Fix mountd build error due to stddef.h redefintion with musl
+
+Without this patch the build of mountd complains about redefintion of
+various #defines from stddef.h (from different files) in musl.
+We prevent this by removing #includes that are also included from
+another file (and are hence included twice, including stddef.h).
+
+Signed-of-by: Daniel F. Dickinson <cshored@thecshore.com>
 Index: git/include/list.h
 ===================================================================
 --- git.orig/include/list.h

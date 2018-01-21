@@ -1,3 +1,16 @@
+Author: Daniel F. Dickinson <cshored@thecshore.com>
+Date:   Wed Jan 17 03:09:48 2018 -0500
+
+    mountd: Add patch to prevent endian.h from throwing warnings with musl
+
+    Due to -Werror mountd experiences build failures due to warnings
+    about needing parentheses in endian.h imported from sys/types.h
+
+    In the files where sys/types.h is included removed the explicit
+    include solves the isues as it is better handled as an internal
+    include for auto_fs4.h.
+
+Signed-of-by: Daniel F. Dickinson <cshored@thecshore.om>
 Index: git/autofs.c
 ===================================================================
 --- git.orig/autofs.c
