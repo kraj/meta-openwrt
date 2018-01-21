@@ -8,13 +8,14 @@ LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=17;md5=2bf63b09608cf97d9db
 SECTION = "base"
 DEPENDS = "libubox ubus"
 
-SRCREV = "971e6703eb9bed936cc62cd335105bd2acca14ef"
 SRC_URI = "git://git.openwrt.org/project/ugps.git \
           "
 
-inherit cmake pkgconfig openwrt
+SRCREV = "971e6703eb9bed936cc62cd335105bd2acca14ef"
 
 S = "${WORKDIR}/git"
+
+inherit cmake pkgconfig openwrt
 
 CFLAGS += "-D_DEFAULT_SOURCE"
 
