@@ -8,17 +8,16 @@ LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=15;md5=e1b007aed2273fc3ec1
 SECTION = "base"
 DEPENDS = "json-c libubox"
 
-SRCREV = "dea067ad67d977c247c300c06676a06adf21e0c7"
-
-SRC_URI = "git://git.openwrt.org/project/jsonpath.git \
-           file://0001-sync-lemon-parser.patch \
-           file://0002-Declare-ParseTrace.patch \
+SRC_URI = "git://git.openwrt.org/project/jsonpath.git;name=jsonpath; \
+          file://0001-sync-lemon-parser.patch \
+          file://0002-Declare-ParseTrace.patch \
           "
+
+SRCREV_jsonpath = "dea067ad67d977c247c300c06676a06adf21e0c7"
 
 inherit cmake pkgconfig
 
 S = "${WORKDIR}/git"
-
 B = "${S}"
 
 do_install_append() {
