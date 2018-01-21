@@ -14,6 +14,7 @@ inherit cmake pkgconfig openwrt-services openwrt openwrt-base-files
 SRCREV = "a235636a2687fafb9c474e4b134a59ff66425c92"
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 SRC_URI = "git://git.openwrt.org/project/uhttpd.git \
+    file://0100-fix-wrong-binaries-found-due-to-inconsistent-path.patch \
 	"
 
 S = "${WORKDIR}/git"
