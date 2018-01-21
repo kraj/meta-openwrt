@@ -8,12 +8,14 @@ LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=18;md5=ba30601dd30339f7ff3
 SECTION = "base"
 DEPENDS = "libubox ubus json-c ustream-ssl"
 RDEPENDS_${PN} += "openssl base-files-scripts-openwrt"
+FILESEXTRAPATHS_prepend = "${THISDIR}/${PN}:"
 
 inherit cmake pkgconfig openwrt-services openwrt openwrt-base-files
 
 SRCREV = "a235636a2687fafb9c474e4b134a59ff66425c92"
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 SRC_URI = "git://git.openwrt.org/project/uhttpd.git \
+    file://0100-fix-wrong-binaries-found-due-to-inconsistent-path.patch \
 	"
 
 S = "${WORKDIR}/git"
