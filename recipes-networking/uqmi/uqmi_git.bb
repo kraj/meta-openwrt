@@ -8,13 +8,14 @@ LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=20;md5=3f7041e5710007661d7
 SECTION = "base"
 DEPENDS = "libubox json-c"
 
-SRCREV = "c61815319c1c0e76898048a19151f30844a6989c"
 SRC_URI = "git://git.openwrt.org/project/uqmi.git \
           "
+SRCREV = "c61815319c1c0e76898048a19151f30844a6989c"
+
+S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig openwrt
 
-S = "${WORKDIR}/git"
 B = "${S}"
 
 FILES_${PN}  += "${libdir}/*"
