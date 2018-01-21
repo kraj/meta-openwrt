@@ -9,7 +9,6 @@ SECTION = "base"
 DEPENDS = "libubox lua5.1"
 
 SRC_URI = "git://git.openwrt.org/project/uci.git;branch=lede-17.01;name=uci; \
-          file://0100-prevent-redefinition-of-stddef.path \
           "
 
 SRCREV_uci = "141b64ef84f43c954e665865b1bbf216fbf7c05f"
