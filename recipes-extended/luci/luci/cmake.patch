@@ -134,7 +134,7 @@ Index: git/modules/luci-mod-admin-full/CMakeLists.txt
 +)
 +
 +INSTALL(TARGETS luci-bwc
-+	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
++	RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
 +)
 +
 +INSTALL(DIRECTORY htdocs/
