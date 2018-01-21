@@ -18,10 +18,10 @@ inherit cmake openwrt pkgconfig
 
 prefix=""
 includedir="/usr/include"
+bindir="usr/bin"
 
-OECMAKE_C_FLAGS += "-I${STAGING_INCDIR}/libnl3"
+OECMAKE_C_FLAGS += "-I${STAGING_INCDIR}/libnl3 -DDESTDIR=${D}"
 
-FILES_${PN} += "/www /usr/lib /usr/share/acl.d"
+FILES_${PN} += "/www /usr/lib /usr/share/acl.d /${bindir}"
 
 S = "${WORKDIR}/git/"
-
