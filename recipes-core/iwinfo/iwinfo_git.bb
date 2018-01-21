@@ -8,11 +8,10 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=751419260aa954499f7abaabaa882bbe"
 SECTION = "base"
 DEPENDS += "uci lua5.1"
 
+SRCREV = "fd9e17be0c43bd6b8df5371f0b353747bc563874"
+
 inherit openwrt
 
-CFLAGS += "-fPIC"
-
-SRCREV = "fd9e17be0c43bd6b8df5371f0b353747bc563874"
 SRC_URI = "git://git.openwrt.org/project/iwinfo.git \
            file://0001-fix-typo-in-spcifying-typename-luaL_Reg.patch \
            file://0001-fix-order-of-linker-cmdline-to-help-linking-when-usi.patch \
@@ -20,6 +19,8 @@ SRC_URI = "git://git.openwrt.org/project/iwinfo.git \
           "
 
 S = "${WORKDIR}/git"
+
+CFLAGS += "-fPIC"
 
 do_install() {
 	install -D -m 0755 ${B}/libiwinfo.so ${D}${libdir}/libiwinfo.so
