@@ -22,6 +22,9 @@ S = "${WORKDIR}/git"
 
 CFLAGS += "-fPIC"
 
+# iwinfo breaks with parallel make
+PARALLEL_MAKE = ""
+
 do_install() {
 	install -D -m 0755 ${B}/libiwinfo.so ${D}${libdir}/libiwinfo.so
         install -D -m 0755 ${B}/iwinfo.so ${D}${libdir}/lua/5.1/iwinfo.so
