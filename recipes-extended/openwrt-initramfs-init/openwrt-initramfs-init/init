@@ -1,3 +1,0 @@
-#!/bin/sh
-# Start procd
-exec /sbin/init
