@@ -8,15 +8,16 @@ LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=17;md5=2a8ffaa9ef41014f236
 SECTION = "base"
 DEPENDS = "libubox uci ubus iptables"
 
-SRCREV = "a4d98aea373e04f3fdc3c492c1688ba52ce490a9"
 SRC_URI = "git://git.openwrt.org/project/firewall3.git \
           "
+
+SRCREV = "a4d98aea373e04f3fdc3c492c1688ba52ce490a9"
+
+S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig openwrt openwrt-services openwrt-base-files
 
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
-
-S = "${WORKDIR}/git"
 
 EXTRA_OECMAKE = "${@bb.utils.contains('DISTRO_FEATURES', 'ipv6', '-DDISABLE_IPV6=OFF', '-DDISABLE_IPV6=ON', d)}"
 
@@ -37,6 +38,8 @@ do_install_append() {
     install -dm 0755 ${D}${sysconfdir}/modules.d ${D}${sysconfdir}/modules-load.d
     if [ "${@bb.utils.contains('DISTRO_FEATURES', 'ipv6', 'true', 'false', d)}" = "true" ]; then
 
+        # Can't indent the here-document because leading spaces confuse
+        # kmodloader
         cat >${D}${sysconfdir}/modules.d/40-ip6tables <<EOF
 ip6_tables
 ip6table_filter
