@@ -8,9 +8,10 @@ LIC_FILES_CHKSUM = "file://NOTICE;md5=bb2810bf31da2f6bb39e0bfa86091da3"
 SECTION = "tools"
 DEPENDS = "zlib"
 
-SRCREV = "bd53eaafbc2a89a57b8adda38f53098a431fa8f4"
 SRC_URI = "git://git.openwrt.org/project/make_ext4fs.git \
           "
+SRCREV = "bd53eaafbc2a89a57b8adda38f53098a431fa8f4"
+
 S = "${WORKDIR}/git"
 B = "${S}"
 
