@@ -7,11 +7,12 @@ SRCREV = "16f7e16181e2f3e9cf3e2ce56a7e291844900d09"
 DEPENDS = "ubus libubox uci"
 
 SRC_URI = "\
-    git://git.openwrt.org/project/ubox.git \
-    file://log.init \
-"
+          git://git.openwrt.org/project/ubox.git \
+          file://log.init \
+          "
 
 SRCREV = "16f7e16181e2f3e9cf3e2ce56a7e291844900d09"
+
 S = "${WORKDIR}/git"
 
 inherit cmake openwrt-services openwrt
@@ -30,6 +31,12 @@ do_install_append () {
         ${@bb.utils.contains('VIRTUAL-RUNTIME_syslog', 'ubox', 'ln -s /usr/sbin/validate_data ${D}/sbin/validate_data', '', d)}
 }
 
-RDEPENDS_${PN} += "ubus libubox"
+RDEPENDS_${PN} += "\
+                  ubus \
+                  libubox \
+                  "
 
-FILES_${PN}  += "${libdir}/*.so ${base_sbindir}"
+FILES_${PN} += "\
+               ${libdir} \
+               ${base_sbindir} \
+               "
