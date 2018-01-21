@@ -8,12 +8,12 @@ LIC_FILES_CHKSUM = "file://mbim.h;beginline=1;endline=13;md5=8c7ce85ebfe23634010
 SECTION = "base"
 DEPENDS = "libubox"
 
-SRCREV = "af9c293c1f1d8a97fbd8adf9c6070ead4920ca84"
 SRC_URI = "git://git.openwrt.org/project/umbim.git \
           "
-
-inherit cmake pkgconfig openwrt
+SRCREV = "af9c293c1f1d8a97fbd8adf9c6070ead4920ca84"
 
 S = "${WORKDIR}/git"
+
+inherit cmake pkgconfig openwrt
 
 FILES_${PN}  += "${libdir}/*"
