@@ -3,9 +3,7 @@
 
 # Released under the MIT license (see COPYING.MIT for the terms)
 
-inherit openwrt openwrt-base-files
-
-DESCRIPTION = "Base files from openembedded and openwrt project"
+SUMMARY = "Base files from openembedded and openwrt projects"
 HOMEPAGE = "http://wiki.openwrt.org/"
 
 LIC_FILES_CHKSUM_remove = " file://openwrt/LICENSE;md5=94d55d512a9ba36caa9b7df079bae19f "
@@ -21,6 +19,8 @@ SRCREV = "${OPENWRT_SRCREV}"
 S = "${WORKDIR}"
 SG = "${WORKDIR}/git/openwrt"
 STMP = "${WORKDIR}/stmp"
+
+inherit openwrt openwrt-base-files
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
@@ -131,17 +131,17 @@ do_install_append () {
 FILES_${PN} = "/"
 
 RDEPENDS_${PN} += "\
-	${@bb.utils.contains('PACKAGECONFIG', 'openwrt', '${PN}-scripts-openwrt', '', d)} \
-	"
+                  ${@bb.utils.contains('PACKAGECONFIG', 'openwrt', '${PN}-scripts-openwrt', '', d)} \
+                  "
 
 RSUGGESTS_${PN} += "\
-	${@bb.utils.contains('PACKAGECONFIG', 'openwrt', '${PN}-scripts-sysupgrade procd ubox', '', d)} \
-	"
+                   ${@bb.utils.contains('PACKAGECONFIG', 'openwrt', '${PN}-scripts-sysupgrade procd ubox', '', d)} \
+                   "
 
 CONFFILES_${PN} += "\
-    ${sysconfdir}/fstab \
-    ${@['', '${sysconfdir}/hostname'][(d.getVar('hostname', True) != '')]} \
-    ${sysconfdir}/shells \
+                   ${sysconfdir}/fstab \
+                   ${@['', '${sysconfdir}/hostname'][(d.getVar('hostname', True) != '')]} \
+                   ${sysconfdir}/shells \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
