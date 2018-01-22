@@ -21,7 +21,6 @@ RDEPENDS_${PN} = "\
 
 RDEPENDS_${PN}-base = "\
     packagegroup-openwrt-minimal \
-    usign \
     "
 
 RDEPENDS_${PN}-network = "\
