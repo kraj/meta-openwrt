@@ -1,3 +1,7 @@
+# Copyright (C) 2015 Khem Raj <raj.khem@gmail.com>
+
+# Released under the MIT license (see COPYING.MIT for the terms)
+
 DESCRIPTION = "Lua is a powerful light-weight programming language designed \
 for extending applications."
 LICENSE = "MIT"
