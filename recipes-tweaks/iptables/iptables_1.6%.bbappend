@@ -1,3 +1,7 @@
+# Copyright (C) 2015 Khem Raj <raj.khem@gmail.com>
+
+# Released under the MIT license (see COPYING.MIT for the terms)
+
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
 EXTRA_OECONF += "--enable-shared --disable-static --with-xtlibdir=/usr/lib/iptables"
