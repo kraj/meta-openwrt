@@ -1,3 +1,14 @@
+Author: Daniel F. Dickinson <cshored@thecshore.com>
+Date:   Tue Jan 16 03:06:33 2018 -0500
+
+    busybox: Fix compilation for musl on 32-bit archs
+
+    At least with core-image-minimal busybox triggers the recently
+    added off_t misdetection alert even when LFS is not enabled;
+    this is due to a bug in busybox handling of the case...this
+    patch should get upstremed.
+
+    Signed-off-by: Daniel F. Dickinson <cshored@thecshore.com>
 Index: busybox-1.24.1/include/libbb.h
 ===================================================================
 --- busybox-1.24.1.orig/include/libbb.h
