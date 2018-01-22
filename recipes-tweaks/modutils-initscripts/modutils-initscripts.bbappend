@@ -2,13 +2,13 @@
 
 # Released under the MIT license (see COPYING.MIT for the terms)
 
-inherit openwrt openwrt-services
-
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 SRC_URI += "\
 	file://modutils.init \
 	"
+
+inherit openwrt openwrt-services
 
 do_install_append() {
 	install -dm 0755 ${D}/etc/init.d
