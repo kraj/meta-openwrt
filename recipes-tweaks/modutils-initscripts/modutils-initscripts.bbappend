@@ -1,3 +1,7 @@
+# Copyright (C) 2018 Daniel Dickinson <cshored@thecshore.com>
+
+# Released under the MIT license (see COPYING.MIT for the terms)
+
 inherit openwrt openwrt-services
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
