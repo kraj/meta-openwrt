@@ -1,3 +1,8 @@
+# Copyright (C) 2015 Khem Raj <raj.khem@gmail.com>
+# Copyright (C) 2018 Daniel Dickinson <cshored@thecshore.com>
+
+# Released under the MIT license (see COPYING.MIT for the terms)
+
 DESCRIPTION = "Networking extension library for Lua"
 HOMEPAGE = "https://github.com/diegonehab/luasocket"
 LICENSE = "MIT"
