@@ -23,9 +23,9 @@ SRC_URI = "http://www.lua.org/ftp/lua-${PV}.tar.gz \
 SRC_URI[md5sum] = "2e115fe26e435e33b0d5c022e4490567"
 SRC_URI[sha256sum] = "2640fc56a795f29d28ef15e13c34a47e223960b0240e8cb0a82d9b0738695333"
 
-S = "${WORKDIR}/lua-${PV}"
-
 inherit pkgconfig binconfig
+
+S = "${WORKDIR}/lua-${PV}"
 
 UCLIBC_PATCHES += "file://uclibc-pthread.patch"
 SRC_URI_append_libc-uclibc = "${UCLIBC_PATCHES}"
