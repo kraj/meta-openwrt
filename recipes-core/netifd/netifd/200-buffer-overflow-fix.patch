@@ -1,0 +1,45 @@
+From 5f9307400f7d2fd08e5ad9954a6dd67d7ad116e7 Mon Sep 17 00:00:00 2001
+From: "Daniel F. Dickinson" <cshored@thecshore.com>
+Date: Tue, 30 Jan 2018 12:45:17 -0500
+Subject: [PATCH] vlan: Buffer overlow in snprintf for vlans
+
+Buffer overlflow condition can occur because vlan
+device name is constructed from device name (size IFNAMSIZ)
+plus the ASCII decimal representation of the vlan id plus
+a dot, but the target can only be IFNAMSIZ.  We fix this
+by using fields widths (and make sure we don't truncate
+more of the orogin device name than we must).
+
+Signed-off-by: Daniel F. Dickinson <cshored@thecshore.com>
+---
+ vlan.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/vlan.c b/vlan.c
+index 067f624..49c3970 100644
+--- a/vlan.c
++++ b/vlan.c
+@@ -64,9 +64,19 @@ static int vlan_set_device_state(struct device *dev, bool up)
+ static void vlan_dev_set_name(struct vlan_device *vldev, struct device *dev)
+ {
+ 	char name[IFNAMSIZ];
++	char devnum[5];
++	int i, j = 0;
+ 
+ 	vldev->dev.hidden = dev->hidden;
+-	snprintf(name, IFNAMSIZ, "%s.%d", dev->ifname, vldev->id);
++	snprintf(devnum, 5, "%d", vldev->id);
++	i = strnlen(devnum, 4);
++	/* Subtract the dot and terminating null and index-0 math */
++	j = IFNAMSIZ - i - 3;
++	/* Brute force the null and length */
++	name[0] = 0;
++	strncat(name, dev->ifname, j);
++	strncat(name, ".", 1);
++	strncat(name, devnum, i);
+ 	device_set_ifname(&vldev->dev, name);
+ }
+ 
+-- 
+2.11.0
+
