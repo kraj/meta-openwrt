@@ -1,0 +1,44 @@
+Break CMake custom command dependency cycle
+
+Ninja complains of dependency cycle due to separate custom commands
+(which can end up building in parallel but the second has a dependency
+on lemon parser build (the first).
+
+| NOTE: VERBOSE=1 cmake --build oe/build/tmp-musl/work/armv5e-oe-linux-musleabi/jsonpath/git-r0/git --target all -- -j 8                 
+| ninja: error: dependency cycle: contrib/lemon -> contrib/lemon     
+
+We therefore update to a single add_custom_command that issues
+the lemon build then uses it to generate the parser.c that we want.
+
+Signed-of-by: Daniel F. Dickinson <cshored@thecshore.com>
+Index: git/CMakeLists.txt
+===================================================================
+--- git.orig/CMakeLists.txt
++++ git/CMakeLists.txt
+@@ -1,4 +1,4 @@
+-cmake_minimum_required(VERSION 2.6)
++cmake_minimum_required(VERSION 3.0)
+ 
+ PROJECT(jsonpath C)
+ ADD_DEFINITIONS(-Os -Wall -Werror --std=gnu99 -Wmissing-declarations -Wno-error=unused-variable -ffunction-sections -D_GNU_SOURCE)
+@@ -21,17 +21,11 @@ IF(JSONC_FOUND)
+ ENDIF()
+ 
+ ADD_CUSTOM_COMMAND(
+-  OUTPUT contrib/lemon
+-  DEPENDS contrib/lemon.c contrib/lempar.c
+-  COMMAND gcc -o contrib/lemon contrib/lemon.c
+-  COMMENT "Generating lemon parser generator"
+-)
+-
+-ADD_CUSTOM_COMMAND(
+   OUTPUT parser.c
+-  DEPENDS parser.y contrib/lemon
++  COMMAND gcc -o contrib/lemon contrib/lemon.c
+   COMMAND ./contrib/lemon parser.y
+-  COMMENT "Generating parser.c"
++  DEPENDS contrib/lemon.c contrib/lempar.c parser.y
++  COMMENT "Generating lemon parser generator and using to generate parser.c"
+ )
+ 
+ FIND_PATH(ubox_include_dir libubox/list.h)
