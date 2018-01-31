@@ -14,8 +14,7 @@ S = "${WORKDIR}/git"
 
 SRCREV = "b173dba22fbd9891bc5e3a55f8b40ba562f38e31"
 
-NPM_INSTALL_append = " uglify-js"
-DEPENDS += "jucid lua5.1 grunt-cli-native"
+DEPENDS += "jucid lua5.1 grunt-cli-native uglify-js-native yui-compressor-native lessjs-native bower-native mocha-native"
 
 do_compile() {
 	oe_runmake node_modules
