@@ -13,10 +13,13 @@ SRC_URI = "git://github.com/mkschreder/jucid \
            file://0001-juci_ws_server.c-ubus_srv_ws_client_new-expects-no-p.patch \
            file://0001-main.c-define-_DEFAULT_SOURCE.patch \
            file://0002-fix-makefile-in.patch \
+           file://0100-buffer-overrun-fix.patch \
            "
 
 S = "${WORKDIR}/git"
 
-inherit autotools pkgconfig
+OEMAKE_C_FLAGS += "-I$(STAGING_INCDIR}/lib"
+
+inherit autotools pkgconfig openwrt
 DEPENDS += "libblobpack libutype libusys luci uci lua5.1 libwebsockets iwinfo rpcd ubus"
 RDEPENDS_${PN} += "libutype libblobpack libusys"

@@ -1,0 +1,30 @@
+Author: Daniel F. Dickinson <cshored@thecshore.com>
+Date: Tue Jan 30 21:03:30 2018 -0500
+
+jucid: Fix buffer overrun in revorpcd
+
+ ../../git/src/juci.c: In function 'juci_load_plugins':
+| ../../git/src/juci.c:64:44: error: '%s' directive output may be truncated writing up to 255 bytes
+into a region of size 254 [-Werror=format-truncation=]
+|          snprintf(fname, sizeof(fname), "%s/%s", path, ent->d_name);
+|                                             ^~
+| ../../git/src/juci.c:64:9: note: 'snprintf' output 2 or more bytes (assuming 257) into a destination of size 255
+|          snprintf(fname, sizeof(fname), "%s/%s", path, ent->d_name);
+
+
+Index: git/src/juci.c
+===================================================================
+--- git.orig/src/juci.c
++++ git/src/juci.c
+@@ -61,7 +61,10 @@ int juci_load_plugins(struct juci *self,
+     while((ent = readdir(dir))){
+         if(strcmp(ent->d_name, ".") == 0 || strcmp(ent->d_name, "..") == 0) continue; 
+ 
+-        snprintf(fname, sizeof(fname), "%s/%s", path, ent->d_name); 
++        strncpy(fname, path, sizeof(fname) - 1);
++        fname[sizeof(fname) - 1] = 0;
++        strncat(fname, "/", 1);
++        strncat(fname, ent->d_name, 254);
+         
+         if(ent->d_type == DT_DIR) {
+             rv |= juci_load_plugins(self, fname, base_path);  
