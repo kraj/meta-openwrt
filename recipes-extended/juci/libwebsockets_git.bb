@@ -16,6 +16,8 @@ PACKAGES += "${PN}-test"
 
 S = "${WORKDIR}/git"
 
+inherit cmake
+
 FILES_${PN}-dev += "${libdir}/cmake"
 FILES_${PN}-test += "${datadir}/"
 
