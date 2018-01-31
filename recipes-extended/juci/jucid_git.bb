@@ -21,5 +21,5 @@ S = "${WORKDIR}/git"
 OEMAKE_C_FLAGS += "-I$(STAGING_INCDIR}/lib"
 
 inherit autotools pkgconfig openwrt
-DEPENDS += "libblobpack libutype libusys luci uci lua5.1 libwebsockets iwinfo rpcd ubus"
-RDEPENDS_${PN} += "libutype libblobpack libusys"
+DEPENDS += " libblobpack libutype libusys luci uci lua5.1 luajit libwebsockets iwinfo rpcd ubus"
+RDEPENDS_${PN} += "libutype libblobpack libusys libwebsockets"
