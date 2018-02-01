@@ -3,7 +3,7 @@
 
 DESCRIPTION = "OpenWrt JSON parsing utility"
 HOMEPAGE = "http://git.openwrt.org/?p=project/jsonpath.git;a=summary"
-LICENSE = "BSD"
+LICENSE = "BSD-1-Clause"
 LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=15;md5=e1b007aed2273fc3ec1d16560a17aadc"
 SECTION = "base"
 DEPENDS = "json-c libubox"
