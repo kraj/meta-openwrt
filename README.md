@@ -11,16 +11,12 @@ cd openembedded-core
 git clone git://github.com/openembedded/meta-openembedded.git
 git clone git://github.com/openembedded/bitbake.git
 git clone git://github.com/kraj/meta-openwrt.git
-git clone git://github.com/imyller/meta-nodejs.git
-git clone git://github.com/imyller/meta-nodejs-contrib.git
 
 $ . ./oe-init-build-env
 
 $ bitbake-layers add-layer ../meta-openembedded/meta-oe
 $ bitbake-layers add-layer ../meta-openembedded/meta-python
 $ bitbake-layers add-layer ../meta-openembedded/meta-networking
-$ bitbake-layers add-layer ../meta-nodejs
-$ bitbake-layers add-layer ../meta-nodejs-contrib
 $ bitbake-layers add-layer ../meta-openwrt
 ```
 
@@ -33,20 +29,21 @@ to local.conf add:
 INHERIT += " openwrt-distro-defaults "
 ```
 
-**NB**: juci is likely currently not working
-To include juci instead of luci add
-CORE_IMAGE_EXTRA_INSTALL = "juci"
-
 You can then use, for example, one of:
 
 ```shell
 $ TCLIBC=musl MACHINE=qemuarm bitbake core-image-minimal
+$ TCLIBC=musl MACHINE=qemuarm bitbake openwrt-image-minimal
 $ TCLIBC=musl MACHINE=qemuarm bitbake openwrt-image-base
 $ TCLIBC=musl MACHINE=qemuarm bitbake openwrt-image-full
 $ TCLIBC=musl MACHINE=qemux86 bitbake core-image-weston
 $ TCLIBC=musl MACHINE=qemux86 bitbake core-image-sato
 
 ```
+
+* openwrt-image-minimal has openwrt networking and cli but no UI
+* openwrt-image-base has openwrt networking, cli, and UI (luci)
+
 # Running
 
 ```shell
