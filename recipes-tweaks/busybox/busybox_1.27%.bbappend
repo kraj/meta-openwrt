@@ -5,12 +5,16 @@
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
+PACKAGECONFIG ??= ""
+PACKAGECONFIG[preferoe] = ""
+
 SRC_URI += "\
     file://fragment-lock.cfg \
-    file://fragment-noifupdown.cfg \
+    ${@bb.utils.contains('PACKAGECONFIG', 'preferoe', '', 'file://fragment-noifupdown.cfg', d)} \
     file://220-add_lock_util.patch \
     file://z300-fix_off_t_misdetection_triggered_without_LFS.patch \
 "
+
 do_install_append () {
     rm -f ${D}/usr/share/udhcpc/default.script
 }
