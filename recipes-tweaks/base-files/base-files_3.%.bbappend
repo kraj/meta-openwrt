@@ -25,10 +25,16 @@ inherit openwrt-virtual-runtimes openwrt-base-files
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
-PACKAGECONFIG_append = "openwrt"
+PACKAGECONFIG ??= "includeopenwrt"
 
-do_install_append () { 
-    if [ "${@bb.utils.contains('PACKAGECONFIG', 'openwrt', 'true', 'false', d)}" = "true" ]; then
+PACKAGECONFIG[includeopenwrt] = ""
+PACKAGECONFIG[preferopenwrt] = ""
+PACKAGECONFIG[preferoe] = ""
+
+BASEFILESISSUEINSTALL ?= "${@bb.utils.contains('PACKAGECONFIG', 'preferopenwrt', '', 'do_install_basefilesissue', d)}"
+
+do_install_append () {
+    if [ "${@bb.utils.contains('PACKAGECONFIG', 'includeopenwrt', 'true', 'false', d)}" = "true" ]; then
         # We need to munge openwrt base-files before copying
         # Some file come from regular OE base-files and others
         # belong in other recipes, or are not applicable
@@ -69,8 +75,13 @@ do_install_append () {
         rm -f ${STMP}/etc/rpc
         rm -f ${STMP}/etc/services
         rm -f ${STMP}/etc/protocols
-        rm -f ${STMP}/etc/banner
-        ln -sf /etc/issue ${STMP}/etc/banner
+        if [ "${@bb.utils.contains('PACKAGECONFIG', 'preferopenwrt', 'true', 'false', d)}" != "true" ]; then
+           rm -f ${STMP}/etc/banner
+           ln -sf /etc/issue ${STMP}/etc/banner
+        else
+           rm -f ${D}/etc/issue
+           ln -sf /etc/banner ${D}/etc/issue
+        fi
 
         # For netifd package
         rm -f ${STMP}/lib/functions/network.sh
@@ -102,8 +113,10 @@ do_install_append () {
 
         # Some files in standard base-files don't apply to openwrt flavour
         # These two are about avoiding flash writes
-        rm -f ${D}${sysconfdir}/fstab
-        rm -f ${D}${sysconfdir}/mtab
+        if [ "${@bb.utils.contains('PACKAGECONFIG', 'preferopenwrt', 'true', 'false', d)}" = "true" ]; then
+          rm -f ${D}${sysconfdir}/fstab
+          rm -f ${D}${sysconfdir}/mtab
+        fi
 
         # Copy what is applicable to rootfs
         cp -dR --preserve=mode,links ${STMP}/* ${D}
@@ -116,14 +129,17 @@ do_install_append () {
         mkdir -p ${D}/overlay
 
         # Avoid flash writes
-        ln -sf /tmp/resolv.conf /tmp/fstab /tmp/TZ ${D}/etc/
-        ln -sf /proc/mounts ${D}/etc/mtab
+        ln -sf /tmp/resolv.conf /tmp/TZ ${D}${sysconfdir}/
+        if [ "${@bb.utils.contains('PACKAGECONFIG', 'preferoe', 'true', 'false', d)}" != "true" ]; then
+            ln -sf /tmp/fstab ${D}${sysconfdir}/fstab
+            ln -sf /proc/mounts ${D}${sysconfdir}/mtab
+        fi
 
-        chmod 0600 ${D}/etc/shadow
+        chmod 0600 ${D}${sysconfdir}/shadow
         chmod 1777 ${D}/tmp
 
-        sed -i "s#%PATH%#/usr/sbin:/usr/bin:/sbin:/bin#g" \
-              ${D}/etc/profile
+        sed -i "s#%PATH%#/usr/sbin:/sbin:/usr/bin:/bin#g" \
+              ${D}${sysconfdir}/profile
 
     fi
 }
@@ -131,17 +147,18 @@ do_install_append () {
 FILES_${PN} = "/"
 
 RDEPENDS_${PN} += "\
-                  ${@bb.utils.contains('PACKAGECONFIG', 'openwrt', '${PN}-scripts-openwrt', '', d)} \
+                  ${@bb.utils.contains('PACKAGECONFIG', 'includeopenwrt', '${PN}-scripts-openwrt', '', d)} \
                   "
 
 RSUGGESTS_${PN} += "\
-                   ${@bb.utils.contains('PACKAGECONFIG', 'openwrt', '${PN}-scripts-sysupgrade procd ubox', '', d)} \
+                   ${@bb.utils.contains('PACKAGECONFIG', 'preferopenwrt', '${PN}-scripts-sysupgrade', '', d)} \
+                   ${@bb.utils.contains('PACKAGECONFIG', 'preferoe', '', 'procd ubox', d)} \
                    "
 
 CONFFILES_${PN} += "\
                    ${sysconfdir}/fstab \
                    ${@['', '${sysconfdir}/hostname'][(d.getVar('hostname', True) != '')]} \
                    ${sysconfdir}/shells \
-"
+                   "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
