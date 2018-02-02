@@ -11,7 +11,8 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=94d55d512a9ba36caa9b7df079bae19f"
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-scripts:"
 
 SRC_URI += "git://github.com/openwrt/openwrt.git;protocol=git;branch=lede-17.01 \
-	"
+           "
+
 SRCREV = "${OPENWRT_SRCREV}"
 
 S = "${WORKDIR}/git"
@@ -21,14 +22,14 @@ do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
 PACKAGES = "\
-	${PN}-openwrt \
-	${PN}-sysupgrade \
-	"
+           ${PN}-openwrt \
+           ${PN}-sysupgrade \
+           "
 
 do_install_append () {
     mkdir -p ${D}${sysconfdir}/config
 
-    install -Dm 0644 ${SC}/lib/functions.sh ${D}/lib/functions.sh 
+    install -Dm 0644 ${SC}/lib/functions.sh ${D}/lib/functions.sh
     install -Dm 0644 ${SC}/lib/functions/uci-defaults.sh ${D}/lib/functions/uci-defaults.sh
     install -Dm 0644 ${SC}/lib/functions/system.sh ${D}/lib/functions/system.sh
     install -Dm 0755 ${SC}/bin/ipcalc.sh ${D}/bin/ipcalc.sh
@@ -41,26 +42,26 @@ do_install_append () {
 }
 
 FILES_${PN}-openwrt = "\
-	/lib/functions.sh \
-	/lib/functions/uci-defaults.sh \
-	/lib/functions/system.sh \
-	/bin/ipcalc.sh \
-        ${sysconfdir}/config \
-	"
+                      /lib/functions.sh \
+                      /lib/functions/uci-defaults.sh \
+                      /lib/functions/system.sh \
+                      /bin/ipcalc.sh \
+                      ${sysconfdir}/config \
+                      "
 
 FILES_${PN}-sysupgrade = "\
-	/etc/sysupgrade.conf \
-	/sbin/sysupgrade \
-	/lib/upgrade/* \
-	/sbin/firstboot \
-	"
+                         /etc/sysupgrade.conf \
+                         /sbin/sysupgrade \
+                         /lib/upgrade/* \
+                         /sbin/firstboot \
+                         "
 
 CONFFILES_${PN}-openwrt += "\
-    ${sysconfdir}/config \
-"
+                           ${sysconfdir}/config \
+                           "
 
 CONFFILES_${PN}-sysupgrade += "\
-    ${sysconfdir]/sysupgrade.conf \
-"
+                              ${sysconfdir]/sysupgrade.conf \
+                              "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
