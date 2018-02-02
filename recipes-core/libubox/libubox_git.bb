@@ -1,14 +1,36 @@
 # Copyright (C) 2015 Khem Raj <raj.khem@gmail.com>
+# Copyright (C) 2018 Daniel Dickinson <cshored@thecshore.com>
 # Released under the MIT license (see COPYING.MIT for the terms)
 
 DESCRIPTION = "C utility functions for OpenWrt"
 HOMEPAGE = "http://git.openwrt.org/?p=project/libubox.git;a=summary"
-LICENSE = "BSD"
-LIC_FILES_CHKSUM = "file://uloop.c;beginline=1;endline=17;md5=f151c0422668fa4c8f91d2caf5267b3e"
 SECTION = "base"
 DEPENDS += "json-c lua5.1"
 
 SRC_URI = "git://git.openwrt.org/project/libubox.git;branch=lede-17.01 \
+PACKAGECONFIG ??= "lua examples"
+
+PACKAGECONFIG[lua] = ""
+PACKAGECONFIG[examples] = ""
+
+LICENSE = "BSD-1-Clause&BSD-3-Clause"
+LICENSE += "${@bb.utils.contains('PACKAGECONFIG', 'examples', '&GPL-2.0', '', d)}"
+LICENSE_${PN} = "BSD-1-Clause&BSD-3-Clause"
+LICENSE_${PN}-lua = "BSD-1-Clause&BSD-3-Clause"
+LICENSE_${PN}-examples = "GPL-2.0&BSD-1-Clause&BSD-3-Clause"
+
+LIC_FILES_CHKSUM = "\
+                   file://avl.c;endline=39;md5=00810155fed3d604816ec5814523d60a \
+                   file://avl-cmp.c;endline=15;md5=1603e6094b432a5f3f320877a06f41b5 \
+                   file://base64.c;endline=61;md5=51fdff010d45b0086ac0a6e035693dc0 \
+                   file://blobmsg.c;endline=15;md5=7ed64c1570e8c9b46c4fc6fbd16c489e \
+                   file://list.h;endline=28;md5=2d5f5475fbd0f08741354c5a99c2e983 \
+                   file://md5.h;endline=39;md5=048bf9f68963c207a0c2b3a94c9d2aaa \
+                   file://md5.c;endline=51;md5=0a448eea0bcbc89e3c7e6608f2d119a0 \
+                   file://usock.h;endline=18;md5=f0dfdc8de858e66d66d74036611bba14 \
+                   file://uloop.c;beginline=1;endline=17;md5=f151c0422668fa4c8f91d2caf5267b3e \
+                   "
+
           "
 SRCREV = "1dafcd7813f147811a6bbdb00eec603fe732aac1"
 
@@ -16,19 +38,26 @@ S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig openwrt
 
-EXTRA_OECMAKE += "-DBUILD_EXAMPLES=ON -DBUILD_LUA=ON -DCMAKE_SKIP_RPATH=ON"
+EXTRA_OECMAKE += "\
+                -DBUILD_EXAMPLES=${@bb.utils.contains('PACKAGECONFIG', 'examples', 'ON', 'OFF', d)} \
+                -DCMAKE_SKIP_RPATH=ON \
+                "
+
 OECMAKE_C_FLAGS += "-I${STAGING_INCDIR}/lua5.1"
 
 do_install_append() {
-	install -d ${D}${bindir} ${D}${includedir}/libubox
-	install -m 0755 ${B}/examples/*-example ${D}${bindir}
-	install -m 0755 ${S}/examples/uloop-example.lua ${D}${bindir}
-	install -m 0755 ${S}/examples/uloop_pid_test.sh ${D}${bindir}
+    install -d ${D}${bindir} ${D}${includedir}/libubox
+    if [ "${@bb.utils.contains('PACKAGECONFIG', 'examples', 'ON', 'OFF', d)}" = "ON" ]; then
+        install -m 0755 ${B}/examples/*-example ${D}${bindir}
+        install -m 0755 ${S}/examples/uloop_pid_test.sh ${D}${bindir}
+    fi
 	install -m 0644 ${S}/*.h ${D}${includedir}/libubox
 	install -m 0755 ${B}/lua/uloop.so ${D}/usr/lib/lua/5.1/uloop.so
 }
 
 PACKAGES =+ "${PN}-examples"
+
+FILES_${PN} += "${datadir}/*"
 
 FILES_${PN} += "${libdir}/* ${datadir}/*"
 
