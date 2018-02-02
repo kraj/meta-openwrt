@@ -38,7 +38,9 @@ SRC_URI = "\
           file://0001-version-libraries.patch \
           file://fix-libdir.patch \
           "
-SRCREV = "1dafcd7813f147811a6bbdb00eec603fe732aac1"
+
+SRCREV = "96305a3cafcc9c0df7f189567671bb26ce3eb129"
+PV = "2.0.0+git${SRCPV}"
 
 S = "${WORKDIR}/git"
 
