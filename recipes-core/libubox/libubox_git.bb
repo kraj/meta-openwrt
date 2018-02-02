@@ -4,7 +4,6 @@
 
 DESCRIPTION = "C utility functions for OpenWrt"
 HOMEPAGE = "http://git.openwrt.org/?p=project/libubox.git;a=summary"
-SECTION = "base"
 DEPENDS += "json-c lua5.1"
 
 SRC_URI = "git://git.openwrt.org/project/libubox.git;branch=lede-17.01 \
@@ -30,6 +29,8 @@ LIC_FILES_CHKSUM = "\
                    file://usock.h;endline=18;md5=f0dfdc8de858e66d66d74036611bba14 \
                    file://uloop.c;beginline=1;endline=17;md5=f151c0422668fa4c8f91d2caf5267b3e \
                    "
+
+SECTION = "libs"
 
           "
 SRCREV = "1dafcd7813f147811a6bbdb00eec603fe732aac1"
