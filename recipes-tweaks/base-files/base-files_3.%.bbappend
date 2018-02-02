@@ -20,7 +20,7 @@ S = "${WORKDIR}"
 SG = "${WORKDIR}/git/openwrt"
 STMP = "${WORKDIR}/stmp"
 
-inherit openwrt openwrt-base-files
+inherit openwrt-virtual-runtimes openwrt-base-files
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
