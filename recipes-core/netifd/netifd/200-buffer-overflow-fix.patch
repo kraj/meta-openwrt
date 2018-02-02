@@ -1,42 +1,67 @@
-From 5f9307400f7d2fd08e5ad9954a6dd67d7ad116e7 Mon Sep 17 00:00:00 2001
+From 4892c6e350718c0dd1edd66a66bf15d19f7c1429 Mon Sep 17 00:00:00 2001
 From: "Daniel F. Dickinson" <cshored@thecshore.com>
 Date: Tue, 30 Jan 2018 12:45:17 -0500
 Subject: [PATCH] vlan: Buffer overlow in snprintf for vlans
 
-Buffer overlflow condition can occur because vlan
+Buffer overflow condition can occur because vlan
 device name is constructed from device name (size IFNAMSIZ)
 plus the ASCII decimal representation of the vlan id plus
-a dot, but the target can only be IFNAMSIZ.  We fix this
-by using fields widths (and make sure we don't truncate
-more of the orogin device name than we must).
+a dot, but the target can only be IFNAMSIZ.
+
+Note that the generic device name code must also be updated
+or vlan id's may be truncated for device like vlan on
+top of bridges.
+
+Credit to "Andrey Melnikov" <temnota.am@gmail.com> for
+a better solution than the original patch I sent for the
+vlan.c part.
 
 Signed-off-by: Daniel F. Dickinson <cshored@thecshore.com>
 ---
- vlan.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ device.c | 11 ++++++++++-
+ vlan.c   |  3 ++-
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
+diff --git a/device.c b/device.c
+index a851037..9f8ffa2 100644
+--- a/device.c
++++ b/device.c
+@@ -660,6 +660,7 @@ void device_set_ifindex(struct device *dev, int ifindex)
+ int device_set_ifname(struct device *dev, const char *name)
+ {
+ 	int ret = 0;
++	char *vlandot = 0;
+ 
+ 	if (!strcmp(dev->ifname, name))
+ 		return 0;
+@@ -667,7 +668,15 @@ int device_set_ifname(struct device *dev, const char *name)
+ 	if (dev->avl.key)
+ 		avl_delete(&devices, &dev->avl);
+ 
+-	strncpy(dev->ifname, name, IFNAMSIZ);
++	if ((vlandot = strchr(name, '.'))) {
++	  /* Copy the part of name that will leave space for a vlan id
++           * the dot, and terminating null. NB. max vlan id is 4095
++           */
++	  strncpy(dev->ifname, name, IFNAMSIZ - strnlen(vlandot, 5) - 1);
++	  strncat(dev->ifname, vlandot, 5);
++	} else {
++	  strncpy(dev->ifname, name, IFNAMSIZ);
++	}
+ 
+ 	if (dev->avl.key)
+ 		ret = avl_insert(&devices, &dev->avl);
 diff --git a/vlan.c b/vlan.c
-index 067f624..49c3970 100644
+index 067f624..8bacc8f 100644
 --- a/vlan.c
 +++ b/vlan.c
-@@ -64,9 +64,19 @@ static int vlan_set_device_state(struct device *dev, bool up)
- static void vlan_dev_set_name(struct vlan_device *vldev, struct device *dev)
- {
+@@ -66,7 +66,8 @@ static void vlan_dev_set_name(struct vlan_device *vldev, struct device *dev)
  	char name[IFNAMSIZ];
-+	char devnum[5];
-+	int i, j = 0;
  
  	vldev->dev.hidden = dev->hidden;
 -	snprintf(name, IFNAMSIZ, "%s.%d", dev->ifname, vldev->id);
-+	snprintf(devnum, 5, "%d", vldev->id);
-+	i = strnlen(devnum, 4);
-+	/* Subtract the dot and terminating null and index-0 math */
-+	j = IFNAMSIZ - i - 3;
-+	/* Brute force the null and length */
-+	name[0] = 0;
-+	strncat(name, dev->ifname, j);
-+	strncat(name, ".", 1);
-+	strncat(name, devnum, i);
++	/* Truncate dev->ifname so that adding dot + VLAN id + '\0' doesn't exceed IFNAMSIZ */
++	snprintf(name, sizeof(name), "%.*s.%d", IFNAMSIZ - 6, dev->ifname, vldev->id & 0xfff);
  	device_set_ifname(&vldev->dev, name);
  }
  
