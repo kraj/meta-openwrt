@@ -4,7 +4,6 @@
 
 DESCRIPTION = "C utility functions for OpenWrt"
 HOMEPAGE = "http://git.openwrt.org/?p=project/libubox.git;a=summary"
-DEPENDS += "json-c lua5.1"
 
 PACKAGECONFIG ??= "lua examples"
 
@@ -31,6 +30,9 @@ LIC_FILES_CHKSUM = "\
 
 SECTION = "libs"
 
+DEPENDS += "json-c"
+DEPENDS += "${@bb.utils.contains('PACKAGECONFIG', 'lua', 'lua5.1', '', d)}"
+
 SRC_URI = "\
           git://git.openwrt.org/project/libubox.git;branch=lede-17.01 \
           file://0001-version-libraries.patch \
@@ -40,31 +42,39 @@ SRCREV = "1dafcd7813f147811a6bbdb00eec603fe732aac1"
 
 S = "${WORKDIR}/git"
 
-inherit cmake pkgconfig openwrt
+inherit cmake pkgconfig openwrt-lua
 
 EXTRA_OECMAKE += "\
+                -DBUILD_LUA=${@bb.utils.contains('PACKAGECONFIG', 'lua', 'ON', 'OFF', d)} \
                 -DBUILD_EXAMPLES=${@bb.utils.contains('PACKAGECONFIG', 'examples', 'ON', 'OFF', d)} \
                 -DCMAKE_SKIP_RPATH=ON \
                 "
 
-OECMAKE_C_FLAGS += "-I${STAGING_INCDIR}/lua5.1"
+OECMAKE_C_FLAGS += "${@bb.utils.contains('PACKAGECONFIG', 'lua', '-I${STAGING_INCDIR}/lua5.1', '', d)}"
 
 do_install_append() {
     install -d ${D}${bindir} ${D}${includedir}/libubox
     if [ "${@bb.utils.contains('PACKAGECONFIG', 'examples', 'ON', 'OFF', d)}" = "ON" ]; then
         install -m 0755 ${B}/examples/*-example ${D}${bindir}
         install -m 0755 ${S}/examples/uloop_pid_test.sh ${D}${bindir}
+        if [ "${@bb.utils.contains('PACKAGECONFIG', 'lua', 'ON', 'OFF', d)}" = "ON" ]; then
+            install -m 0755 ${S}/examples/uloop-example.lua ${D}${bindir}
+        fi
+        install -m 0755 ${S}/examples/uloop_pid_test.sh ${D}${bindir}
     fi
-	install -m 0644 ${S}/*.h ${D}${includedir}/libubox
-	install -m 0755 ${B}/lua/uloop.so ${D}/usr/lib/lua/5.1/uloop.so
+    install -m 0644 ${S}/*.h ${D}${includedir}/libubox
+    if [ "${@bb.utils.contains('PACKAGECONFIG', 'lua', 'ON', 'OFF', d)}" = "ON" ]; then
+        install -m 0755 ${B}/lua/uloop.so ${D}/usr/lib/lua/5.1/uloop.so
+    fi
 }
 
-PACKAGES =+ "${PN}-examples"
+PACKAGES =+ "\
+            ${@bb.utils.contains('PACKAGECONFIG', 'examples', '${PN}-examples', '', d)} \
+            ${@bb.utils.contains('PACKAGECONFIG', 'lua', '${PN}-lua', '', d)} \
+            "
 
 FILES_${PN} += "${datadir}/*"
-
-FILES_${PN} += "${libdir}/* ${datadir}/*"
-
+FILES_${PN}-lua += "${libdir}/lua/5.1/*"
 FILES_${PN}-examples += "${bindir}/*-example \
                         ${bindir}/uloop-example.lua \
                         ${bindir}/uloop_pid_test.sh \
