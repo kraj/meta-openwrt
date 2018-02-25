@@ -29,7 +29,7 @@ PACKAGECONFIG ??= "includeopenwrt"
 
 PACKAGECONFIG[includeopenwrt] = ""
 PACKAGECONFIG[preferopenwrt] = ""
-PACKAGECONFIG[preferoe] = ""
+PACKAGECONFIG[oeoveropenwrt] = ""
 
 BASEFILESISSUEINSTALL ?= "${@bb.utils.contains('PACKAGECONFIG', 'preferopenwrt', '', 'do_install_basefilesissue', d)}"
 
@@ -130,7 +130,7 @@ do_install_append () {
 
         # Avoid flash writes
         ln -sf /tmp/resolv.conf /tmp/TZ ${D}${sysconfdir}/
-        if [ "${@bb.utils.contains('PACKAGECONFIG', 'preferoe', 'true', 'false', d)}" != "true" ]; then
+        if [ "${@bb.utils.contains('PACKAGECONFIG', 'oeoveropenwrt', 'true', 'false', d)}" != "true" ]; then
             ln -sf /tmp/fstab ${D}${sysconfdir}/fstab
             ln -sf /proc/mounts ${D}${sysconfdir}/mtab
         fi
@@ -152,7 +152,7 @@ RDEPENDS_${PN} += "\
 
 RSUGGESTS_${PN} += "\
                    ${@bb.utils.contains('PACKAGECONFIG', 'preferopenwrt', '${PN}-scripts-sysupgrade', '', d)} \
-                   ${@bb.utils.contains('PACKAGECONFIG', 'preferoe', '', 'procd ubox', d)} \
+                   ${@bb.utils.contains('PACKAGECONFIG', 'oeoveropenwrt', '', 'procd ubox', d)} \
                    "
 
 CONFFILES_${PN} += "\
