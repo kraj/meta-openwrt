@@ -25,6 +25,10 @@ addtask make_scripts after do_patch before do_compile
 do_make_scripts[lockfiles] = "${TMPDIR}/kernel-scripts.lock"
 do_make_scripts[deptask] = "do_populate_sysroot"
 
+do_make_scripts() {
+	:
+}
+
 FILES_${PN} += "${base_libdir}/modules ${libdir}/iptables"
 
 RDEPENDS_${PN} += "perl"
