@@ -16,14 +16,18 @@ SRC_URI = " \
           file://400-fix-IFF_LOWER_UP-musl.patch \
           "
 
-SRC_URI[md5sum] = "aed5ce0873709ac243f1177fc81ff452"
-SRC_URI[sha256sum] = "c4865aa1c64c5ff173ff7b5d69425466c71f0f9b5eb5299c52c68bdcd46fa63b"
+SRC_URI[md5sum] = "b37ed4d9c28cdcd5558c55934be8d051"
+SRC_URI[sha256sum] = "95580b851c79c0bbc484e0d0ea23f53e5c7f439ad73d509e426598565392690d"
 
 EXTRA_OECONF = "--with-kbuild=${STAGING_KERNEL_DIR} --with-xtlibdir=${libdir}/iptables"
 
 addtask make_scripts after do_patch before do_compile
 do_make_scripts[lockfiles] = "${TMPDIR}/kernel-scripts.lock"
 do_make_scripts[deptask] = "do_populate_sysroot"
+
+do_make_scripts() {
+	:
+}
 
 FILES_${PN} += "${base_libdir}/modules ${libdir}/iptables"
 
