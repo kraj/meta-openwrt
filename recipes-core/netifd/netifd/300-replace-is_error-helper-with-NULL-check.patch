@@ -1,0 +1,32 @@
+From d3a5df04bdcc039d900df49c8c608c1a91a976c7 Mon Sep 17 00:00:00 2001
+From: Alexandru Ardelean <ardeleanalex@gmail.com>
+Date: Fri, 8 Dec 2017 16:22:13 +0200
+Subject: [PATCH] handler: replace is_error() helper with NULL check
+
+The `is_error()` is just a macro that checks
+that object is NULL (which is considered an error
+in libjson-c terminology).
+
+Newer libjson-c versions have deprecated this.
+
+Signed-off-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+---
+ handler.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/handler.c b/handler.c
+index 0c4627f..a0b2a57 100644
+--- a/handler.c
++++ b/handler.c
+@@ -105,7 +105,7 @@ netifd_parse_script_handler(const char *name, script_dump_cb cb)
+ 			tok = json_tokener_new();
+ 
+ 		obj = json_tokener_parse_ex(tok, start, len);
+-		if (!is_error(obj)) {
++		if (obj) {
+ 			netifd_init_script_handler(name, obj, cb);
+ 			json_object_put(obj);
+ 			json_tokener_free(tok);
+-- 
+2.14.1
+

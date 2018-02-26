@@ -14,6 +14,7 @@ SRC_URI = "\
           file://100-Fix-IFF_LOWER_UP-define.patch \
           file://network.config \
           file://200-buffer-overflow-fix.patch \
+          file://300-replace-is_error-helper-with-NULL-check.patch \
           "
 
 SRCREV_netifd = "650758b16e5185505a3fbc1307949340af70b611"
