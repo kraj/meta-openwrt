@@ -27,7 +27,13 @@ SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 OECMAKE_C_FLAGS += "-I${STAGING_INCDIR}/libnl3 -Wno-error=cpp"
 
+do_configure_prepend () {
+    # replace hardcoded '/lib/' with '${base_libdir}/'
+    grep -rnl "/lib/" ${S}/openwrt/package/network/config/netifd/ | xargs sed -i "s:/lib/:${base_libdir}/:g"
+}
+
 do_install_append() {
+    install -d ${D}${base_libdir}/netifd/
     # cp because recursive
     cp -dR --preserve=mode,links ${S}/openwrt/package/network/config/netifd/files/* ${D}/
     cp -dR --preserve=mode,links ${S}/scripts/* ${D}${base_libdir}/netifd/
@@ -50,23 +56,29 @@ do_install_append() {
     install -dm 0755 ${D}/etc/modules.d ${D}/etc/modules-load.d
     echo "bridge" >${D}/etc/modules.d/30-bridge
     echo "bridge" >${D}/etc/modules-load.d/bridge.conf
+
+    # Remove duplicate files under /lib/
+    rm -rf ${D}/lib/
+
 }
 
-ALTERNATIVE_${PN} = "ifup ifdown"
+ALTERNATIVE_${PN} = "ifup ifdown default.script"
 
 ALTERNATIVE_PRIORITY = "40"
+ALTERNATIVE_PRIORITY_pkg[default.script] = "60"
 ALTERNATIVE_LINK_NAME[ifup] = "${base_sbindir}/ifup"
 ALTERNATIVE_LINK_NAME[ifdown] = "${base_sbindir}/ifdown"
+ALTERNATIVE_LINK_NAME[default.script] = "/usr/share/udhcpc/default.script"
 
 FILES_${PN} += "\
-               /usr/share/udhcpc/default.script \
-               /lib/netifd/dhcp.script \
-               /lib/netifd/utils.sh \
-               /lib/netifd/netifd-wireless.sh \
-               /lib/netifd/netifd-proto.sh \
-               /lib/netifd/proto/dhcp.sh \
-               /lib/network/config.sh \
-               /lib/functions/network.sh \
+               /usr/share/udhcpc/default.script* \
+               ${base_libdir}/netifd/dhcp.script \
+               ${base_libdir}/netifd/utils.sh \
+               ${base_libdir}/netifd/netifd-wireless.sh \
+               ${base_libdir}/netifd/netifd-proto.sh \
+               ${base_libdir}/netifd/proto/dhcp.sh \
+               ${base_libdir}/network/config.sh \
+               ${base_libdir}/functions/network.sh \
                ${@bb.utils.contains('IMAGE_INSTALL', 'base-files ', '', '${sysconfdir}/config/network', d)} \
                ${@bb.utils.contains('COMBINED_FEATURES', 'wifi', '/sbin/wifi', '', d)} \
                "
