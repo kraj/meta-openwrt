@@ -66,7 +66,7 @@ do_install_append() {
     fi
     install -m 0644 ${S}/*.h ${D}${includedir}/libubox
     if [ "${@bb.utils.contains('PACKAGECONFIG', 'lua', 'ON', 'OFF', d)}" = "ON" ]; then
-        install -m 0755 ${B}/lua/uloop.so ${D}/usr/lib/lua/5.1/uloop.so
+        install -m 0755 ${B}/lua/uloop.so ${D}${libdir}/lua/5.1/uloop.so
     fi
 }
 
