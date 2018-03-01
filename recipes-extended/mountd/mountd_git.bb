@@ -22,6 +22,10 @@ SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 S = "${WORKDIR}/git"
 
+do_configure_prepend () {
+    sed -i "s:-Werror --std=gnu99:-Werror -Wno-format-truncation -Wno-format-overflow --std=gnu99:g" ${S}/CMakeLists.txt
+}
+
 do_install_append() {
     install -Dm 0755 ${S}/openwrt/package/system/mountd/files/mountd.config ${D}${sysconfdir}/config/mountd
     install -Dm 0755 ${S}/openwrt/package/system/mountd/files/mountd.init ${D}${sysconfdir}/init.d/mountd
