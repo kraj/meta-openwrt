@@ -21,9 +21,8 @@ do_install_append() {
 	install -d ${D}${includedir}/libubox
 	install -m 0644 ${S}/*.h ${D}${includedir}/libubox
 
-	install -dm 0755 ${D}/lib
-	mv ${D}/usr/lib/libustream-ssl.so ${D}/lib/libustream-ssl.so
-	rmdir ${D}/usr/lib
+	install -dm 0755 ${D}${base_libdir}
+	mv ${D}${libdir}/libustream-ssl.so ${D}${base_libdir}/libustream-ssl.so
 }
 
 FILES_${PN}  += "${base_libdir}/*"
