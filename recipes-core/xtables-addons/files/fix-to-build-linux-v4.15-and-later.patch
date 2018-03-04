@@ -1,0 +1,25 @@
+Use linux/uaccess.h instead of asm/uaccess.h to solve below error:
+-- snip --
+| In file included from .../xtables-addons-2.14/extensions/LUA/xt_LUA_target.c:22:0:
+| .../kernel-source/arch/x86/include/asm/uaccess.h: In function 'set_fs':
+| .../kernel-source/arch/x86/include/asm/uaccess.h:32:9: error: dereferencing pointer to incomplete type 'struct task_struct'
+|   current->thread.addr_limit = fs;
+|          ^~
+-- snip --
+
+Ref: https://lkml.org/lkml/2017/9/30/189
+
+Upstream-Status: Pending
+
+Signed-off-by: Jagadeesh Krishnanjanappa <jkrishnanjanappa@mvista.com>
+--- xtables-addons-2.14/extensions/LUA/xt_LUA_target.c_org	2018-02-23 00:07:29.868045854 +0530
++++ xtables-addons-2.14/extensions/LUA/xt_LUA_target.c	2018-02-23 00:06:44.736093557 +0530
+@@ -19,7 +19,7 @@
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
+ #include <linux/module.h>
+-#include <asm/uaccess.h>
++#include <linux/uaccess.h>
+ #include <net/ip.h>
+ #include <linux/netfilter/x_tables.h>
+ #include "xt_LUA.h"

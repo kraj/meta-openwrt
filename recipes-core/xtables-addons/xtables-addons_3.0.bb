@@ -7,13 +7,14 @@ DEPENDS = "virtual/kernel iptables"
 inherit autotools module-base pkgconfig
 
 SRC_URI = " \
-          ${SOURCEFORGE_MIRROR}/project/${PN}/Xtables-addons/${PN}-${PV}.tar.xz \
+          https://fossies.org/linux/privat/${BPN}-${PV}.tar.xz \
           file://100-add-rtsp-conntrack.patch \
           file://200-add-lua-packetscript.patch \
           file://201-fix-lua-packetscript.patch \
           file://202-add-lua-autoconf.patch \
           file://300-geoip-endian-detection.patch \
           file://400-fix-IFF_LOWER_UP-musl.patch \
+	  file://fix-to-build-linux-v4.15-and-later.patch \
           "
 
 SRC_URI[md5sum] = "b37ed4d9c28cdcd5558c55934be8d051"
