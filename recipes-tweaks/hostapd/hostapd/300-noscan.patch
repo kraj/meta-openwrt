@@ -1,7 +1,7 @@
-diff -ruN hostapd-2.5.orig/hostapd/config_file.c hostapd-2.5/hostapd/config_file.c
---- hostapd-2.5.orig/hostapd/config_file.c	2017-02-15 16:20:07.102232803 -0700
-+++ hostapd-2.5/hostapd/config_file.c	2017-02-15 16:20:35.132232593 -0700
-@@ -2795,6 +2795,10 @@
+diff -ruN hostapd-2.6/hostapd/config_file.c hostapd-2.6.orig/hostapd/config_file.c
+--- hostapd-2.6/hostapd/config_file.c	2016-10-02 20:51:11.000000000 +0200
++++ hostapd-2.6.orig/hostapd/config_file.c	2018-03-17 23:05:11.032723997 +0100
+@@ -2863,6 +2863,10 @@
  		}
  #endif /* CONFIG_IEEE80211W */
  #ifdef CONFIG_IEEE80211N
@@ -12,10 +12,10 @@ diff -ruN hostapd-2.5.orig/hostapd/config_file.c hostapd-2.5/hostapd/config_file
  	} else if (os_strcmp(buf, "ieee80211n") == 0) {
  		conf->ieee80211n = atoi(pos);
  	} else if (os_strcmp(buf, "ht_capab") == 0) {
-diff -ruN hostapd-2.5.orig/src/ap/ap_config.h hostapd-2.5/src/ap/ap_config.h
---- hostapd-2.5.orig/src/ap/ap_config.h	2017-02-15 16:20:07.105566137 -0700
-+++ hostapd-2.5/src/ap/ap_config.h	2017-02-15 16:20:35.135565927 -0700
-@@ -626,6 +626,8 @@
+diff -ruN hostapd-2.6/src/ap/ap_config.h hostapd-2.6.orig/src/ap/ap_config.h
+--- hostapd-2.6/src/ap/ap_config.h	2016-10-02 20:51:11.000000000 +0200
++++ hostapd-2.6.orig/src/ap/ap_config.h	2018-03-17 23:04:30.697722861 +0100
+@@ -664,6 +664,8 @@
  
  	int ht_op_mode_fixed;
  	u16 ht_capab;
@@ -24,22 +24,22 @@ diff -ruN hostapd-2.5.orig/src/ap/ap_config.h hostapd-2.5/src/ap/ap_config.h
  	int ieee80211n;
  	int secondary_channel;
  	int no_pri_sec_switch;
-diff -ruN hostapd-2.5.orig/src/ap/hw_features.c hostapd-2.5/src/ap/hw_features.c
---- hostapd-2.5.orig/src/ap/hw_features.c	2017-02-15 16:20:07.105566137 -0700
-+++ hostapd-2.5/src/ap/hw_features.c	2017-02-15 16:22:03.158898602 -0700
-@@ -472,7 +472,7 @@
- 	struct wpa_driver_scan_params params;
- 	int ret;
+diff -ruN hostapd-2.6/src/ap/hw_features.c hostapd-2.6.orig/src/ap/hw_features.c
+--- hostapd-2.6/src/ap/hw_features.c	2016-10-02 20:51:11.000000000 +0200
++++ hostapd-2.6.orig/src/ap/hw_features.c	2018-03-17 23:05:54.273725214 +0100
+@@ -226,7 +226,7 @@
+ {
+ 	int pri_chan, sec_chan;
  
 -	if (!iface->conf->secondary_channel)
 +	if (!iface->conf->secondary_channel || iface->conf->noscan)
- 		return 0; /* HT40 not used */
+ 		return 1; /* HT40 not used */
  
- 	hostapd_set_state(iface, HAPD_IFACE_HT_SCAN);
-diff -ruN hostapd-2.5.orig/src/ap/ieee802_11_ht.c hostapd-2.5/src/ap/ieee802_11_ht.c
---- hostapd-2.5.orig/src/ap/ieee802_11_ht.c	2017-02-15 16:20:07.105566137 -0700
-+++ hostapd-2.5/src/ap/ieee802_11_ht.c	2017-02-15 16:20:35.135565927 -0700
-@@ -221,6 +221,9 @@
+ 	pri_chan = iface->conf->channel;
+diff -ruN hostapd-2.6/src/ap/ieee802_11_ht.c hostapd-2.6.orig/src/ap/ieee802_11_ht.c
+--- hostapd-2.6/src/ap/ieee802_11_ht.c	2016-10-02 20:51:11.000000000 +0200
++++ hostapd-2.6.orig/src/ap/ieee802_11_ht.c	2018-03-17 23:08:20.303729325 +0100
+@@ -244,6 +244,9 @@
  	if (!(iface->conf->ht_capab & HT_CAP_INFO_SUPP_CHANNEL_WIDTH_SET))
  		return;
  
@@ -49,7 +49,7 @@ diff -ruN hostapd-2.5.orig/src/ap/ieee802_11_ht.c hostapd-2.5/src/ap/ieee802_11_
  	if (len < IEEE80211_HDRLEN + 2 + sizeof(*bc_ie))
  		return;
  
-@@ -345,6 +348,9 @@
+@@ -368,6 +371,9 @@
  	if (iface->current_mode->mode != HOSTAPD_MODE_IEEE80211G)
  		return;
  
