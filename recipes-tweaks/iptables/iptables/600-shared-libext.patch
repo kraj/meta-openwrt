@@ -1,8 +1,7 @@
-Index: iptables-1.6.1/extensions/GNUmakefile.in
-===================================================================
---- iptables-1.6.1.orig/extensions/GNUmakefile.in
-+++ iptables-1.6.1/extensions/GNUmakefile.in
-@@ -50,11 +50,33 @@ pfb_build_mod := $(filter-out @blacklist
+diff -ruN iptables-1.6.2.orig/extensions/GNUmakefile.in iptables-1.6.2/extensions/GNUmakefile.in
+--- iptables-1.6.2.orig/extensions/GNUmakefile.in	2018-02-02 16:37:25.000000000 +0100
++++ iptables-1.6.2/extensions/GNUmakefile.in	2018-03-17 21:39:46.006579720 +0100
+@@ -50,11 +50,33 @@
  pfa_build_mod := $(filter-out @blacklist_modules@ @blacklist_a_modules@,${pfa_build_mod})
  pf4_build_mod := $(filter-out @blacklist_modules@ @blacklist_4_modules@,${pf4_build_mod})
  pf6_build_mod := $(filter-out @blacklist_modules@ @blacklist_6_modules@,${pf6_build_mod})
@@ -41,7 +40,7 @@ Index: iptables-1.6.1/extensions/GNUmakefile.in
  pfx_solibs    := $(patsubst %,libxt_%.so,${pfx_build_mod} ${pfx_symlinks})
  pfb_solibs    := $(patsubst %,libebt_%.so,${pfb_build_mod})
  pfa_solibs    := $(patsubst %,libarpt_%.so,${pfa_build_mod})
-@@ -65,15 +87,15 @@ pf6_solibs    := $(patsubst %,libip6t_%.
+@@ -65,15 +87,15 @@
  #
  # Building blocks
  #
@@ -65,7 +64,7 @@ Index: iptables-1.6.1/extensions/GNUmakefile.in
  
  .SECONDARY:
  
-@@ -92,7 +114,7 @@ clean:
+@@ -92,7 +114,7 @@
  distclean: clean
  
  init%.o: init%.c
@@ -74,16 +73,16 @@ Index: iptables-1.6.1/extensions/GNUmakefile.in
  
  -include .*.d
  
-@@ -101,7 +123,7 @@ init%.o: init%.c
+@@ -101,7 +123,7 @@
  #	Shared libraries
  #
  lib%.so: lib%.oo
 -	${AM_VERBOSE_CCLD} ${CCLD} ${AM_LDFLAGS} ${LDFLAGS} -shared -o $@ $< -L../libxtables/.libs -lxtables ${$*_LIBADD};
-+	${AM_VERBOSE_CCLD} ${CCLD} ${AM_LDFLAGS} ${LDFLAGS} -shared -o $@ $< -L${top_builddir}/libxtables/.libs -lxtables ${$*_LIBADD};
++	${AM_VERBOSE_CCLD} ${CCLD} ${AM_LDFLAGS} -shared ${LDFLAGS} -o $@ $< -L${top_builddir}/libxtables/.libs -lxtables ${$*_LIBADD};
  
  lib%.oo: ${srcdir}/lib%.c
  	${AM_VERBOSE_CC} ${CC} ${AM_CPPFLAGS} ${AM_DEPFLAGS} ${AM_CFLAGS} -D_INIT=lib$*_init -DPIC -fPIC ${CFLAGS} -o $@ -c $<;
-@@ -124,28 +146,28 @@ xt_connlabel_LIBADD = @libnetfilter_conn
+@@ -124,28 +146,28 @@
  #	handling code in the Makefiles.
  #
  lib%.o: ${srcdir}/lib%.c
@@ -120,7 +119,7 @@ Index: iptables-1.6.1/extensions/GNUmakefile.in
 -initexta_func := $(addprefix arpt_,${pfa_build_mod})
 -initext4_func := $(addprefix ipt_,${pf4_build_mod})
 -initext6_func := $(addprefix ip6t_,${pf6_build_mod})
-+initext_func  := $(addprefix xt_,${pfx_build_static})
++nitext_func  := $(addprefix xt_,${pfx_build_static})
 +initextb_func := $(addprefix ebt_,${pfb_build_static})
 +initexta_func := $(addprefix arpt_,${pfa_build_static})
 +initext4_func := $(addprefix ipt_,${pf4_build_static})
@@ -128,11 +127,10 @@ Index: iptables-1.6.1/extensions/GNUmakefile.in
  
  .initext.dd: FORCE
  	@echo "${initext_func}" >$@.tmp; \
-Index: iptables-1.6.1/iptables/Makefile.am
-===================================================================
---- iptables-1.6.1.orig/iptables/Makefile.am
-+++ iptables-1.6.1/iptables/Makefile.am
-@@ -8,7 +8,8 @@ BUILT_SOURCES =
+diff -ruN iptables-1.6.2.orig/iptables/Makefile.am iptables-1.6.2/iptables/Makefile.am
+--- iptables-1.6.2.orig/iptables/Makefile.am	2018-02-02 16:37:25.000000000 +0100
++++ iptables-1.6.2/iptables/Makefile.am	2018-03-17 22:18:06.186644473 +0100
+@@ -8,7 +8,8 @@
  
  xtables_multi_SOURCES  = xtables-multi.c iptables-xml.c
  xtables_multi_CFLAGS   = ${AM_CFLAGS}
@@ -142,7 +140,7 @@ Index: iptables-1.6.1/iptables/Makefile.am
  if ENABLE_STATIC
  xtables_multi_CFLAGS  += -DALL_INCLUSIVE
  endif
-@@ -16,23 +17,26 @@ if ENABLE_IPV4
+@@ -16,23 +17,26 @@
  xtables_multi_SOURCES += iptables-save.c iptables-restore.c \
                           iptables-standalone.c iptables.c
  xtables_multi_CFLAGS  += -DENABLE_IPV4
@@ -173,7 +171,7 @@ Index: iptables-1.6.1/iptables/Makefile.am
  if ENABLE_STATIC
  xtables_compat_multi_CFLAGS  += -DALL_INCLUSIVE
  endif
-@@ -45,11 +49,12 @@ xtables_compat_multi_SOURCES += xtables-
+@@ -45,11 +49,12 @@
  				getethertype.c nft-bridge.c \
  				xtables-eb-standalone.c xtables-eb.c \
  				xtables-translate.c
