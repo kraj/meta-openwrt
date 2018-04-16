@@ -56,10 +56,6 @@ do_install_append() {
     install -dm 0755 ${D}/etc/modules.d ${D}/etc/modules-load.d
     echo "bridge" >${D}/etc/modules.d/30-bridge
     echo "bridge" >${D}/etc/modules-load.d/bridge.conf
-
-    # Remove duplicate files under /lib/
-    rm -rf ${D}/lib/
-
 }
 
 ALTERNATIVE_${PN} = "ifup ifdown default.script"
