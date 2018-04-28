@@ -34,10 +34,6 @@ MODULES_INSTALL_TARGET = "install"
 # kernel scripts
 do_make_scripts[depends] += "virtual/kernel:do_shared_workdir"
 
-PACKAGES =+ "${PN}-common"
-
-FILES_${PN}-common += "${libexecdir}/xtables-addons ${sbindir}/iptaccount ${libdir}/libxt_ACCOUNT_cl.so.*"
-
-FILES_${PN} += "${base_libdir}/modules ${libdir}/iptables"
+FILES_${PN} += "${libexecdir}/xtables-addons ${sbindir}/iptaccount ${libdir}/libxt_ACCOUNT_cl.so.* ${libdir}/iptables"
 
 RDEPENDS_${PN} += "perl"
