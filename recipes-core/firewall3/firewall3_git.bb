@@ -21,6 +21,7 @@ SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 EXTRA_OECMAKE = "${@bb.utils.contains('DISTRO_FEATURES', 'ipv6', '-DDISABLE_IPV6=OFF', '-DDISABLE_IPV6=ON', d)}"
 
+CFLAGS += "-Wno-error=format-overflow"
 do_install_append() {
     install -d ${D}${sysconfdir}
     install -d ${D}${sysconfdir}/config

@@ -28,6 +28,8 @@ inherit cmake openwrt openwrt-services pkgconfig openwrt-base-files
 
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
+CFLAGS += "-Wno-error=format-truncation"
+
 do_install_append() {
     # Early init
     install -Dm 0755 ${BF}/etc/preinit ${D}${sysconfdir}/preinit
@@ -36,7 +38,8 @@ do_install_append() {
     install -Dm 0644 ${BF}/rom/note ${D}/rom/note
     install -Dm 0544 ${WORKDIR}/banner.failsafe ${D}${sysconfdir}/banner.failsafe
 
-    install -Dm 0644 -t ${D}${base_libdir}/preinit ${BF}/lib/preinit/*
+    install -d ${D}${base_libdir}
+    cp --preserve=mode,timestamps -R ${BF}/lib/preinit ${D}${base_libdir}
     install -Dm 0644 ${WORKDIR}/10_sysinfo ${D}${base_libdir}/preinit/10_sysinfo
     install -Dm 0644 ${WORKDIR}/00_preinit.conf ${D}${base_libdir}/preinit/00_preinit.conf
 
@@ -62,7 +65,8 @@ do_install_append() {
 
     # Dev manager / hotplug / coldplug
     install -Dm 0644 ${PD}/hotplug.json ${D}${sysconfdir}/hotplug.json
-    install -Dm 0755 -t ${D}${sysconfdir}/rc.button ${BF}/etc/rc.button/*
+    install -d ${D}${sysconfdir}
+    cp --preserve=mode,timestamps -R ${BF}/etc/rc.button ${D}${sysconfdir}
     install -Dm 0755 ${BF}/sbin/hotplug-call ${D}${base_sbindir}/hotplug-call
     cp -dR --preserve=mode,links ${BF}/etc/hotplug.d ${D}${sysconfdir}
 

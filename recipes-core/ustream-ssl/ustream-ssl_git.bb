@@ -23,6 +23,7 @@ do_install_append() {
 
 	install -dm 0755 ${D}${base_libdir}
 	mv ${D}${libdir}/libustream-ssl.so ${D}${base_libdir}/libustream-ssl.so
+	rmdir --ignore-fail-on-non-empty ${D}${libdir}
 }
 
 FILES_${PN}  += "${base_libdir}/*"
