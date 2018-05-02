@@ -14,7 +14,8 @@ SRC_URI = " \
           file://202-add-lua-autoconf.patch \
           file://300-geoip-endian-detection.patch \
           file://400-fix-IFF_LOWER_UP-musl.patch \
-	  file://fix-to-build-linux-v4.15-and-later.patch \
+          file://fix-to-build-linux-v4.15-and-later.patch \
+          file://0001-Unset-LDFLAGS-for-kernel-modules.patch \
           "
 
 SRC_URI[md5sum] = "b37ed4d9c28cdcd5558c55934be8d051"

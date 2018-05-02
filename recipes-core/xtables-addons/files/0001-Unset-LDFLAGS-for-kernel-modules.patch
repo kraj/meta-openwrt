@@ -1,0 +1,31 @@
+From 2bd785bdb4582ccc6350d08e87deb8fc5d9c8b9d Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Wed, 2 May 2018 05:50:33 +0000
+Subject: [PATCH] Unset LDFLAGS for kernel modules
+
+In OE we specify LDFLAGS as if CC is used for LD
+where options are using -Wl, prefix to pass linker
+options, but when building kernel LD linker is used
+directly, therefore we do not need this option
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ extensions/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/extensions/Makefile.am b/extensions/Makefile.am
+index a487fd8..1c04ea6 100644
+--- a/extensions/Makefile.am
++++ b/extensions/Makefile.am
+@@ -3,7 +3,7 @@
+ 
+ AM_CPPFLAGS = ${regular_CPPFLAGS} -I${abs_top_srcdir}/extensions
+ AM_CFLAGS = ${regular_CFLAGS} ${libxtables_CFLAGS}
+-
++LDFLAGS =
+ # Not having Kbuild in Makefile.extra because it will already recurse
+ .PHONY: modules modules_install clean_modules
+ 
+-- 
+1.9.1
+
