@@ -4,7 +4,7 @@ LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=751419260aa954499f7abaabaa882bbe"
 DEPENDS = "virtual/kernel iptables"
 
-inherit autotools module pkgconfig
+inherit autotools kernel-module-split module-base pkgconfig
 
 SRC_URI = " \
           https://fossies.org/linux/privat/${BPN}-${PV}.tar.xz \
@@ -22,13 +22,12 @@ SRC_URI[sha256sum] = "95580b851c79c0bbc484e0d0ea23f53e5c7f439ad73d509e4265985653
 
 S = "${WORKDIR}/xtables-addons-${PV}"
 
+
 MODULES_MODULE_SYMVERS_LOCATION = "../${BPN}-${PV}/extensions"
 
-KERNEL_CC += "${TOOLCHAIN_OPTIONS}"
-KERNEL_LD += "${TOOLCHAIN_OPTIONS}"
-EXTRA_OECONF = "--with-kbuild=${STAGING_KERNEL_DIR} --with-xtlibdir=${libdir}/iptables"
+EXTRA_OECONF = "--with-kbuild=${STAGING_KERNEL_DIR}"
 
-EXTRA_OEMAKE = "M=${S}/extentions DESTDIR=${D}"
+EXTRA_OEMAKE = "M=${S}/extentions DESTDIR=${D} V=1"
 MODULES_INSTALL_TARGET = "install"
 # make_scripts requires kernel source directory to create
 # kernel scripts
