@@ -32,12 +32,9 @@ INHERIT += " openwrt-distro-defaults "
 You can then use, for example, one of:
 
 ```shell
-$ TCLIBC=musl MACHINE=qemuarm bitbake core-image-minimal
 $ TCLIBC=musl MACHINE=qemuarm bitbake openwrt-image-minimal
 $ TCLIBC=musl MACHINE=qemuarm bitbake openwrt-image-base
 $ TCLIBC=musl MACHINE=qemuarm bitbake openwrt-image-full
-$ TCLIBC=musl MACHINE=qemux86 bitbake core-image-weston
-$ TCLIBC=musl MACHINE=qemux86 bitbake core-image-sato
 
 ```
 
@@ -52,7 +49,7 @@ $ TCLIBC=musl runqemu qemuarm
 
 # Limitations
 
-Works with OE Release >= 2.2
+Works with OE Release >= 2.5 ( Sumo )
 
 Currently images are buildable/bootable for mips, arm, aarch64, ppc, x86, x86_64
 based qemu machines
