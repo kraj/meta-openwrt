@@ -26,10 +26,11 @@ do_install_append() {
     install -d ${D}${sysconfdir}
     install -d ${D}${sysconfdir}/config
     install -d ${D}${sysconfdir}/init.d
-    install -d ${D}${sysconfdir}/rc.d
+    install -d ${D}${sysconfdir}/hotplug.d/iface
     install -d ${D}${base_sbindir}
 
     install -m 0755 ${WORKDIR}/git/openwrt/package/network/config/firewall/files/firewall.init ${D}${sysconfdir}/init.d/firewall
+    install -m 0644 ${WORKDIR}/git/openwrt/package/network/config/firewall/files/firewall.hotplug ${D}${sysconfdir}/hotplug.d/iface/20-firewall
     install -m 0644 ${WORKDIR}/git/openwrt/package/network/config/firewall/files/firewall.config ${D}${sysconfdir}/config/firewall
     install -m 0644 ${WORKDIR}/git/openwrt/package/network/config/firewall/files/firewall.user ${D}${sysconfdir}/firewall.user
 
