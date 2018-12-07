@@ -24,23 +24,29 @@ doesn't exit in new namespace
 So moving the runtime configuration to /run here
 
 Signed-off-by: Parthiban Nallathambi <pn@denx.de>
+Signed-off-by: Alejandro Hernandez <aehs29@gmail.com>
+
+
 ---
  netifd.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/netifd.h b/netifd.h
-index 0cd4155..65d9451 100644
---- a/netifd.h
-+++ b/netifd.h
-@@ -38,7 +38,7 @@
+Index: git/netifd.h
+===================================================================
+--- git.orig/netifd.h
++++ git/netifd.h
+@@ -32,12 +32,12 @@
+ #define DEFAULT_MAIN_PATH	"./examples"
+ #define DEFAULT_CONFIG_PATH	"./config"
+ #define DEFAULT_HOTPLUG_PATH	"./examples/hotplug-cmd"
+-#define DEFAULT_RESOLV_CONF	"./tmp/resolv.conf"
++#define DEFAULT_RESOLV_CONF	"./run/resolv.conf"
+ #else
  #define DEFAULT_MAIN_PATH	"/lib/netifd"
  #define DEFAULT_CONFIG_PATH	NULL /* use the default set in libuci */
  #define DEFAULT_HOTPLUG_PATH	"/sbin/hotplug-call"
 -#define DEFAULT_RESOLV_CONF	"/tmp/resolv.conf.auto"
 +#define DEFAULT_RESOLV_CONF	"/run/resolv.conf.auto"
- #define DEFAULT_ETC_RESOLV	"/etc/resolv.conf"
  #endif
  
--- 
-2.14.4
-
+ extern const char *resolv_conf;
