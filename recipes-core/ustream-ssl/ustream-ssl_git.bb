@@ -11,7 +11,7 @@ DEPENDS = "libubox openssl"
 SRC_URI = "git://git.openwrt.org/project/ustream-ssl.git \
           "
 
-SRCREV = "ec80adaa1b47f28d426fa19c692011ce60b992d6"
+SRCREV = "23a3f2830341acd1db149175baf7315a33bd0edb"
 
 S = "${WORKDIR}/git"
 
