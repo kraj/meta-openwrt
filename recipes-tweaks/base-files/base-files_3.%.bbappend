@@ -6,8 +6,9 @@
 SUMMARY = "Base files from openembedded and openwrt projects"
 HOMEPAGE = "http://wiki.openwrt.org/"
 
-LIC_FILES_CHKSUM_remove = " file://openwrt/LICENSE;md5=94d55d512a9ba36caa9b7df079bae19f "
-LIC_FILES_CHKSUM_append = " file://git/openwrt/LICENSE;md5=94d55d512a9ba36caa9b7df079bae19f "
+
+LIC_FILES_CHKSUM_remove = " file://${S}/../git/openwrt/LICENSE;md5=94d55d512a9ba36caa9b7df079bae19f "
+LIC_FILES_CHKSUM_append = " file://${SG}/LICENSE;md5=94d55d512a9ba36caa9b7df079bae19f "
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-openwrt:"
 
