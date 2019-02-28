@@ -1,0 +1,51 @@
+From 4983ee551a743e55bb2f2ec12ceab0ddba13eb2d Mon Sep 17 00:00:00 2001
+From: Hans Dedecker <dedeckeh@gmail.com>
+Date: Thu, 3 May 2018 17:21:15 +0200
+Subject: [PATCH] odhcpd: fix strncpy bounds
+
+Fix strncpy bounds as reported by Coverity in CID 1412278 and 1412293
+
+Signed-off-by: Hans Dedecker <dedeckeh@gmail.com>
+---
+ src/dhcpv4.c | 6 ++++--
+ src/odhcpd.c | 4 +++-
+ 2 files changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/src/dhcpv4.c b/src/dhcpv4.c
+index db5f138..35a3ad0 100644
+--- a/src/dhcpv4.c
++++ b/src/dhcpv4.c
+@@ -779,8 +779,10 @@ static void handle_dhcpv4(void *addr, void *data, size_t len,
+ 		}
+ 	}
+ 
+-	struct ifreq ifr = {.ifr_name = ""};
+-	strncpy(ifr.ifr_name, iface->ifname, sizeof(ifr.ifr_name));
++	struct ifreq ifr;
++
++	memset(&ifr, 0, sizeof(ifr));
++	strncpy(ifr.ifr_name, iface->ifname, sizeof(ifr.ifr_name) - 1);
+ 
+ 	if (!ioctl(sock, SIOCGIFMTU, &ifr)) {
+ 		uint16_t mtu = htons(ifr.ifr_mtu);
+diff --git a/src/odhcpd.c b/src/odhcpd.c
+index 71b803d..8aa4571 100644
+--- a/src/odhcpd.c
++++ b/src/odhcpd.c
+@@ -143,10 +143,12 @@ int odhcpd_get_interface_config(const char *ifname, const char *what)
+ int odhcpd_get_mac(const struct interface *iface, uint8_t mac[6])
+ {
+ 	struct ifreq ifr;
++
+ 	memset(&ifr, 0, sizeof(ifr));
+-	strncpy(ifr.ifr_name, iface->ifname, sizeof(ifr.ifr_name));
++	strncpy(ifr.ifr_name, iface->ifname, sizeof(ifr.ifr_name) - 1);
+ 	if (ioctl(ioctl_sock, SIOCGIFHWADDR, &ifr) < 0)
+ 		return -1;
++
+ 	memcpy(mac, ifr.ifr_hwaddr.sa_data, 6);
+ 	return 0;
+ }
+-- 
+2.7.4
+
