@@ -8,12 +8,12 @@ inherit autotools kernel-module-split module-base pkgconfig
 
 SRC_URI = " \
           https://fossies.org/linux/privat/${BPN}-${PV}.tar.xz \
+          file://001-fix-kernel-version-detection.patch \
           file://100-add-rtsp-conntrack.patch \
           file://200-add-lua-packetscript.patch \
           file://201-fix-lua-packetscript.patch \
           file://202-add-lua-autoconf.patch \
           file://400-fix-IFF_LOWER_UP-musl.patch \
-          file://fix-to-build-linux-v4.15-and-later.patch \
           file://0001-Unset-LDFLAGS-for-kernel-modules.patch \
           "
 

@@ -235,7 +235,7 @@
 +#endif /* _NETFILTER_MIME_H */
 --- /dev/null
 +++ b/extensions/rtsp/nf_conntrack_rtsp.c
-@@ -0,0 +1,576 @@
+@@ -0,0 +1,761 @@
 +/*
 + * RTSP extension for IP connection tracking
 + * (C) 2003 by Tom Marshall <tmarshall at real.com>
@@ -250,7 +250,16 @@
 + * 2013-03-04: Il'inykh Sergey <sergeyi at inango-sw.com>. Inango Systems Ltd
 + *	- fixed rtcp nat mapping and other port mapping fixes
 + *	- simple TEARDOWN request handling
-+ *	- codestyle fixes and other less significant bug fixes 
++ *	- codestyle fixes and other less significant bug fixes
++ * 2018-04-17: Alin Nastac <alin.nastac at gmail.com>
++ *             Hans Dedecker <dedeckeh at gmail.com>
++ *       - use IP address read from SETUP URI in expected connections
++ * 2018-04-18: Hans Dedecker <dedeckeh at gmail.com>
++ *       - update RTP expected connection source IP based on SOURCE
++ *         in the SETUP reply message
++ * 2018-08-03: Alin Nastac <alin.nastac at gmail.com>
++ *             Hans Dedecker <dedeckeh at gmail.com>
++ *       - parse non-standard destination=address:port format
 + *
 + * based on ip_conntrack_irc.c
 + *
@@ -281,6 +290,7 @@
 +#include <net/netfilter/nf_conntrack.h>
 +#include <net/netfilter/nf_conntrack_expect.h>
 +#include <net/netfilter/nf_conntrack_helper.h>
++#include <net/netfilter/nf_conntrack_zones.h>
 +#include "nf_conntrack_rtsp.h"
 +
 +#define NF_NEED_STRNCASECMP
@@ -399,13 +409,14 @@
 +}
 +
 +/*
-+ * Find lo/hi client ports (if any) in transport header
++ * Find lo/hi client ports and/or source (if any) in transport header
 + * In:
 + *   ptcp, tcplen = packet
 + *   tranoff, tranlen = buffer to search
 + *
 + * Out:
 + *   pport_lo, pport_hi = lo/hi ports (host endian)
++ *   srvaddr
 + *
 + * Returns nonzero if any client ports found
 + *
@@ -482,6 +493,40 @@
 +					}
 +					rc = 1;
 +				}
++			} else if (strncmp(ptran+off, "source=", 7) == 0) {
++				uint srcaddrlen;
++
++				off += 7;
++				srcaddrlen = nextfieldoff - off - 1;
++
++				if (in4_pton(ptran + off, srcaddrlen,
++					     (u8 *)&prtspexp->srvaddr.in,
++					     -1, NULL))
++					pr_debug("source found : %pI4\n",
++						 &prtspexp->srvaddr.ip);
++			} else if (nextfieldoff - off > 12 && strncmp(ptran+off, "destination=", 12) == 0) {
++				const char *psep;
++				u_int16_t   port;
++
++				off += 12;
++
++				if (in4_pton(ptran+off, nextfieldoff - off - 1, (u8 *)&prtspexp->cltaddr.in, -1, NULL)) {
++					pr_debug("destination found : %pI4\n", &prtspexp->cltaddr.ip);
++
++					/*
++					 * Some RTSP clients(mostly STBs) use non-standard destination parameters:
++					 * destination=address:port
++					 */
++					psep = memchr(ptran+off, ':', nextfieldoff-off);
++					if (psep != NULL && nf_strtou16(psep + 1, &port)) {
++						if (prtspexp->loport != 0 && prtspexp->loport != port)
++							pr_debug("multiple ports found, port %hu ignored\n", port);
++						else {
++							pr_debug("lo port found : %hu\n", port);
++							prtspexp->loport = prtspexp->hiport = port;
++						}
++					}
++				}
 +			}
 +			
 +			/*
@@ -543,6 +588,7 @@
 +		uint transoff = 0;
 +		uint translen = 0;
 +		uint off;
++		union nf_inet_addr srvaddr;
 +		
 +		if (!rtsp_parse_message(pdata, datalen, &dataoff,
 +					&hdrsoff, &hdrslen,
@@ -558,6 +604,32 @@
 +
 +		if (strncmp(pdata+cmdoff, "SETUP ", 6) != 0)
 +			continue;   /* not a SETUP message */
++
++		srvaddr = ct->tuplehash[!dir].tuple.src.u3;
++
++		/* try to get RTP media source from SETUP URI */
++		off = cmdoff + 6;
++		while (off < datalen) {
++			if (strncmp(pdata+off, "://", 3) == 0) {
++				off += 3;
++				cmdoff = off;
++
++				while (off < datalen) {
++					if (pdata[off] == ':' ||
++					    pdata[off] == '/' ||
++					    pdata[off] == ' ') {
++						in4_pton(pdata + cmdoff,
++							 off - cmdoff,
++							 (u8 *)&srvaddr.in,
++							 -1, NULL);
++						break;
++					}
++					off++;
++				}
++				break;
++			}
++			off++;
++		}
 +
 +		pr_debug("found a setup message\n");
 +
@@ -583,8 +655,7 @@
 +		}
 +
 +		nf_ct_expect_init(rtp_exp, NF_CT_EXPECT_CLASS_DEFAULT,
-+				  nf_ct_l3num(ct),
-+				  NULL, /* &ct->tuplehash[!dir].tuple.src.u3, */
++				  nf_ct_l3num(ct), &srvaddr,
 +				  &ct->tuplehash[!dir].tuple.dst.u3,
 +				  IPPROTO_UDP, NULL, &be_loport);
 +
@@ -601,8 +672,7 @@
 +			}
 +
 +			nf_ct_expect_init(rtcp_exp, NF_CT_EXPECT_CLASS_DEFAULT,
-+					  nf_ct_l3num(ct),
-+					  NULL, /* &ct->tuplehash[!dir].tuple.src.u3, */
++					  nf_ct_l3num(ct), &srvaddr,
 +					  &ct->tuplehash[!dir].tuple.dst.u3,
 +					  IPPROTO_UDP, NULL, &be_hiport);
 +
@@ -659,11 +729,120 @@
 +
 +
 +static inline int
-+help_in(struct sk_buff *skb, size_t pktlen,
-+	struct nf_conn* ct, enum ip_conntrack_info ctinfo)
-+{
-+	return NF_ACCEPT;
-+}
++help_in(struct sk_buff *skb, unsigned char *rb_ptr, unsigned int datalen,
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0)
++	 struct nf_conn *ct, enum ip_conntrack_info ctinfo,
++	 unsigned int protoff)
++#else
++	 struct nf_conn *ct, enum ip_conntrack_info ctinfo)
++#endif
++ {
++	struct ip_ct_rtsp_expect expinfo;
++	union nf_inet_addr srvaddr;
++	int dir = CTINFO2DIR(ctinfo);   /* = IP_CT_DIR_ORIGINAL */
++	int len;
++	char* pdata = rb_ptr;
++	uint dataoff = 0;
++	int ret = NF_ACCEPT;
++	u_int8_t family;
++	struct nf_conntrack_expect *exp_ct = NULL;
++	struct nf_conntrack_tuple t;
++	struct net *net = nf_ct_net(ct);
++
++	memset(&expinfo, 0, sizeof(expinfo));
++
++	while (dataoff < datalen) {
++		uint cmdoff = dataoff;
++		uint hdrsoff = 0;
++		uint hdrslen = 0;
++		uint cseqoff = 0;
++		uint cseqlen = 0;
++		uint transoff = 0;
++		uint translen = 0;
++
++		if (!rtsp_parse_message(pdata, datalen, &dataoff,
++					&hdrsoff, &hdrslen,
++					&cseqoff, &cseqlen,
++					&transoff, &translen))
++			break;      /* not a valid message */
++
++		if (strncmp(pdata+cmdoff, "RTSP/", 5) == 0 && translen) {
++			union nf_inet_addr zeroaddr;
++
++			memset(&zeroaddr, 0, sizeof(zeroaddr));
++
++			if (!rtsp_parse_transport(pdata+transoff, translen, &expinfo))
++				continue;
++
++			srvaddr = expinfo.srvaddr;
++
++			if (nf_inet_addr_cmp(&srvaddr, &ct->tuplehash[dir].tuple.src.u3) ||
++					nf_inet_addr_cmp(&srvaddr, &zeroaddr))
++				continue;
++		} else
++			continue;  /* not valid RTSP reply */
++
++ 		if (expinfo.loport == 0) {
++			pr_debug("no udp transports found\n");
++			continue;   /* no udp transports found */
++		}
++
++		family = nf_ct_l3num(ct);
++		if (family == AF_INET)
++			len = 4;
++		else
++			len = 16;
++
++		/* replace rtp expect src addr */
++		t.src.l3num = family;
++		t.dst.protonum = IPPROTO_UDP;
++
++		memcpy(&t.src.u3, &ct->tuplehash[dir].tuple.src.u3, len);
++		if (sizeof(t.src.u3) > len)
++			/* address needs to be cleared for nf_ct_tuple_equal */
++			memset((void *)&t.src.u3 + len, 0, sizeof(t.src.u3) - len);
++
++		t.src.u.all = 0;
++
++		memcpy(&t.dst.u3, &ct->tuplehash[dir].tuple.dst.u3, len);
++		if (sizeof(t.dst.u3) > len)
++			/* address needs to be cleared for nf_ct_tuple_equal */
++			memset((void *)&t.dst.u3 + len, 0, sizeof(t.dst.u3) - len);
++
++		t.dst.u.all = htons(expinfo.loport);
++
++		/* get the rtp expect and replace the srcaddr with RTP server addr */
++		exp_ct = nf_ct_expect_find_get(net, nf_ct_zone(ct), &t);
++		if (exp_ct) {
++			memcpy(&exp_ct->tuple.src.u3, &srvaddr, len);
++			if (sizeof(exp_ct->tuple.src.u3) > len)
++				/* address needs to be cleared for nf_ct_tuple_equal */
++				memset((void *)&exp_ct->tuple.src.u3 + len, 0,
++				       sizeof(exp_ct->tuple.src.u3) - len);
++		} else
++			goto out;
++
++		/* replace rtcp expect src addr */
++		if (expinfo.pbtype == pb_range) {
++			t.dst.u.all = htons(expinfo.hiport);
++
++			/* get the rtcp expect and replace the srcaddr with RTP server addr */
++			exp_ct = nf_ct_expect_find_get(net, nf_ct_zone(ct), &t);
++			if (exp_ct) {
++				memcpy(&exp_ct->tuple.src.u3, &srvaddr, len);
++				if (sizeof(exp_ct->tuple.src.u3) > len)
++					/* address needs to be cleared for nf_ct_tuple_equal */
++					memset((void *)&exp_ct->tuple.src.u3 + len, 0,
++					       sizeof(exp_ct->tuple.src.u3) - len);
++			} else
++				goto out;
++		}
++
++		goto out;
++	}
++out:
++	return ret;
++ }
 +
 +static int help(struct sk_buff *skb, unsigned int protoff,
 +		struct nf_conn *ct, enum ip_conntrack_info ctinfo) 
@@ -720,7 +899,13 @@
 +	case IP_CT_DIR_REPLY:
 +		pr_debug("IP_CT_DIR_REPLY\n");
 +		/* inbound packet: server->client */
-+		ret = NF_ACCEPT;
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0)
++		ret = help_in(skb, rb_ptr, datalen, ct, ctinfo, protoff);
++#else
++		ret = help_in(skb, rb_ptr, datalen, ct, ctinfo);
++#endif
++		break;
++	default:
 +		break;
 +	}
 +
@@ -814,7 +999,7 @@
 +module_exit(fini);
 --- /dev/null
 +++ b/extensions/rtsp/nf_conntrack_rtsp.h
-@@ -0,0 +1,72 @@
+@@ -0,0 +1,74 @@
 +/*
 + * RTSP extension for IP connection tracking.
 + * (C) 2003 by Tom Marshall <tmarshall at real.com>
@@ -861,13 +1046,15 @@
 + */
 +struct ip_ct_rtsp_expect
 +{
-+    u_int32_t   len;        /* length of header block */
-+    portblock_t pbtype;     /* Type of port block that was requested */
-+    u_int16_t   loport;     /* Port that was requested, low or first */
-+    u_int16_t   hiport;     /* Port that was requested, high or second */
++    u_int32_t          len;        /* length of header block */
++    portblock_t        pbtype;     /* Type of port block that was requested */
++    u_int16_t          loport;     /* Port that was requested, low or first */
++    u_int16_t          hiport;     /* Port that was requested, high or second */
++    union nf_inet_addr srvaddr;    /* src address in SETUP reply */
++    union nf_inet_addr cltaddr;    /* destination address */
 +#if 0
-+    uint        method;     /* RTSP method */
-+    uint        cseq;       /* CSeq from request */
++    uint               method;     /* RTSP method */
++    uint               cseq;       /* CSeq from request */
 +#endif
 +};
 +
@@ -889,7 +1076,7 @@
 +#endif /* _IP_CONNTRACK_RTSP_H */
 --- /dev/null
 +++ b/extensions/rtsp/nf_nat_rtsp.c
-@@ -0,0 +1,617 @@
+@@ -0,0 +1,636 @@
 +/*
 + * RTSP extension for TCP NAT alteration
 + * (C) 2003 by Tom Marshall <tmarshall at real.com>
@@ -1049,9 +1236,9 @@
 +	struct nf_conntrack_tuple *rtp_t;
 +
 +#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0)
-+	char szextaddr[INET6_ADDRSTRLEN];
++	char szextaddr[INET6_ADDRSTRLEN + 16];
 +#else
-+	char szextaddr[INET_ADDRSTRLEN];
++	char szextaddr[INET_ADDRSTRLEN + 16];
 +#endif
 +	uint extaddrlen;
 +	int  is_stun;
@@ -1184,8 +1371,9 @@
 +
 +			pfieldend = memchr(ptran+off, ';', nextparamoff-off);
 +			nextfieldoff = (pfieldend == NULL) ? nextparamoff : pfieldend-ptran+1;
++			SKIP_WSPACE(ptran, nextfieldoff, off);
 +
-+			if (dstact != DSTACT_NONE && strncmp(ptran+off, "destination=", 12) == 0) {
++			if (dstact != DSTACT_NONE && nextfieldoff - off > 12 && strncmp(ptran+off, "destination=", 12) == 0) {
 +				if (strncmp(ptran+off+12, szextaddr, extaddrlen) == 0)
 +					is_stun = 1;
 +
@@ -1196,12 +1384,28 @@
 +					uint dstreplen = 0;
 +					diff = dstlen;
 +					if (dstact == DSTACT_AUTO && !is_stun) {
-+						pr_debug("RTSP: replace dst addr\n");
++						const char* psep = memchr(ptran+off, ':', dstlen);
++						u_int16_t port;
++
 +						dstoff += 12;
 +						dstlen -= 13;
 +						pdstrep = szextaddr;
-+						dstreplen = extaddrlen;
-+						diff = nextfieldoff-off-13-extaddrlen;
++
++						if (psep != NULL && nf_strtou16(psep + 1, &port)) {
++							pr_debug("RTSP: replace dst addr&port\n");
++
++							if (port != prtspexp->loport) {
++								pr_debug("multiple ports found, port %hu ignored\n", port);
++								dstreplen = extaddrlen;
++							} else {
++								sprintf(szextaddr+extaddrlen, ":%s", rbuf1);
++								dstreplen = extaddrlen+1+rbuf1len;
++							}
++						} else {
++							pr_debug("RTSP: replace dst addr\n");
++							dstreplen = extaddrlen;
++						}
++						diff = nextfieldoff-off-13-dstreplen;
 +					}
 +
 +#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0)
@@ -1239,7 +1443,7 @@
 +			pfieldend = memchr(ptran+off, ';', nextparamoff-off);
 +			nextfieldoff = (pfieldend == NULL) ? nextparamoff : pfieldend-ptran+1;
 +
-+			if (strncmp(ptran+off, "client_port=", 12) == 0) {
++			if (nextfieldoff - off > 12 && strncmp(ptran+off, "client_port=", 12) == 0) {
 +				u_int16_t port;
 +				uint	  numlen;
 +				uint      origoff;
@@ -1426,7 +1630,9 @@
 +
 +static void nf_nat_rtsp_expected(struct nf_conn* ct, struct nf_conntrack_expect *exp)
 +{
-+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,3,0) || LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4,18,0)
++	struct nf_nat_range2 range;
++#elif LINUX_VERSION_CODE < KERNEL_VERSION(3,3,0) || LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0)
 +	struct nf_nat_range range;
 +#else
 +	struct nf_nat_ipv4_range range;
@@ -1509,7 +1715,7 @@
 +module_exit(fini);
 --- a/extensions/Kbuild
 +++ b/extensions/Kbuild
-@@ -28,6 +28,7 @@ obj-${build_lscan}       += xt_lscan.o
+@@ -26,6 +26,7 @@ obj-${build_lscan}       += xt_lscan.o
  obj-${build_pknock}      += pknock/
  obj-${build_psd}         += xt_psd.o
  obj-${build_quota2}      += xt_quota2.o
