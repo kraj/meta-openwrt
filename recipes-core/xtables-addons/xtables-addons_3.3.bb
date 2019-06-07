@@ -18,8 +18,8 @@ SRC_URI = " \
           "
 
 
-SRC_URI[md5sum] = "80ea89ba8d5a001a8d71c7f05b2f0141"
-SRC_URI[sha256sum] = "006f4e38bbf4b9a9069b90ca78c93b65800e9ebfd17332b713f1f80292420aaa"
+SRC_URI[md5sum] = "e99ea681b7b3866a581390e1b3ea185e"
+SRC_URI[sha256sum] = "efa62c7df6cd3b82d7195105bf6fe177b605f91f3522e4114d2f4e0ad54320d6"
 
 S = "${WORKDIR}/xtables-addons-${PV}"
 
