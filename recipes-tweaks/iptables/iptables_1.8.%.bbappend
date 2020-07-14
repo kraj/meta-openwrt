@@ -8,7 +8,7 @@ XTLIBDIR = "${libdir}/iptables"
 
 EXTRA_OECONF += "--enable-shared --disable-static --with-xtlibdir=${XTLIBDIR}"
 
-SRC_URI += "file://601-shared-libext.patch"
+SRC_URI += "file://600-shared-libext.patch"
 
 LDFLAGS += "-fuse-ld=bfd"
 
