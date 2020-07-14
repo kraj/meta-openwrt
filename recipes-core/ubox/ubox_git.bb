@@ -17,6 +17,8 @@ S = "${WORKDIR}/git"
 
 inherit cmake openwrt-services openwrt
 
+TARGET_CFLAGS += "-Wno-format-truncation"
+
 do_install_append () {
         ${@bb.utils.contains('VIRTUAL-RUNTIME_syslog', 'ubox', 'install -Dm 0755 ${WORKDIR}/log.init ${D}/etc/init.d/log', '', d)}
         ${@bb.utils.contains('VIRTUAL-RUNTIME_kmod_manager', 'ubox', 'ln -s /sbin/kmodloader ${D}/usr/sbin/rmmod', '', d)}
