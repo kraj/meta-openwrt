@@ -6,7 +6,7 @@ HOMEPAGE = "http://git.openwrt.org/?p=project/uhttpd.git;a=summary"
 LICENSE = "BSD"
 LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=18;md5=ba30601dd30339f7ff3d0ad681d45679"
 SECTION = "base"
-DEPENDS = "libubox ubus json-c ustream-ssl"
+DEPENDS = "libubox ubus json-c ustream-ssl libxcrypt"
 
 SRC_URI = "\
           git://git.openwrt.org/project/uhttpd.git \
