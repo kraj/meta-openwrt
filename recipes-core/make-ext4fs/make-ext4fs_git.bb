@@ -9,13 +9,14 @@ SECTION = "tools"
 DEPENDS = "zlib"
 
 SRC_URI = "git://git.openwrt.org/project/make_ext4fs.git \
-          "
+           file://0001-contents.c-Add-mising-include-for-major-minor.patch"
 SRCREV = "bd53eaafbc2a89a57b8adda38f53098a431fa8f4"
 
 S = "${WORKDIR}/git"
 B = "${S}"
 
 CFLAGS += "-I${S}/include -I${S}/libsparse/include"
+TARGET_CFLAGS_append = "-Wno-implicit-function-declaration"
 
 TARGET_CC_ARCH += "${LDFLAGS}"
 
