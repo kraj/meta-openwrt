@@ -4,8 +4,6 @@
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-SRC_URI += "file://300-noscan.patch"
-
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 inherit openwrt openwrt-base-files
