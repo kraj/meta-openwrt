@@ -7,7 +7,7 @@ DEPENDS = "virtual/kernel iptables"
 inherit autotools kernel-module-split module-base pkgconfig
 
 SRC_URI = " \
-          https://fossies.org/linux/privat/${BPN}-${PV}.tar.xz \
+          https://master.dl.sourceforge.net/project/xtables-addons/Xtables-addons/${BPN}-${PV}.tar.xz \
           file://001-fix-kernel-version-detection.patch \
           file://100-add-rtsp-conntrack.patch \
           file://200-add-lua-packetscript.patch \
