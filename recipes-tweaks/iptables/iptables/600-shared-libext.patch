@@ -1,8 +1,6 @@
-diff --git a/extensions/GNUmakefile.in b/extensions/GNUmakefile.in
-index 0842a55..4c36607 100644
 --- a/extensions/GNUmakefile.in
 +++ b/extensions/GNUmakefile.in
-@@ -50,11 +50,33 @@ pfb_build_mod := $(filter-out @blacklist_modules@ @blacklist_b_modules@,${pfb_bu
+@@ -50,11 +50,33 @@ pfb_build_mod := $(filter-out @blacklist
  pfa_build_mod := $(filter-out @blacklist_modules@ @blacklist_a_modules@,${pfa_build_mod})
  pf4_build_mod := $(filter-out @blacklist_modules@ @blacklist_4_modules@,${pf4_build_mod})
  pf6_build_mod := $(filter-out @blacklist_modules@ @blacklist_6_modules@,${pf6_build_mod})
@@ -41,7 +39,7 @@ index 0842a55..4c36607 100644
  pfx_solibs    := $(patsubst %,libxt_%.so,${pfx_build_mod})
  pfb_solibs    := $(patsubst %,libebt_%.so,${pfb_build_mod})
  pfa_solibs    := $(patsubst %,libarpt_%.so,${pfa_build_mod})
-@@ -66,16 +88,16 @@ pfx_symlink_files := $(patsubst %,libxt_%.so,${pfx_symlinks})
+@@ -66,16 +88,16 @@ pfx_symlink_files := $(patsubst %,libxt_
  #
  # Building blocks
  #
@@ -67,7 +65,7 @@ index 0842a55..4c36607 100644
  
  .SECONDARY:
  
-@@ -99,7 +121,7 @@ clean:
+@@ -112,7 +134,7 @@ clean:
  distclean: clean
  
  init%.o: init%.c
@@ -76,7 +74,7 @@ index 0842a55..4c36607 100644
  
  -include .*.d
  
-@@ -108,7 +130,7 @@ init%.o: init%.c
+@@ -121,7 +143,7 @@ init%.o: init%.c
  #	Shared libraries
  #
  lib%.so: lib%.oo
@@ -85,7 +83,7 @@ index 0842a55..4c36607 100644
  
  lib%.oo: ${srcdir}/lib%.c
  	${AM_VERBOSE_CC} ${CC} ${AM_CPPFLAGS} ${AM_DEPFLAGS} ${AM_CFLAGS} -D_INIT=lib$*_init -DPIC -fPIC ${CFLAGS} -o $@ -c $<;
-@@ -131,28 +153,28 @@ xt_connlabel_LIBADD = @libnetfilter_conntrack_LIBS@
+@@ -144,28 +166,28 @@ xt_connlabel_LIBADD = @libnetfilter_conn
  #	handling code in the Makefiles.
  #
  lib%.o: ${srcdir}/lib%.c
@@ -130,16 +128,13 @@ index 0842a55..4c36607 100644
  
  .initext.dd: FORCE
  	@echo "${initext_func}" >$@.tmp; \
-diff --git a/iptables/Makefile.am b/iptables/Makefile.am
-index 3ff8589..cdee167 100644
 --- a/iptables/Makefile.am
 +++ b/iptables/Makefile.am
-@@ -8,29 +8,34 @@ BUILT_SOURCES =
+@@ -7,19 +7,21 @@ BUILT_SOURCES =
  
  xtables_legacy_multi_SOURCES  = xtables-legacy-multi.c iptables-xml.c
  xtables_legacy_multi_CFLAGS   = ${AM_CFLAGS}
 -xtables_legacy_multi_LDADD    = ../extensions/libext.a
-+xtables_legacy_multi_LDADD    =
 +xtables_legacy_multi_LDFLAGS  = -L${top_builddir}/extensions/ -liptext
  if ENABLE_STATIC
  xtables_legacy_multi_CFLAGS  += -DALL_INCLUSIVE
@@ -149,43 +144,33 @@ index 3ff8589..cdee167 100644
  xtables_legacy_multi_CFLAGS  += -DENABLE_IPV4
 -xtables_legacy_multi_LDADD   += ../libiptc/libip4tc.la ../extensions/libext4.a
 +xtables_legacy_multi_LDADD   += ../libiptc/libip4tc.la
-+xtables_legacy_multi_LDFLAGS += -L${top_builddir}/extensions -liptext4
++xtables_legacy_multi_LDFLAGS += -L${top_builddir}/extensions/ -lext4
  endif
  if ENABLE_IPV6
  xtables_legacy_multi_SOURCES += ip6tables-standalone.c ip6tables.c
  xtables_legacy_multi_CFLAGS  += -DENABLE_IPV6
 -xtables_legacy_multi_LDADD   += ../libiptc/libip6tc.la ../extensions/libext6.a
 +xtables_legacy_multi_LDADD   += ../libiptc/libip6tc.la
-+xtables_legacy_multi_LDFLAGS += -L${top_builddir}/extensions -liptext6
++xtables_legacy_multi_LDFLAGS += -L${top_builddir}/extensions/ -lext6
  endif
  xtables_legacy_multi_SOURCES += xshared.c iptables-restore.c iptables-save.c
--xtables_legacy_multi_LDADD   += ../libxtables/libxtables.la -lm
-+xtables_legacy_multi_LDADD   += ${top_builddir}/libxtables/libxtables.la -lm
-+
- 
- # iptables using nf_tables api
+ xtables_legacy_multi_LDADD   += ../libxtables/libxtables.la -lm
+@@ -28,7 +30,7 @@ xtables_legacy_multi_LDADD   += ../libxt
  if ENABLE_NFTABLES
- BUILT_SOURCES += xtables-config-parser.h
  xtables_nft_multi_SOURCES  = xtables-nft-multi.c iptables-xml.c
  xtables_nft_multi_CFLAGS   = ${AM_CFLAGS}
 -xtables_nft_multi_LDADD    = ../extensions/libext.a ../extensions/libext_ebt.a
-+xtables_nft_multi_LDADD    =
-+xtables_compat_multi_LDFLAGS  = -liptext -liptext_ebt
++xtables_nft_multi_LDFLAGS  = -L${top_builddir}/extensions/ -lext -lext_ebt
  if ENABLE_STATIC
  xtables_nft_multi_CFLAGS  += -DALL_INCLUSIVE
  endif
-@@ -45,11 +50,12 @@ xtables_nft_multi_SOURCES += xtables-save.c xtables-restore.c \
+@@ -42,7 +44,8 @@ xtables_nft_multi_SOURCES += xtables-sav
  				xtables-eb-standalone.c xtables-eb.c \
  				xtables-eb-translate.c \
  				xtables-translate.c
 -xtables_nft_multi_LDADD   += ${libmnl_LIBS} ${libnftnl_LIBS} ${libnetfilter_conntrack_LIBS} ../extensions/libext4.a ../extensions/libext6.a ../extensions/libext_ebt.a ../extensions/libext_arpt.a
 +xtables_nft_multi_LDADD   += ${libmnl_LIBS} ${libnftnl_LIBS} ${libnetfilter_conntrack_LIBS}
-+xtables_nft_multi_LDFLAGS = -liptext4 -liptext6 -liptext_ebt -liptext_arpt
- # yacc and lex generate dirty code
- xtables_nft_multi-xtables-config-parser.o xtables_nft_multi-xtables-config-syntax.o: AM_CFLAGS += -Wno-missing-prototypes -Wno-missing-declarations -Wno-implicit-function-declaration -Wno-nested-externs -Wno-undef -Wno-redundant-decls
++xtables_nft_multi_LDFLAGS += -L${top_builddir}/extensions/ -lext4 -lext6 -lext_ebt -lext_arpt
  xtables_nft_multi_SOURCES += xshared.c
--xtables_nft_multi_LDADD   += ../libxtables/libxtables.la -lm
-+xtables_nft_multi_LDADD   += ${top_builddir}/libxtables/libxtables.la -lm
+ xtables_nft_multi_LDADD   += ../libxtables/libxtables.la -lm
  endif
- 
- sbin_PROGRAMS    = xtables-legacy-multi
