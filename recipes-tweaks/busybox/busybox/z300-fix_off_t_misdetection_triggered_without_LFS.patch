@@ -9,11 +9,9 @@ Date:   Tue Jan 16 03:06:33 2018 -0500
     patch should get upstremed.
 
     Signed-off-by: Daniel F. Dickinson <cshored@thecshore.com>
-Index: busybox-1.24.1/include/libbb.h
-===================================================================
---- busybox-1.24.1.orig/include/libbb.h
-+++ busybox-1.24.1/include/libbb.h
-@@ -252,6 +252,14 @@ typedef unsigned long long uoff_t;
+--- a/include/libbb.h
++++ b/include/libbb.h
+@@ -277,6 +277,14 @@ typedef unsigned long long uoff_t;
  #  define STRTOOFF strtoull
  #  define OFF_FMT "ll"
  # endif
@@ -28,7 +26,7 @@ Index: busybox-1.24.1/include/libbb.h
  #else
  /* CONFIG_LFS is off */
  # if UINT_MAX == 0xffffffff
-@@ -269,15 +277,8 @@ typedef unsigned long uoff_t;
+@@ -294,16 +302,8 @@ typedef unsigned long uoff_t;
  #  define STRTOOFF strtol
  #  define OFF_FMT "l"
  # endif
@@ -37,6 +35,7 @@ Index: busybox-1.24.1/include/libbb.h
 -/* scary. better ideas? (but do *test* them first!) */
 -#define OFF_T_MAX  ((off_t)~((off_t)1 << (sizeof(off_t)*8-1)))
 -/* Users report bionic to use 32-bit off_t even if LARGEFILE support is requested.
+- * On musl, !ENABLE_LFS on 32-bit arches thinks that off_t is 32-bit.
 - * We misdetected that. Don't let it build:
 - */
 -struct BUG_off_t_size_is_misdetected {
