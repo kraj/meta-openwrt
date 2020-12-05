@@ -130,7 +130,7 @@
  	@echo "${initext_func}" >$@.tmp; \
 --- a/iptables/Makefile.am
 +++ b/iptables/Makefile.am
-@@ -7,19 +7,21 @@ BUILT_SOURCES =
+@@ -7,28 +7,30 @@ BUILT_SOURCES =
  
  xtables_legacy_multi_SOURCES  = xtables-legacy-multi.c iptables-xml.c
  xtables_legacy_multi_CFLAGS   = ${AM_CFLAGS}
@@ -143,19 +143,21 @@
  xtables_legacy_multi_SOURCES += iptables-standalone.c iptables.c
  xtables_legacy_multi_CFLAGS  += -DENABLE_IPV4
 -xtables_legacy_multi_LDADD   += ../libiptc/libip4tc.la ../extensions/libext4.a
-+xtables_legacy_multi_LDADD   += ../libiptc/libip4tc.la
++xtables_legacy_multi_LDADD   = ../libiptc/libip4tc.la
 +xtables_legacy_multi_LDFLAGS += -L${top_builddir}/extensions/ -lext4
  endif
  if ENABLE_IPV6
  xtables_legacy_multi_SOURCES += ip6tables-standalone.c ip6tables.c
  xtables_legacy_multi_CFLAGS  += -DENABLE_IPV6
 -xtables_legacy_multi_LDADD   += ../libiptc/libip6tc.la ../extensions/libext6.a
-+xtables_legacy_multi_LDADD   += ../libiptc/libip6tc.la
++xtables_legacy_multi_LDADD   = ../libiptc/libip6tc.la
 +xtables_legacy_multi_LDFLAGS += -L${top_builddir}/extensions/ -lext6
  endif
  xtables_legacy_multi_SOURCES += xshared.c iptables-restore.c iptables-save.c
- xtables_legacy_multi_LDADD   += ../libxtables/libxtables.la -lm
-@@ -28,7 +30,7 @@ xtables_legacy_multi_LDADD   += ../libxt
+-xtables_legacy_multi_LDADD   += ../libxtables/libxtables.la -lm
++xtables_legacy_multi_LDADD   = ../libxtables/libxtables.la -lm
+ 
+ # iptables using nf_tables api
  if ENABLE_NFTABLES
  xtables_nft_multi_SOURCES  = xtables-nft-multi.c iptables-xml.c
  xtables_nft_multi_CFLAGS   = ${AM_CFLAGS}
@@ -169,7 +171,7 @@
  				xtables-eb-translate.c \
  				xtables-translate.c
 -xtables_nft_multi_LDADD   += ${libmnl_LIBS} ${libnftnl_LIBS} ${libnetfilter_conntrack_LIBS} ../extensions/libext4.a ../extensions/libext6.a ../extensions/libext_ebt.a ../extensions/libext_arpt.a
-+xtables_nft_multi_LDADD   += ${libmnl_LIBS} ${libnftnl_LIBS} ${libnetfilter_conntrack_LIBS}
++xtables_nft_multi_LDADD   = ${libmnl_LIBS} ${libnftnl_LIBS} ${libnetfilter_conntrack_LIBS}
 +xtables_nft_multi_LDFLAGS += -L${top_builddir}/extensions/ -lext4 -lext6 -lext_ebt -lext_arpt
  xtables_nft_multi_SOURCES += xshared.c
  xtables_nft_multi_LDADD   += ../libxtables/libxtables.la -lm
