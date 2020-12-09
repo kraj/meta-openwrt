@@ -10,6 +10,7 @@ EXTRA_OECONF += "--enable-shared --disable-static --with-xtlibdir=${XTLIBDIR}"
 
 SRC_URI += "file://600-shared-libext.patch \
             file://601-Fix-out-of-tree-build.patch \ 
+            file://200-configurable_builtin.patch \
 "
 
 LDFLAGS += "-fuse-ld=bfd"
