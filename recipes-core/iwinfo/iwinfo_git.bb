@@ -6,9 +6,9 @@ HOMEPAGE = "http://git.openwrt.org/?p=project/iwinfo.git;a=summary"
 LICENSE = "GPL-2.0"
 LIC_FILES_CHKSUM = "file://COPYING;md5=751419260aa954499f7abaabaa882bbe"
 SECTION = "base"
-DEPENDS += "uci lua5.1"
+DEPENDS += "uci lua5.1 ubus"
 
-SRCREV = "fd9e17be0c43bd6b8df5371f0b353747bc563874"
+SRCREV = "2faa20e5e9d107b97e393a4eb458370e80b4d720"
 
 inherit openwrt
 
