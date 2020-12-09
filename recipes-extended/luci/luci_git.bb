@@ -25,4 +25,4 @@ OECMAKE_C_FLAGS += "-I${STAGING_INCDIR}/libnl3 -DDESTDIR=${D}"
 
 FILES_${PN} += "/www /lib /usr/share/acl.d ${bindir} ${libdir}"
 
-S = "${WORKDIR}/git/"
+S = "${WORKDIR}/git"
