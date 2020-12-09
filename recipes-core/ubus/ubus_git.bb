@@ -20,3 +20,5 @@ do_install_append () {
     install -dm 0755 ${D}/sbin
     ln -s /usr/sbin/ubusd ${D}/sbin/ubusd
 }
+
+TOOLCHAIN = "gcc"
