@@ -12,13 +12,13 @@ LIC_FILES_CHKSUM = "file://procd.c;beginline=1;endline=13;md5=61e3657604f131a859
 SECTION = "base"
 DEPENDS = "libubox ubus json-c"
 
-SRC_URI = "git://git.openwrt.org/project/procd.git;branch=lede-17.01 \
+SRC_URI = "git://git.openwrt.org/project/procd.git \
 	file://00_preinit.conf \
         file://banner.failsafe \
 	file://10_sysinfo \
 "
 
-SRCREV_pn-procd = "188353099cf6fc88f145cfcb84a4db3f6523528a"
+SRCREV_pn-procd = "6acc48c7a2faac48c534b8a5516500c270550a9e"
 
 S = "${WORKDIR}/git"
 PD = "${S}/openwrt/package/system/procd/files"
