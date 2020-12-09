@@ -82,11 +82,11 @@ FILES_${PN} += "\
 
 CONFFILES_${PN}_append = "\
                          ${sysconfdir}/config/network \
-                         $(sysconfdir)/config/wireless \
+                         ${sysconfdir}/config/wireless \
 	                 "
 
 RDEPENDS_${PN} += "\
                   bridge-utils \
                   kernel-module-bridge \
-                  base-files-scripts-openwrt\
+                  base-files-scripts-openwrt \
                   "
