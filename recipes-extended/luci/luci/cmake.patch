@@ -1,7 +1,5 @@
-Index: git/CMakeLists.txt
-===================================================================
 --- /dev/null
-+++ git/CMakeLists.txt
++++ b/CMakeLists.txt
 @@ -0,0 +1,31 @@
 +cmake_minimum_required(VERSION 3.0)
 +
@@ -34,10 +32,8 @@ Index: git/CMakeLists.txt
 +ADD_SUBDIRECTORY(themes/luci-theme-bootstrap)
 +ADD_SUBDIRECTORY(applications/luci-app-firewall)
 +
-Index: git/libs/luci-lib-ip/CMakeLists.txt
-===================================================================
 --- /dev/null
-+++ git/libs/luci-lib-ip/CMakeLists.txt
++++ b/libs/luci-lib-ip/CMakeLists.txt
 @@ -0,0 +1,15 @@
 +cmake_minimum_required(VERSION 3.0)
 +
@@ -54,10 +50,8 @@ Index: git/libs/luci-lib-ip/CMakeLists.txt
 +	LIBRARY DESTINATION "${LUAPATH}/luci"
 +)
 +
-Index: git/libs/luci-lib-nixio/CMakeLists.txt
-===================================================================
 --- /dev/null
-+++ git/libs/luci-lib-nixio/CMakeLists.txt
++++ b/libs/luci-lib-nixio/CMakeLists.txt
 @@ -0,0 +1,26 @@
 +cmake_minimum_required(VERSION 3.0)
 +
@@ -85,14 +79,22 @@ Index: git/libs/luci-lib-nixio/CMakeLists.txt
 +	USE_SOURCE_PERMISSIONS
 +)
 +
-Index: git/modules/luci-base/CMakeLists.txt
-===================================================================
 --- /dev/null
-+++ git/modules/luci-base/CMakeLists.txt
-@@ -0,0 +1,26 @@
++++ b/modules/luci-base/CMakeLists.txt
+@@ -0,0 +1,37 @@
 +cmake_minimum_required(VERSION 3.0)
 +
 +PROJECT(luci-base C)
++
++ADD_CUSTOM_COMMAND(OUTPUT lemon
++		   COMMAND gcc -o ${CMAKE_BINARY_DIR}/lemon ${PROJECT_SOURCE_DIR}/src/contrib/lemon.c)
++
++ADD_CUSTOM_COMMAND(OUTPUT plural_formula
++		   COMMAND cd ${PROJECT_SOURCE_DIR}/src && ${CMAKE_BINARY_DIR}/lemon -q T=${PROJECT_SOURCE_DIR}/src/contrib/lempar.c plural_formula.y && cd -
++		   DEPENDS lemon)
++add_custom_target(generate_plural_formula ALL
++		   DEPENDS lemon plural_formula
++)
 +
 +ADD_LIBRARY(parser SHARED src/template_parser.c src/template_utils.c src/template_lmo.c src/template_lualib.c)
 +SET_TARGET_PROPERTIES(parser PROPERTIES PREFIX "")
@@ -106,6 +108,8 @@ Index: git/modules/luci-base/CMakeLists.txt
 +	LIBRARY DESTINATION "${LUAPATH}/luci/template"
 +)
 +
++add_dependencies(parser generate_plural_formula)
++
 +INSTALL(DIRECTORY root/
 +	DESTINATION "${CMAKE_INSTALL_PREFIX}/"
 +	USE_SOURCE_PERMISSIONS
@@ -115,37 +119,14 @@ Index: git/modules/luci-base/CMakeLists.txt
 +	DESTINATION "${CMAKE_INSTALL_PREFIX}/www"
 +	USE_SOURCE_PERMISSIONS
 +)
-+
-Index: git/modules/luci-mod-admin-full/CMakeLists.txt
-===================================================================
 --- /dev/null
-+++ git/modules/luci-mod-admin-full/CMakeLists.txt
-@@ -0,0 +1,21 @@
++++ b/modules/luci-mod-admin-full/CMakeLists.txt
+@@ -0,0 +1,3 @@
 +cmake_minimum_required(VERSION 3.0)
 +
 +PROJECT(luci-mod-admin-full C)
-+
-+ADD_EXECUTABLE(luci-bwc src/luci-bwc.c)
-+TARGET_LINK_LIBRARIES(luci-bwc dl)
-+
-+INSTALL(DIRECTORY luasrc/
-+	DESTINATION "${LUAPATH}/luci"
-+	USE_SOURCE_PERMISSIONS
-+)
-+
-+INSTALL(TARGETS luci-bwc
-+	RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
-+)
-+
-+INSTALL(DIRECTORY htdocs/
-+	DESTINATION "${CMAKE_INSTALL_PREFIX}/www"
-+	USE_SOURCE_PERMISSIONS
-+)
-+
-Index: git/themes/luci-theme-bootstrap/CMakeLists.txt
-===================================================================
 --- /dev/null
-+++ git/themes/luci-theme-bootstrap/CMakeLists.txt
++++ b/themes/luci-theme-bootstrap/CMakeLists.txt
 @@ -0,0 +1,19 @@
 +cmake_minimum_required(VERSION 3.0)
 +
@@ -166,23 +147,24 @@ Index: git/themes/luci-theme-bootstrap/CMakeLists.txt
 +	USE_SOURCE_PERMISSIONS
 +)
 +
-Index: git/applications/luci-app-firewall/CMakeLists.txt
-===================================================================
 --- /dev/null
-+++ git/applications/luci-app-firewall/CMakeLists.txt
-@@ -0,0 +1,8 @@
++++ b/applications/luci-app-firewall/CMakeLists.txt
+@@ -0,0 +1,13 @@
 +cmake_minimum_required(VERSION 3.0)
 +
 +PROJECT(luci-app-firewall C)
 +
-+INSTALL(DIRECTORY luasrc/
-+	DESTINATION "${LUAPATH}/luci"
++INSTALL(DIRECTORY root/
++	DESTINATION "${CMAKE_INSTALL_PREFIX}/"
 +	USE_SOURCE_PERMISSIONS
 +)
-Index: git/libs/luci-lib-jsonc/CMakeLists.txt
-===================================================================
++
++INSTALL(DIRECTORY htdocs/
++	DESTINATION "${CMAKE_INSTALL_PREFIX}/www"
++	USE_SOURCE_PERMISSIONS
++)
 --- /dev/null
-+++ git/libs/luci-lib-jsonc/CMakeLists.txt
++++ b/libs/luci-lib-jsonc/CMakeLists.txt
 @@ -0,0 +1,15 @@
 +cmake_minimum_required(VERSION 3.0)
 +
@@ -197,5 +179,55 @@ Index: git/libs/luci-lib-jsonc/CMakeLists.txt
 +
 +INSTALL(TARGETS jsonc
 +	LIBRARY DESTINATION "${LUAPATH}/luci"
++)
++
+--- /dev/null
++++ b/modules/luci-mod-status/CMakeLists.txt
+@@ -0,0 +1,25 @@
++cmake_minimum_required(VERSION 3.0)
++
++PROJECT(luci-mod-status C)
++
++ADD_EXECUTABLE(luci-bwc src/luci-bwc.c)
++TARGET_LINK_LIBRARIES(luci-bwc dl)
++
++INSTALL(DIRECTORY luasrc/
++	DESTINATION "${LUAPATH}/luci"
++	USE_SOURCE_PERMISSIONS
++)
++
++INSTALL(TARGETS luci-bwc
++	RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
++)
++
++INSTALL(DIRECTORY root/
++	DESTINATION "${CMAKE_INSTALL_PREFIX}/"
++	USE_SOURCE_PERMISSIONS
++)
++
++INSTALL(DIRECTORY htdocs/
++	DESTINATION "${CMAKE_INSTALL_PREFIX}/www"
++	USE_SOURCE_PERMISSIONS
++)
+--- /dev/null
++++ b/modules/luci-mod-system/CMakeLists.txt
+@@ -0,0 +1,19 @@
++cmake_minimum_required(VERSION 3.0)
++
++PROJECT(luci-mod-system C)
++
++INSTALL(DIRECTORY luasrc/
++	DESTINATION "${LUAPATH}/luci"
++	USE_SOURCE_PERMISSIONS
++)
++
++INSTALL(DIRECTORY root/
++	DESTINATION "${CMAKE_INSTALL_PREFIX}/"
++	USE_SOURCE_PERMISSIONS
++)
++
++INSTALL(DIRECTORY htdocs/
++	DESTINATION "${CMAKE_INSTALL_PREFIX}/www"
++	USE_SOURCE_PERMISSIONS
 +)
 +
