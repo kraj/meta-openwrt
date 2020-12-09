@@ -1,0 +1,26 @@
+From 484a1e97e3d0fdc67d133d063c6b2cb8cce8256b Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Wed, 9 Dec 2020 15:49:54 -0800
+Subject: [PATCH] Add missing space before linker option
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 4b4e4c6..4a22ea1 100644
+--- a/Makefile
++++ b/Makefile
+@@ -27,7 +27,7 @@ OBJ := \
+ 	$(CC) $(CFLAGS) -c -o $@ $^
+ 
+ make_ext4fs: $(OBJ) libsparse/libsparse.a
+-	$(CC) $(LDFLAGS)-o $@ $^ $(ZLIB)
++	$(CC) $(LDFLAGS) -o $@ $^ $(ZLIB)
+ 
+ libsparse/libsparse.a:
+ 	$(MAKE) -C libsparse/ libsparse.a
+-- 
+2.29.2
+
