@@ -9,8 +9,9 @@ SECTION = "tools"
 DEPENDS = "zlib"
 
 SRC_URI = "git://git.openwrt.org/project/make_ext4fs.git \
-           file://0001-contents.c-Add-mising-include-for-major-minor.patch"
-SRCREV = "bd53eaafbc2a89a57b8adda38f53098a431fa8f4"
+           file://0001-Add-missing-space-before-linker-option.patch \
+"
+SRCREV = "5c201be7d72aff735da27e17c29852e0cefe3e52"
 
 S = "${WORKDIR}/git"
 B = "${S}"
