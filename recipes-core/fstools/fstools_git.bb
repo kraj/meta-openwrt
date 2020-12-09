@@ -15,7 +15,7 @@ SRC_URI = "git://git.openwrt.org/project/fstools.git \
 	   file://0001-Define-GLOB_ONLYDIR-if-not-available.patch \
           "
 
-SRCREV = "d34ea8eb1e12259a315cdef7aa0cd3ceaea68e00"
+SRCREV = "0c6fb90e8c6e255e2b5da2c840fe534c7bc8cd7a"
 
 S = "${WORKDIR}/git"
 
