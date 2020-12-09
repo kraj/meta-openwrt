@@ -12,21 +12,16 @@ Upstream-Status: Pending
  libfstools/overlay.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/libfstools/overlay.c b/libfstools/overlay.c
-index cdac23e..0fbe788 100644
 --- a/libfstools/overlay.c
 +++ b/libfstools/overlay.c
-@@ -30,6 +30,10 @@
- #include "libfstools.h"
- #include "volume.h"
+@@ -34,6 +34,10 @@
+ #define GLOB_ONLYDIR 0x100
+ #endif
  
 +#ifndef GLOB_ONLYDIR
 +#define GLOB_ONLYDIR    0x100
 +#endif
 +
  #define SWITCH_JFFS2 "/tmp/.switch_jffs2"
+ #define OVERLAYDIR "/rom/overlay"
  
- static bool keep_sysupgrade;
--- 
-2.7.0
-
