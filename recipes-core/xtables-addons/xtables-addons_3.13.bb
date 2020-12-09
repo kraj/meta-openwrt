@@ -6,8 +6,10 @@ DEPENDS = "virtual/kernel iptables"
 
 inherit autotools kernel-module-split module-base pkgconfig
 
+CFLAGS_append_toolchain-clang = " -Wno-error=implicit-function-declaration"
+
 SRC_URI = " \
-          https://master.dl.sourceforge.net/project/xtables-addons/Xtables-addons/${BPN}-${PV}.tar.xz \
+          https://inai.de/files/xtables-addons/${BP}.tar.xz \
           file://001-fix-kernel-version-detection.patch \
           file://100-add-rtsp-conntrack.patch \
           file://200-add-lua-packetscript.patch \
@@ -16,15 +18,9 @@ SRC_URI = " \
           file://400-fix-IFF_LOWER_UP-musl.patch \
           file://0001-Unset-LDFLAGS-for-kernel-modules.patch \
           "
+SRC_URI[sha256sum] = "893c0c4ea09759cda1ab7e68f1281d125e59270f7b59e446204ce686c6a76d65"
 
-
-SRC_URI[md5sum] = "e99ea681b7b3866a581390e1b3ea185e"
-SRC_URI[sha256sum] = "efa62c7df6cd3b82d7195105bf6fe177b605f91f3522e4114d2f4e0ad54320d6"
-
-S = "${WORKDIR}/xtables-addons-${PV}"
-
-
-MODULES_MODULE_SYMVERS_LOCATION = "../${BPN}-${PV}/extensions"
+MODULES_MODULE_SYMVERS_LOCATION = "../${BP}/extensions"
 
 EXTRA_OECONF = "--with-kbuild=${STAGING_KERNEL_DIR}"
 
