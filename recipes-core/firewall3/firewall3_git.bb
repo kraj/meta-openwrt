@@ -143,3 +143,5 @@ RRECOMMENDS_${PN} += "\
                      kernel-module-nf-conntrack-ipv6 \
                      ', '' , d)} \
                      "
+
+TOOLCHAIN = "gcc"
