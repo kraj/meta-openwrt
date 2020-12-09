@@ -6,10 +6,6 @@
 SUMMARY = "Base files from openembedded and openwrt projects"
 HOMEPAGE = "http://wiki.openwrt.org/"
 
-
-LIC_FILES_CHKSUM_remove = " file://${S}/../git/openwrt/LICENSE;md5=94d55d512a9ba36caa9b7df079bae19f "
-LIC_FILES_CHKSUM_append = " file://${SG}/LICENSE;md5=94d55d512a9ba36caa9b7df079bae19f "
-
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-openwrt:"
 
 SRC_URI += "\
@@ -20,6 +16,7 @@ SRCREV = "${OPENWRT_SRCREV}"
 S = "${WORKDIR}"
 SG = "${WORKDIR}/git/openwrt"
 STMP = "${WORKDIR}/stmp"
+OPENWRT_BASEPATH = "${SG}"
 
 inherit openwrt-virtual-runtimes openwrt-base-files
 
@@ -59,6 +56,7 @@ do_install_append () {
         rm -f ${STMP}/etc/rc.common
         rm -f ${STMP}/etc/rc.local
         rm -f ${STMP}/usr/libexec/login.sh
+        rm -f ${STMP}/usr/libexec/validate_firmware_image
         rm -f ${STMP}/etc/init.d/done
         rm -f ${STMP}/etc/init.d/sysctl
         rm -f ${STMP}/etc/init.d/umount
@@ -96,7 +94,7 @@ do_install_append () {
         # These depend on mechanisms not in OE build process
         rm -f ${STMP}/etc/openwrt_version
         rm -f ${STMP}/etc/openwrt_release
-        rm -f ${STMP}/etc/uci-defaults/13_fix_group_user
+        rm -f ${STMP}/etc/uci-defaults/13_fix-group-user
         # We want this to fail if Openwrt adds more to this dir, so no rm -rf
         rmdir ${STMP}/etc/uci-defaults
 
