@@ -11,7 +11,7 @@ DEPENDS = "libubox"
 SRC_URI = "git://git.openwrt.org/project/relayd.git \
           "
 
-SRCREV = "ad0b25ad74345d367c62311e14b279f5ccb8ef13"
+SRCREV = "f4d759be54ceb37714e9a6ca320d5b50c95e9ce9"
 
 S = "${WORKDIR}/git"
 
