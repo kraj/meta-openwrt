@@ -11,12 +11,10 @@ DEPENDS = "libubox ubus"
 SRC_URI = "git://git.openwrt.org/project/ugps.git \
           "
 
-SRCREV = "971e6703eb9bed936cc62cd335105bd2acca14ef"
+SRCREV = "511a5b3c84fa715ef0305cf26c98619c12a4867a"
 
 S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig openwrt
-
-CFLAGS += "-D_DEFAULT_SOURCE"
 
 FILES_${PN}  += "${libdir}/*"
