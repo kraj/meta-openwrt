@@ -10,7 +10,7 @@ DEPENDS = "libusb libubox"
 
 SRC_URI = "git://git.openwrt.org/project/usbmode.git"
 
-SRCREV = "993a9a542791953c4804f7ddbb3a07756738e37a"
+SRCREV = "f40f84c27534159066c94dadc0c08e0b255c3e26"
 
 S = "${WORKDIR}/git"
 
