@@ -11,10 +11,9 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=ab6706baf6d39a6b0fa2613a3b0831e7"
 DEPENDS += "lua5.1-native lua5.1"
 
 SRC_URI = "git://github.com/diegonehab/luasocket.git \
-           file://0001-allow-overrides-for-DESTDIR-CC_linux-LD_linux-LDFLAG.patch \
           "
 
-SRCREV = "d1ec29be7f982db75864155dd61a058902e1cae2"
+SRCREV = "5b18e475f38fcf28429b1cc4b17baee3b9793a62"
 
 S = "${WORKDIR}/git"
 
@@ -32,4 +31,3 @@ do_install() {
 
 FILES_${PN}  += "${libdir}/* ${datadir}/lua/5.*/"
 FILES_${PN}-dbg  += "${libdir}/lua/5.*/.debug ${libdir}/lua/5.*/*/.debug"
-
