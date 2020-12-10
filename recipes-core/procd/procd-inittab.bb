@@ -44,7 +44,7 @@ do_install() {
     fi
 }
 
-pkg_postinst_${PN} () {
+pkg_postinst_ontarget_${PN} () {
 # run this on the target
 if [ "x$D" = "x" ] && [ -e /proc/consoles ]; then
 	tmp="${SERIAL_CONSOLES_CHECK}"
