@@ -13,7 +13,7 @@ SRC_URI = "\
           file://0100-fix-wrong-binaries-found-due-to-inconsistent-path.patch \
 	  "
 
-SRCREV = "a235636a2687fafb9c474e4b134a59ff66425c92"
+SRCREV = "f53a63999784bcb7dc513e221f3f25dd3de2f35e"
 S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig openwrt-services openwrt openwrt-base-files
