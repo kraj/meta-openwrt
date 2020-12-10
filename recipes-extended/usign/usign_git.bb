@@ -9,7 +9,7 @@ SECTION = "base"
 
 SRC_URI = "git://git.openwrt.org/project/usign.git \
           "
-SRCREV = "ef6419142a3b0fbcddcccf536e3c1880302c6f89"
+SRCREV = "f1f65026a94137c91b5466b149ef3ea3f20091e9"
 
 S = "${WORKDIR}/git"
 
