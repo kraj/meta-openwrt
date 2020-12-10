@@ -1,0 +1,28 @@
+From 3ce3c3ded2cf6ab4d2212f9f7789238c2aa2c79d Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Wed, 9 Dec 2020 22:28:20 -0800
+Subject: [PATCH] Fix compilation problem warn_unused_result [-Wunused-result]
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ log/logd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/log/logd.c b/log/logd.c
+index 7d53139..81cc4f7 100644
+--- a/log/logd.c
++++ b/log/logd.c
+@@ -260,8 +260,8 @@ main(int argc, char **argv)
+ 	ubus_auto_connect(&conn);
+ 	p = getpwnam("logd");
+ 	if (p) {
+-		setuid(p->pw_uid);
+-		setgid(p->pw_gid);
++		if(setuid(p->pw_uid));
++		if(setgid(p->pw_gid));
+ 	}
+ 	uloop_run();
+ 	log_shutdown();
+-- 
+2.29.2
+
