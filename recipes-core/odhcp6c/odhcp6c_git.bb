@@ -8,11 +8,10 @@ LIC_FILES_CHKSUM = "file://src/odhcp6c.c;beginline=1;endline=13;md5=41d01a2c8e6a
 SECTION = "base"
 DEPENDS = "libubox"
 
-SRCREV_odhcp6c = "474b5a3a9a25f0aa12e69afd72d7661638ad879d"
+SRCREV_odhcp6c = "0ffa3a31f7146d320214f431291c1196070a010f"
 
 SRC_URI = "\
           git://git.openwrt.org/project/odhcp6c.git;name=odhcp6c \
-          file://0001-dhcpv6-Fix-strncpy-bounds-and-initialize-struct-to-0.patch \
           "
 
 S = "${WORKDIR}/git"
