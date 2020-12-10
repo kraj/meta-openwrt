@@ -24,11 +24,11 @@ S = "${WORKDIR}/git"
 PD = "${S}/openwrt/package/system/procd/files"
 BF = "${S}/openwrt/package/base-files/files"
 
-inherit cmake openwrt openwrt-services pkgconfig openwrt-base-files
+inherit cmake openwrt openwrt-services pkgconfig openwrt-base-files update-alternatives
 
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
-CFLAGS += "-Wno-error=format-truncation"
+TARGET_CFLAGS_append = " -Wno-error=array-bounds -Wno-error=unused-result"
 
 do_install_append() {
     # Early init
