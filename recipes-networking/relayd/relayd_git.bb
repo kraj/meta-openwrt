@@ -9,6 +9,7 @@ SECTION = "base"
 DEPENDS = "libubox"
 
 SRC_URI = "git://git.openwrt.org/project/relayd.git \
+           file://0001-Fix-ignoring-return-value-of-write-declared-with-att.patch \
           "
 
 SRCREV = "f4d759be54ceb37714e9a6ca320d5b50c95e9ce9"

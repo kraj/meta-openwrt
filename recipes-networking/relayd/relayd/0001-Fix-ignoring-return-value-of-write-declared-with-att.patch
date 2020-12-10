@@ -1,0 +1,27 @@
+From ad0040910f62ebdfe47af750e101787183453bf3 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Wed, 9 Dec 2020 23:09:03 -0800
+Subject: [PATCH] Fix ignoring return value of 'write' declared with attribute
+ 'warn_unused_result'
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ route.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/route.c b/route.c
+index c552d1f..a619576 100644
+--- a/route.c
++++ b/route.c
+@@ -42,7 +42,7 @@ static void rtnl_flush(void)
+ 	if (fd < 0)
+ 		return;
+ 
+-	write(fd, "-1", 2);
++	if(write(fd, "-1", 2));
+ 	close(fd);
+ }
+ 
+-- 
+2.29.2
+
