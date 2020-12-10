@@ -12,7 +12,7 @@ SRC_URI = "\
 	git://git.openwrt.org/project/rpcd.git;name=rpcd; \
 	"
 
-SRCREV_rpcd = "cfe1e75c91bc1bac82e6caab3e652b0ebee59524"
+SRCREV_rpcd = "3fea6559817a22de1b8375b9b1f3d818e6534591"
 
 S = "${WORKDIR}/git"
 OR = "${S}/openwrt/package/system/rpcd/files"
