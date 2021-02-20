@@ -13,12 +13,10 @@ SRC_URI = "\
           git://git.openwrt.org/project/netifd.git;name=netifd \
           file://100-Fix-IFF_LOWER_UP-define.patch \
           file://network.config \
-          file://200-buffer-overflow-fix.patch \
-          file://300-replace-is_error-helper-with-NULL-check.patch \
 	  file://0001-resolv.conf.auto-Use-run-instead-of-tmp.patch \
           "
 
-SRCREV_netifd = "650758b16e5185505a3fbc1307949340af70b611"
+SRCREV_netifd = "b1e83288fdbf9ac80f5377b279404adaf05e0c4d"
 
 S = "${WORKDIR}/git"
 

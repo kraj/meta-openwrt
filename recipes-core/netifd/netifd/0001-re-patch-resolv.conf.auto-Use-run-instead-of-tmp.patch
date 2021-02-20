@@ -1,7 +1,7 @@
-From 587e3af4084e477c244750028937cbfa54bf6c71 Mon Sep 17 00:00:00 2001
-From: Parthiban Nallathambi <pn@denx.de>
-Date: Fri, 8 Jun 2018 18:41:43 +0200
-Subject: [PATCH] [resolv.conf.auto]: Use /run instead of /tmp
+From d05621d33f7366f7960458ec67e6163126e57b50 Mon Sep 17 00:00:00 2001
+From: Cleiton Bueno <cleitonrbueno@gmail.com>
+Date: Fri, 19 Feb 2021 12:30:56 -0300
+Subject: [PATCH] re-patch [resolv.conf.auto]: Use /run instead of /tmp
 
 Using netifd as network manager along with systemd provokes the bad usage
 of path, in this case /tmp/. All the runtime configuration needs to be
@@ -26,15 +26,14 @@ So moving the runtime configuration to /run here
 Signed-off-by: Parthiban Nallathambi <pn@denx.de>
 Signed-off-by: Alejandro Hernandez <aehs29@gmail.com>
 
-
 ---
- netifd.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ netifd.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Index: git/netifd.h
-===================================================================
---- git.orig/netifd.h
-+++ git/netifd.h
+diff --git a/netifd.h b/netifd.h
+index a4a146c..94a57b5 100644
+--- a/netifd.h
++++ b/netifd.h
 @@ -32,12 +32,12 @@
  #define DEFAULT_MAIN_PATH	"./examples"
  #define DEFAULT_CONFIG_PATH	"./config"
@@ -45,8 +44,11 @@ Index: git/netifd.h
  #define DEFAULT_MAIN_PATH	"/lib/netifd"
  #define DEFAULT_CONFIG_PATH	NULL /* use the default set in libuci */
  #define DEFAULT_HOTPLUG_PATH	"/sbin/hotplug-call"
--#define DEFAULT_RESOLV_CONF	"/tmp/resolv.conf.auto"
-+#define DEFAULT_RESOLV_CONF	"/run/resolv.conf.auto"
+-#define DEFAULT_RESOLV_CONF	"/tmp/resolv.conf.d/resolv.conf.auto"
++#define DEFAULT_RESOLV_CONF	"/run/resolv.conf.d/resolv.conf.auto"
  #endif
  
  extern const char *resolv_conf;
+-- 
+2.7.4
+
