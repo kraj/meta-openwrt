@@ -13,10 +13,9 @@ FILESEXTRAPATHS_prepend = "${THIDIR}/${PN}:"
 SRC_URI = "\
     git://git.openwrt.org/project/odhcpd.git;name=odhcpd \
     file://0100-OE-build-fails-due-to-libnl-tiny-dependency-in-CMakeLists.patch \
-    file://0001-odhcpd-fix-strncpy-bounds.patch \
 "
 
-SRCREV_odhcpd = "750e457e3000187b85906814a2529ede24775325"
+SRCREV_odhcpd = "fbf14aee4ad321ac3702b60ff8193d82812c2270"
 
 S = "${WORKDIR}/git"
 OF = "${S}/openwrt/package/network/services/odhcpd/files"
