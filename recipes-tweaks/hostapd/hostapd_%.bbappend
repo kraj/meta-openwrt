@@ -42,4 +42,6 @@ FILES_${PN} += "\
                ${base_libdir}/netifd/hostapd.sh \
                ${base_libdir}/wifi/mac80211.sh \
                ${base_libdir}/netifd/wireless/mac80211.sh \
+               ${base_libdir}/netifd/mac80211.sh \
+               ${base_libdir}/netifd/proto/ppp.sh \
 "
