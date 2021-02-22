@@ -1,6 +1,47 @@
+From 8dfa0388630dc6166681adedfc31f69b49edea14 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Tomasz=20=C5=BByjewski?= <tomasz.zyjewski@3mdeb.com>
+Date: Mon, 15 Feb 2021 15:40:54 +0100
+Subject: [PATCH] cmake-patch
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Tomasz Żyjewski <tomasz.zyjewski@3mdeb.com>
+---
+ CMakeLists.txt                                | 35 ++++++++++++++++++
+ applications/luci-app-firewall/CMakeLists.txt | 18 ++++++++++
+ libs/luci-lib-ip/CMakeLists.txt               | 15 ++++++++
+ libs/luci-lib-jsonc/CMakeLists.txt            | 15 ++++++++
+ libs/luci-lib-nixio/CMakeLists.txt            | 26 ++++++++++++++
+ libs/rpcd-mod-luci/CMakeLists.txt             | 12 +++++++
+ libs/rpcd-mod-rrdns/CMakeLists.txt            | 10 ++++++
+ modules/luci-base/CMakeLists.txt              | 36 +++++++++++++++++++
+ modules/luci-mod-admin-full/CMakeLists.txt    |  3 ++
+ modules/luci-mod-network/CMakeLists.txt       | 19 ++++++++++
+ modules/luci-mod-status/CMakeLists.txt        | 25 +++++++++++++
+ modules/luci-mod-system/CMakeLists.txt        | 19 ++++++++++
+ themes/luci-theme-bootstrap/CMakeLists.txt    | 19 ++++++++++
+ 13 files changed, 252 insertions(+)
+ create mode 100644 CMakeLists.txt
+ create mode 100644 applications/luci-app-firewall/CMakeLists.txt
+ create mode 100644 libs/luci-lib-ip/CMakeLists.txt
+ create mode 100644 libs/luci-lib-jsonc/CMakeLists.txt
+ create mode 100644 libs/luci-lib-nixio/CMakeLists.txt
+ create mode 100644 libs/rpcd-mod-luci/CMakeLists.txt
+ create mode 100644 libs/rpcd-mod-rrdns/CMakeLists.txt
+ create mode 100644 modules/luci-base/CMakeLists.txt
+ create mode 100644 modules/luci-mod-admin-full/CMakeLists.txt
+ create mode 100644 modules/luci-mod-network/CMakeLists.txt
+ create mode 100644 modules/luci-mod-status/CMakeLists.txt
+ create mode 100644 modules/luci-mod-system/CMakeLists.txt
+ create mode 100644 themes/luci-theme-bootstrap/CMakeLists.txt
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+new file mode 100644
+index 000000000000..536bda74f266
 --- /dev/null
 +++ b/CMakeLists.txt
-@@ -0,0 +1,31 @@
+@@ -0,0 +1,35 @@
 +cmake_minimum_required(VERSION 3.0)
 +
 +PROJECT(luci)
@@ -26,12 +67,43 @@
 +
 +ADD_SUBDIRECTORY(modules/luci-base)
 +ADD_SUBDIRECTORY(modules/luci-mod-admin-full)
++ADD_SUBDIRECTORY(modules/luci-mod-status)
++ADD_SUBDIRECTORY(modules/luci-mod-system)
++ADD_SUBDIRECTORY(modules/luci-mod-network)
 +ADD_SUBDIRECTORY(libs/luci-lib-nixio)
 +ADD_SUBDIRECTORY(libs/luci-lib-ip)
 +ADD_SUBDIRECTORY(libs/luci-lib-jsonc)
++ADD_SUBDIRECTORY(libs/rpcd-mod-luci)
++ADD_SUBDIRECTORY(libs/rpcd-mod-rrdns)
 +ADD_SUBDIRECTORY(themes/luci-theme-bootstrap)
 +ADD_SUBDIRECTORY(applications/luci-app-firewall)
+diff --git a/applications/luci-app-firewall/CMakeLists.txt b/applications/luci-app-firewall/CMakeLists.txt
+new file mode 100644
+index 000000000000..5abaa244a438
+--- /dev/null
++++ b/applications/luci-app-firewall/CMakeLists.txt
+@@ -0,0 +1,18 @@
++cmake_minimum_required(VERSION 3.0)
 +
++PROJECT(luci-app-firewall C)
++
++INSTALL(DIRECTORY luasrc/
++	DESTINATION "${LUAPATH}/luci"
++	USE_SOURCE_PERMISSIONS
++)
++
++INSTALL(DIRECTORY root/
++	DESTINATION "${CMAKE_INSTALL_PREFIX}/"
++	USE_SOURCE_PERMISSIONS
++)
++
++INSTALL(DIRECTORY htdocs/
++	DESTINATION "${CMAKE_INSTALL_PREFIX}/www"
++	USE_SOURCE_PERMISSIONS
++)
+diff --git a/libs/luci-lib-ip/CMakeLists.txt b/libs/luci-lib-ip/CMakeLists.txt
+new file mode 100644
+index 000000000000..56ba5bd987aa
 --- /dev/null
 +++ b/libs/luci-lib-ip/CMakeLists.txt
 @@ -0,0 +1,15 @@
@@ -50,6 +122,30 @@
 +	LIBRARY DESTINATION "${LUAPATH}/luci"
 +)
 +
+diff --git a/libs/luci-lib-jsonc/CMakeLists.txt b/libs/luci-lib-jsonc/CMakeLists.txt
+new file mode 100644
+index 000000000000..c236a7b2b9f1
+--- /dev/null
++++ b/libs/luci-lib-jsonc/CMakeLists.txt
+@@ -0,0 +1,15 @@
++cmake_minimum_required(VERSION 3.0)
++
++PROJECT(luci-lib-jsonc C)
++
++FIND_PACKAGE(PkgConfig)
++
++ADD_LIBRARY(jsonc SHARED src/jsonc.c)
++SET_TARGET_PROPERTIES(jsonc PROPERTIES PREFIX "")
++
++TARGET_LINK_LIBRARIES(jsonc json-c)
++
++INSTALL(TARGETS jsonc
++	LIBRARY DESTINATION "${LUAPATH}/luci"
++)
++
+diff --git a/libs/luci-lib-nixio/CMakeLists.txt b/libs/luci-lib-nixio/CMakeLists.txt
+new file mode 100644
+index 000000000000..da9b3e42c9d5
 --- /dev/null
 +++ b/libs/luci-lib-nixio/CMakeLists.txt
 @@ -0,0 +1,26 @@
@@ -79,9 +175,46 @@
 +	USE_SOURCE_PERMISSIONS
 +)
 +
+diff --git a/libs/rpcd-mod-luci/CMakeLists.txt b/libs/rpcd-mod-luci/CMakeLists.txt
+new file mode 100644
+index 000000000000..d2133cc20ae3
+--- /dev/null
++++ b/libs/rpcd-mod-luci/CMakeLists.txt
+@@ -0,0 +1,12 @@
++cmake_minimum_required(VERSION 2.6)
++
++PROJECT(rpcd-mod-luci C)
++
++SET(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
++
++ADD_LIBRARY(rpcd-mod-luci SHARED src/luci.c)
++SET_TARGET_PROPERTIES(rpcd-mod-luci PROPERTIES OUTPUT_NAME luci PREFIX "")
++
++INSTALL(TARGETS rpcd-mod-luci
++	LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}/rpcd"
++)
+diff --git a/libs/rpcd-mod-rrdns/CMakeLists.txt b/libs/rpcd-mod-rrdns/CMakeLists.txt
+new file mode 100644
+index 000000000000..e1a4788337c9
+--- /dev/null
++++ b/libs/rpcd-mod-rrdns/CMakeLists.txt
+@@ -0,0 +1,10 @@
++cmake_minimum_required(VERSION 2.6)
++
++PROJECT(rpcd-mod-rrdns C)
++
++ADD_LIBRARY(rpcd-mod-rrdns SHARED src/rrdns.c)
++SET_TARGET_PROPERTIES(rpcd-mod-rrdns PROPERTIES OUTPUT_NAME rrdns PREFIX "")
++
++INSTALL(TARGETS rpcd-mod-rrdns
++	LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}/rpcd"
++)
+diff --git a/modules/luci-base/CMakeLists.txt b/modules/luci-base/CMakeLists.txt
+new file mode 100644
+index 000000000000..8b83ef4afa79
 --- /dev/null
 +++ b/modules/luci-base/CMakeLists.txt
-@@ -0,0 +1,37 @@
+@@ -0,0 +1,36 @@
 +cmake_minimum_required(VERSION 3.0)
 +
 +PROJECT(luci-base C)
@@ -96,19 +229,18 @@
 +		   DEPENDS lemon plural_formula
 +)
 +
-+ADD_LIBRARY(parser SHARED src/template_parser.c src/template_utils.c src/template_lmo.c src/template_lualib.c)
++ADD_LIBRARY(parser SHARED src/template_parser.c src/template_utils.c src/template_lmo.c src/template_lualib.c src/plural_formula.c)
++add_dependencies(parser generate_plural_formula)
 +SET_TARGET_PROPERTIES(parser PROPERTIES PREFIX "")
-+
-+INSTALL(DIRECTORY luasrc/
-+	DESTINATION "${LUAPATH}/luci"
-+	USE_SOURCE_PERMISSIONS
-+)
 +
 +INSTALL(TARGETS parser
 +	LIBRARY DESTINATION "${LUAPATH}/luci/template"
 +)
 +
-+add_dependencies(parser generate_plural_formula)
++INSTALL(DIRECTORY luasrc/
++	DESTINATION "${LUAPATH}/luci"
++	USE_SOURCE_PERMISSIONS
++)
 +
 +INSTALL(DIRECTORY root/
 +	DESTINATION "${CMAKE_INSTALL_PREFIX}/"
@@ -119,18 +251,24 @@
 +	DESTINATION "${CMAKE_INSTALL_PREFIX}/www"
 +	USE_SOURCE_PERMISSIONS
 +)
+diff --git a/modules/luci-mod-admin-full/CMakeLists.txt b/modules/luci-mod-admin-full/CMakeLists.txt
+new file mode 100644
+index 000000000000..1fd83f8f73b5
 --- /dev/null
 +++ b/modules/luci-mod-admin-full/CMakeLists.txt
 @@ -0,0 +1,3 @@
 +cmake_minimum_required(VERSION 3.0)
 +
 +PROJECT(luci-mod-admin-full C)
+diff --git a/modules/luci-mod-network/CMakeLists.txt b/modules/luci-mod-network/CMakeLists.txt
+new file mode 100644
+index 000000000000..5c2c9751c9ab
 --- /dev/null
-+++ b/themes/luci-theme-bootstrap/CMakeLists.txt
++++ b/modules/luci-mod-network/CMakeLists.txt
 @@ -0,0 +1,19 @@
 +cmake_minimum_required(VERSION 3.0)
 +
-+PROJECT(luci-theme-bootstrap C)
++PROJECT(luci-mod-network C)
 +
 +INSTALL(DIRECTORY luasrc/
 +	DESTINATION "${LUAPATH}/luci"
@@ -147,40 +285,9 @@
 +	USE_SOURCE_PERMISSIONS
 +)
 +
---- /dev/null
-+++ b/applications/luci-app-firewall/CMakeLists.txt
-@@ -0,0 +1,13 @@
-+cmake_minimum_required(VERSION 3.0)
-+
-+PROJECT(luci-app-firewall C)
-+
-+INSTALL(DIRECTORY root/
-+	DESTINATION "${CMAKE_INSTALL_PREFIX}/"
-+	USE_SOURCE_PERMISSIONS
-+)
-+
-+INSTALL(DIRECTORY htdocs/
-+	DESTINATION "${CMAKE_INSTALL_PREFIX}/www"
-+	USE_SOURCE_PERMISSIONS
-+)
---- /dev/null
-+++ b/libs/luci-lib-jsonc/CMakeLists.txt
-@@ -0,0 +1,15 @@
-+cmake_minimum_required(VERSION 3.0)
-+
-+PROJECT(luci-lib-jsonc C)
-+
-+FIND_PACKAGE(PkgConfig)
-+
-+ADD_LIBRARY(jsonc SHARED src/jsonc.c)
-+SET_TARGET_PROPERTIES(jsonc PROPERTIES PREFIX "")
-+
-+TARGET_LINK_LIBRARIES(jsonc json-c)
-+
-+INSTALL(TARGETS jsonc
-+	LIBRARY DESTINATION "${LUAPATH}/luci"
-+)
-+
+diff --git a/modules/luci-mod-status/CMakeLists.txt b/modules/luci-mod-status/CMakeLists.txt
+new file mode 100644
+index 000000000000..a4e323f71a85
 --- /dev/null
 +++ b/modules/luci-mod-status/CMakeLists.txt
 @@ -0,0 +1,25 @@
@@ -209,6 +316,9 @@
 +	DESTINATION "${CMAKE_INSTALL_PREFIX}/www"
 +	USE_SOURCE_PERMISSIONS
 +)
+diff --git a/modules/luci-mod-system/CMakeLists.txt b/modules/luci-mod-system/CMakeLists.txt
+new file mode 100644
+index 000000000000..ca99fb2a71e9
 --- /dev/null
 +++ b/modules/luci-mod-system/CMakeLists.txt
 @@ -0,0 +1,19 @@
@@ -231,3 +341,31 @@
 +	USE_SOURCE_PERMISSIONS
 +)
 +
+diff --git a/themes/luci-theme-bootstrap/CMakeLists.txt b/themes/luci-theme-bootstrap/CMakeLists.txt
+new file mode 100644
+index 000000000000..7a91aa761a28
+--- /dev/null
++++ b/themes/luci-theme-bootstrap/CMakeLists.txt
+@@ -0,0 +1,19 @@
++cmake_minimum_required(VERSION 3.0)
++
++PROJECT(luci-theme-bootstrap C)
++
++INSTALL(DIRECTORY luasrc/
++	DESTINATION "${LUAPATH}/luci"
++	USE_SOURCE_PERMISSIONS
++)
++
++INSTALL(DIRECTORY root/
++	DESTINATION "${CMAKE_INSTALL_PREFIX}/"
++	USE_SOURCE_PERMISSIONS
++)
++
++INSTALL(DIRECTORY htdocs/
++	DESTINATION "${CMAKE_INSTALL_PREFIX}/www"
++	USE_SOURCE_PERMISSIONS
++)
++
+-- 
+2.17.1
+
