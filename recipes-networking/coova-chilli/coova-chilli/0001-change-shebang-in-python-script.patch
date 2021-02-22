@@ -1,0 +1,23 @@
+From 3dbc43c2264d35089986c81f9b669ab06e403ec9 Mon Sep 17 00:00:00 2001
+From: Jakub Lecki <jakub.lecki@3mdeb.com>
+Date: Fri, 8 Jan 2021 16:52:10 +0100
+Subject: [PATCH] change shebang in python script
+
+Signed-off-by: Jakub Lecki <jakub.lecki@3mdeb.com>
+---
+ conf/CoovaChilliLib.py.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/conf/CoovaChilliLib.py.in b/conf/CoovaChilliLib.py.in
+index b167dcdbb317..aed3fbd91c51 100755
+--- a/conf/CoovaChilliLib.py.in
++++ b/conf/CoovaChilliLib.py.in
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/env python
+ """
+  CoovaChilli Python Library
+  Copyright (C) 2009  David Bird <david@coova.com>
+-- 
+2.25.1
+
