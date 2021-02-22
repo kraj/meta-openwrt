@@ -30,4 +30,8 @@ OECMAKE_C_FLAGS += "-I${STAGING_INCDIR}/libnl3 -DDESTDIR=${D}"
 
 S = "${WORKDIR}/git"
 
+do_configure_prepend() {
+    cp ${WORKDIR}/plural_formula.* ${S}/modules/luci-base/src/
+}
+
 FILES_${PN} += "/www ${base_libdir} /usr/share /usr/libexec"
