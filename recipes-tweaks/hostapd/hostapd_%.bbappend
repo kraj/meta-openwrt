@@ -29,9 +29,11 @@ do_install_append() {
     install -d ${D}${base_libdir}/netifd
     install -d ${D}${base_libdir}/netifd/wireless
     install -d ${D}${base_libdir}/wifi
+    install -d ${D}${base_libdir}/netifd/proto
 
     install -m 0755 ${WORKDIR}/git/openwrt/package/kernel/mac80211/files/lib/wifi/mac80211.sh ${D}${base_libdir}/wifi/mac80211.sh
     install -m 0755 ${WORKDIR}/git/openwrt/package/kernel/mac80211/files/lib/netifd/wireless/mac80211.sh ${D}${base_libdir}/netifd/wireless/mac80211.sh
+    install -m 0755 ${WORKDIR}/git/openwrt/package/network/services/ppp/files/ppp.sh ${D}${base_libdir}/netifd/proto/ppp.sh
 }
 
 FILES_${PN} += "\
