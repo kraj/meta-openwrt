@@ -19,7 +19,11 @@ SRC_URI = "git://github.com/openwrt/luci.git;branch=openwrt-19.07 \
 
 inherit cmake openwrt pkgconfig
 
+DEPENDS += " rpcd"
+
 RDEPENDS_${PN} += " liblucihttp"
+
+INSANE_SKIP_${PN} = "already-stripped"
 
 prefix=""
 includedir="/usr/include"
