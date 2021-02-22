@@ -9,9 +9,9 @@ SECTION = "base"
 DEPENDS = "json-c libubox libnl lua5.1 iwinfo openssl libxcrypt"
 RDEPENDS_${PN} = "lua5.1"
 
-SRCREV = "07d9006d239b29c9377fccb91b45eb2d0e447919"
+SRCREV = "8674e2a004c4407b3a454cf819f4d0308e0c02df"
 
-SRC_URI = "git://github.com/openwrt/luci.git \
+SRC_URI = "git://github.com/openwrt/luci.git;branch=openwrt-19.07 \
            file://cmake.patch \
            file://plural_formula.c \
            file://plural_formula.h \
