@@ -16,6 +16,8 @@ SRC_URI = "git://github.com/openwrt/luci.git \
 
 inherit cmake openwrt pkgconfig
 
+RDEPENDS_${PN} += " liblucihttp"
+
 prefix=""
 includedir="/usr/include"
 bindir="/usr/bin"
