@@ -12,7 +12,10 @@ RDEPENDS_${PN} = "lua5.1"
 SRCREV = "07d9006d239b29c9377fccb91b45eb2d0e447919"
 
 SRC_URI = "git://github.com/openwrt/luci.git \
-           file://cmake.patch"
+           file://cmake.patch \
+           file://plural_formula.c \
+           file://plural_formula.h \
+           "
 
 inherit cmake openwrt pkgconfig
 
