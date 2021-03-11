@@ -40,6 +40,10 @@ do_install_append () {
         mkdir -p ${STMP}
         cp -dR --preserve=mode,links ${SG}/package/base-files/files/* ${STMP}/
 
+        rm -f ${STMP}/etc/passwd
+        rm -f ${STMP}/etc/shadow
+        rm -f ${STMP}/etc/group
+
         # procd - earlyinit
         rm -f ${STMP}/etc/inittab
         rm -f ${STMP}/etc/preinit
@@ -134,7 +138,7 @@ do_install_append () {
             ln -sf /proc/mounts ${D}${sysconfdir}/mtab
         fi
 
-        chmod 0600 ${D}${sysconfdir}/shadow
+        # chmod 0600 ${D}${sysconfdir}/shadow
         chmod 1777 ${D}/tmp
 
         sed -i "s#%PATH%#/usr/sbin:/sbin:/usr/bin:/bin#g" \
