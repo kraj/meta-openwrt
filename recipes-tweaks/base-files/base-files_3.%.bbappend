@@ -131,6 +131,8 @@ do_install_append () {
         # FIXME: Should this change for OE?
         mkdir -p ${D}/overlay
 
+        mkdir -p ${D}/run/lock
+
         # Avoid flash writes
         ln -sf /tmp/resolv.conf /tmp/TZ ${D}${sysconfdir}/
         if [ "${@bb.utils.contains('PACKAGECONFIG', 'oeoveropenwrt', 'true', 'false', d)}" != "true" ]; then
