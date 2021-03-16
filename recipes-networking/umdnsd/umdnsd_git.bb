@@ -10,7 +10,7 @@ DEPENDS = "json-c libcap libubox ubus"
 
 SRC_URI = "git://git.openwrt.org/project/mdnsd.git \
           "
-SRCREV = "59e4fc98162d253b4e5ecd110f7bc5ea3962e221"
+SRCREV = "78aa36b0e9808e801c527c6dc47320e593309522"
 
 S = "${WORKDIR}/git"
 
