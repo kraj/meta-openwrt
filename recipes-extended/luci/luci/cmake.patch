@@ -1,6 +1,6 @@
 --- /dev/null
 +++ b/CMakeLists.txt
-@@ -0,0 +1,31 @@
+@@ -0,0 +1,32 @@
 +cmake_minimum_required(VERSION 3.0)
 +
 +PROJECT(luci)
@@ -26,11 +26,24 @@
 +
 +ADD_SUBDIRECTORY(modules/luci-base)
 +ADD_SUBDIRECTORY(modules/luci-mod-admin-full)
++ADD_SUBDIRECTORY(libs/luci-lib-base)
 +ADD_SUBDIRECTORY(libs/luci-lib-nixio)
 +ADD_SUBDIRECTORY(libs/luci-lib-ip)
 +ADD_SUBDIRECTORY(libs/luci-lib-jsonc)
 +ADD_SUBDIRECTORY(themes/luci-theme-bootstrap)
 +ADD_SUBDIRECTORY(applications/luci-app-firewall)
++
+--- /dev/null
++++ b/libs/luci-lib-base/CMakeLists.txt
+@@ -0,0 +1,9 @@
++cmake_minimum_required(VERSION 3.0)
++
++PROJECT(luci-lib-base C)
++
++INSTALL(DIRECTORY luasrc/
++	DESTINATION "${LUAPATH}/luci"
++	USE_SOURCE_PERMISSIONS
++)
 +
 --- /dev/null
 +++ b/libs/luci-lib-ip/CMakeLists.txt
