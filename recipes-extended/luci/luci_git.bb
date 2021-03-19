@@ -7,7 +7,7 @@ LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=2b42edef8fa55315f34f2370b4715ca9"
 SECTION = "base"
 DEPENDS = "json-c libubox libnl lua5.1 iwinfo openssl libxcrypt"
-RDEPENDS_${PN} = "lua5.1"
+RDEPENDS_${PN} = "lua5.1 lucihttp"
 
 SRCREV = "07d9006d239b29c9377fccb91b45eb2d0e447919"
 
