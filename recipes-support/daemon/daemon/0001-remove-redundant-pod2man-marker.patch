@@ -1,0 +1,26 @@
+From 725dd4f56af89748c3abb06351c237dc208992c8 Mon Sep 17 00:00:00 2001
+From: Jakub Lecki <jakub.lecki@3mdeb.com>
+Date: Wed, 13 Jan 2021 10:17:00 +0100
+Subject: [PATCH] remove redundant pod2man marker
+
+Signed-off-by: Jakub Lecki <jakub.lecki@3mdeb.com>
+---
+ libslack/str.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/libslack/str.c b/libslack/str.c
+index 2de1bdcc0900..ffbce3176aae 100644
+--- a/libslack/str.c
++++ b/libslack/str.c
+@@ -2861,8 +2861,6 @@ C<length> points to is decremented by the number of bytes deleted by the
+ translation. On success, returns the number of characters replaced or
+ deleted. On error, returns C<-1> with C<errno> set appropriately.
+ 
+-=cut
+-
+ */
+ 
+ static int do_tr_compiled(unsigned char *str, size_t *length, StringTR *table)
+-- 
+2.25.1
+

@@ -10,10 +10,12 @@ DEPENDS = "libubox"
 
 SRC_URI = "git://git.openwrt.org/project/umbim.git \
           "
-SRCREV = "af9c293c1f1d8a97fbd8adf9c6070ead4920ca84"
+SRCREV = "184b707ddaa0acee84d02e0ffe599cb8b67782bd"
 
 S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig openwrt
+
+TARGET_CFLAGS_append = " -Wno-error=address-of-packed-member"
 
 FILES_${PN}  += "${libdir}/*"

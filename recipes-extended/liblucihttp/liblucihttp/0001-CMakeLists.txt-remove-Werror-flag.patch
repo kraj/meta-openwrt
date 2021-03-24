@@ -1,0 +1,29 @@
+From 9c23211693ca13d270b2866cd9a3e6486e15626a Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Tomasz=20=C5=BByjewski?= <tomasz.zyjewski@3mdeb.com>
+Date: Thu, 11 Feb 2021 15:41:11 +0100
+Subject: [PATCH] CMakeLists.txt-remove-Werror-flag
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Tomasz Żyjewski <tomasz.zyjewski@3mdeb.com>
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 676c20aa6a00..ced7821d1d55 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -5,7 +5,7 @@ PROJECT(liblucihttp C)
+ OPTION(BUILD_LUA "build Lua binding" ON)
+ OPTION(BUILD_TESTS "build test programs" ON)
+ 
+-ADD_DEFINITIONS(-Os -ggdb -Wall -Werror --std=gnu99 -Wmissing-declarations -Wno-format-truncation)
++ADD_DEFINITIONS(-Os -ggdb -Wall --std=gnu99 -Wmissing-declarations -Wno-format-truncation)
+ 
+ SET(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
+ 
+-- 
+2.17.1
+

@@ -1,0 +1,76 @@
+From c79673ed10d5171567b9a8f8a5a8585fea6d44b0 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Tomasz=20=C5=BByjewski?= <tomasz.zyjewski@3mdeb.com>
+Date: Mon, 8 Feb 2021 13:34:38 +0100
+Subject: [PATCH] 430-hostapd_cli_ifdef
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Tomasz Żyjewski <tomasz.zyjewski@3mdeb.com>
+---
+ hostapd/hostapd_cli.c | 8 --------
+ 1 file changed, 8 deletions(-)
+
+diff --git a/hostapd/hostapd_cli.c b/hostapd/hostapd_cli.c
+index 046024390f84..aa7194e3dcb0 100644
+--- a/hostapd/hostapd_cli.c
++++ b/hostapd/hostapd_cli.c
+@@ -385,7 +385,6 @@ static int hostapd_cli_cmd_disassociate(struct wpa_ctrl *ctrl, int argc,
+ }
+ 
+ 
+-#ifdef CONFIG_TAXONOMY
+ static int hostapd_cli_cmd_signature(struct wpa_ctrl *ctrl, int argc,
+ 				     char *argv[])
+ {
+@@ -398,7 +397,6 @@ static int hostapd_cli_cmd_signature(struct wpa_ctrl *ctrl, int argc,
+ 	os_snprintf(buf, sizeof(buf), "SIGNATURE %s", argv[0]);
+ 	return wpa_ctrl_command(ctrl, buf);
+ }
+-#endif /* CONFIG_TAXONOMY */
+ 
+ 
+ #ifdef CONFIG_IEEE80211W
+@@ -417,7 +415,6 @@ static int hostapd_cli_cmd_sa_query(struct wpa_ctrl *ctrl, int argc,
+ #endif /* CONFIG_IEEE80211W */
+ 
+ 
+-#ifdef CONFIG_WPS
+ static int hostapd_cli_cmd_wps_pin(struct wpa_ctrl *ctrl, int argc,
+ 				   char *argv[])
+ {
+@@ -643,7 +640,6 @@ static int hostapd_cli_cmd_wps_config(struct wpa_ctrl *ctrl, int argc,
+ 			 ssid_hex, argv[1]);
+ 	return wpa_ctrl_command(ctrl, buf);
+ }
+-#endif /* CONFIG_WPS */
+ 
+ 
+ static int hostapd_cli_cmd_disassoc_imminent(struct wpa_ctrl *ctrl, int argc,
+@@ -1538,15 +1534,12 @@ static const struct hostapd_cli_cmd hostapd_cli_commands[] = {
+ 	{ "disassociate", hostapd_cli_cmd_disassociate,
+ 	  hostapd_complete_stations,
+ 	  "<addr> = disassociate a station" },
+-#ifdef CONFIG_TAXONOMY
+ 	{ "signature", hostapd_cli_cmd_signature, hostapd_complete_stations,
+ 	  "<addr> = get taxonomy signature for a station" },
+-#endif /* CONFIG_TAXONOMY */
+ #ifdef CONFIG_IEEE80211W
+ 	{ "sa_query", hostapd_cli_cmd_sa_query, hostapd_complete_stations,
+ 	  "<addr> = send SA Query to a station" },
+ #endif /* CONFIG_IEEE80211W */
+-#ifdef CONFIG_WPS
+ 	{ "wps_pin", hostapd_cli_cmd_wps_pin, NULL,
+ 	  "<uuid> <pin> [timeout] [addr] = add WPS Enrollee PIN" },
+ 	{ "wps_check_pin", hostapd_cli_cmd_wps_check_pin, NULL,
+@@ -1571,7 +1564,6 @@ static const struct hostapd_cli_cmd hostapd_cli_commands[] = {
+ 	  "<SSID> <auth> <encr> <key> = configure AP" },
+ 	{ "wps_get_status", hostapd_cli_cmd_wps_get_status, NULL,
+ 	  "= show current WPS status" },
+-#endif /* CONFIG_WPS */
+ 	{ "disassoc_imminent", hostapd_cli_cmd_disassoc_imminent, NULL,
+ 	  "= send Disassociation Imminent notification" },
+ 	{ "ess_disassoc", hostapd_cli_cmd_ess_disassoc, NULL,
+-- 
+2.17.1
+

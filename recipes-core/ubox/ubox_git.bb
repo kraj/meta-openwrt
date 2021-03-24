@@ -8,16 +8,15 @@ DEPENDS = "ubus libubox uci"
 
 SRC_URI = "\
           git://git.openwrt.org/project/ubox.git \
+          file://0001-Fix-compilation-problem-warn_unused_result-Wunused-r.patch \
           file://log.init \
           "
 
-SRCREV = "16f7e16181e2f3e9cf3e2ce56a7e291844900d09"
+SRCREV = "9ef886819dd48303d8ced4cdbc9afbf32682535c"
 
 S = "${WORKDIR}/git"
 
 inherit cmake openwrt-services openwrt
-
-TARGET_CFLAGS += "-Wno-format-truncation"
 
 do_install_append () {
         ${@bb.utils.contains('VIRTUAL-RUNTIME_syslog', 'ubox', 'install -Dm 0755 ${WORKDIR}/log.init ${D}/etc/init.d/log', '', d)}

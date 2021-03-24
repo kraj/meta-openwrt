@@ -6,16 +6,14 @@ Date:   Sat Jan 20 20:25:58 2018 -0500
     The PATH of the uhttpd CGI environment does not match the profile or init PATH
     which results in luci finding the wrong binaries compared to the command line or
     initscripts, when there is more than one binary of the same name.
-Index: git/main.c
-===================================================================
---- git.orig/main.c
-+++ git/main.c
-@@ -177,7 +177,7 @@ static void init_defaults_pre(void)
+--- a/main.c
++++ b/main.c
+@@ -185,7 +185,7 @@ static void init_defaults_pre(void)
  	conf.max_connections = 100;
  	conf.realm = "Protected Area";
  	conf.cgi_prefix = "/cgi-bin";
 -	conf.cgi_path = "/sbin:/usr/sbin:/bin:/usr/bin";
 +	conf.cgi_path = "/usr/sbin:/usr/bin:/sbin:/bin";
  	INIT_LIST_HEAD(&conf.cgi_alias);
+ 	INIT_LIST_HEAD(&conf.lua_prefix);
  }
- 

@@ -8,9 +8,9 @@ LIC_FILES_CHKSUM = "file://License.txt;md5=81cba52d2de829c8be3d167618e6b8b6"
 SECTION = "libs"
 DEPENDS = ""
 
-SRCREV = "1bc90ac506b50a06ee613b139405ff47ecc83c0a"
+PV = "3.0.2+git${SRCPV}"
+SRCREV = "34257124eefe0ca095ed54681c818381070ed549"
 SRC_URI = "git://github.com/blunderer/libroxml.git \
-           file://0001-remove-inline-from-read-close-buf-and-file-functions.patch \
          "
 
 inherit cmake pkgconfig

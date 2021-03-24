@@ -1,0 +1,60 @@
+From 0309f724be2492fa6f108036cae2975a65c43716 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Tomasz=20=C5=BByjewski?= <tomasz.zyjewski@3mdeb.com>
+Date: Thu, 28 Jan 2021 17:16:34 +0100
+Subject: [PATCH] chilli.in: add needed killproc function
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Tomasz Żyjewski <tomasz.zyjewski@3mdeb.com>
+---
+ conf/chilli.in | 26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
+
+diff --git a/conf/chilli.in b/conf/chilli.in
+index fea6dfe145cd..bff164e39fd4 100644
+--- a/conf/chilli.in
++++ b/conf/chilli.in
+@@ -17,7 +17,7 @@ lockfile=/var/lock/subsys/$prog
+ 
+ MULTI=$(ls @ETCCHILLI@/*/chilli.conf 2>/dev/null)
+ [ -z "$DHCPIF" ] && [ -n "$MULTI" ] && {
+-    for c in $MULTI; 
++    for c in $MULTI;
+     do
+         echo "Found configuration $c"
+         DHCPIF=$(basename $(echo $c|sed 's#/chilli.conf##'))
+@@ -41,6 +41,30 @@ fi
+     exit 0
+ }
+ 
++pidofproc () {
++
++	# pidof output null when no program is running, so no "2>/dev/null".
++	pid=`pidof $1`
++	status=$?
++	case $status in
++	0)
++		echo $pid
++		return 0
++		;;
++	127)
++		echo "ERROR: command pidof not found" >&2
++		exit 127
++		;;
++	*)
++		return $status
++		;;
++	esac
++}
++
++killproc() { # kill the named process(es)
++	pid=`pidofproc $1` && kill $pid
++}
++
+ start() {
+     echo -n $"Starting $prog: "
+ 
+-- 
+2.17.1
+

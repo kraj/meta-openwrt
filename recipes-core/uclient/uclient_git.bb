@@ -11,10 +11,8 @@ DEPENDS = "libubox ustream-ssl"
 SRC_URI = "git://git.openwrt.org/project/uclient.git \
           "
 
-SRCREV = "4b87d83160fec70d50b7fcd736a8c538c28a016c"
+SRCREV = "c66098611f16806a936a3a3f92113a16382fc4d9"
 
 S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig openwrt
-
-OECMAKE_C_FLAGS += "-Wno-error=discarded-qualifiers"

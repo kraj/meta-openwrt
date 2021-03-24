@@ -14,7 +14,7 @@ SRC_URI = "git://git.openwrt.org/project/jsonpath.git;name=jsonpath; \
           file://0100-break-lemon-dependency-cycle.patch \
           "
 
-SRCREV_jsonpath = "dea067ad67d977c247c300c06676a06adf21e0c7"
+SRCREV_jsonpath = "c7e938d6582a436dddc938539e72dd1320625c54"
 
 inherit cmake pkgconfig
 

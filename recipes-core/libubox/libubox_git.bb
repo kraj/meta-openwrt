@@ -34,12 +34,12 @@ DEPENDS += "json-c"
 DEPENDS += "${@bb.utils.contains('PACKAGECONFIG', 'lua', 'lua5.1', '', d)}"
 
 SRC_URI = "\
-          git://git.openwrt.org/project/libubox.git;branch=lede-17.01 \
+          git://git.openwrt.org/project/libubox.git \
           file://0001-version-libraries.patch \
           file://fix-libdir.patch \
           "
 
-SRCREV = "96305a3cafcc9c0df7f189567671bb26ce3eb129"
+SRCREV = "9e52171d70def760a6949676800d0b73f85ee22d"
 PV = "2.0.0+git${SRCPV}"
 
 S = "${WORKDIR}/git"
