@@ -12,7 +12,6 @@ SRC_URI += "\
     file://fragment-lock.cfg \
     ${@bb.utils.contains('PACKAGECONFIG', 'oeoveropenwrt', '', 'file://fragment-noifupdown.cfg', d)} \
     file://220-add_lock_util.patch \
-    file://z300-fix_off_t_misdetection_triggered_without_LFS.patch \
 "
 
 do_install_append () {

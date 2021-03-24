@@ -7,12 +7,15 @@
 # Use this git SRCREV for all recipes that pull files out of openwrt repository
 # Equivalent to tag v17.01.4
 
-OPENWRT_SRCREV = "444add156f2a6d92fc15005c5ade2208a978966c"
+OPENWRT_SRCREV = "dd3464023f1836ef4fa417509830aaf5618b9ae9"
 
-LICENSE_append = "&GPL-2.0+"
-LIC_FILES_CHKSUM_append = " file://${S}/../git/openwrt/LICENSE;md5=94d55d512a9ba36caa9b7df079bae19f "
+LICENSE_append = "& GPL-2.0+"
+
+OPENWRT_BASEPATH ?= "${S}/../git/openwrt"
+
+LIC_FILES_CHKSUM_append = " file://${OPENWRT_BASEPATH}/LICENSE;md5=b234ee4d69f5fce4486a80fdaf4a4263 "
 
 SRC_URI_append = "\
-	git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt;branch=lede-17.01 \
+	git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt \
 	"
 

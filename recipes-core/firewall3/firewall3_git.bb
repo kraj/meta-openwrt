@@ -11,7 +11,7 @@ DEPENDS = "libubox uci ubus iptables"
 SRC_URI = "git://git.openwrt.org/project/firewall3.git \
           "
 
-SRCREV = "a4d98aea373e04f3fdc3c492c1688ba52ce490a9"
+SRCREV = "12f6f143106257e0921c6ebbca2fe329cbeb3de6"
 
 S = "${WORKDIR}/git"
 
@@ -143,3 +143,5 @@ RRECOMMENDS_${PN} += "\
                      kernel-module-nf-conntrack-ipv6 \
                      ', '' , d)} \
                      "
+
+TOOLCHAIN = "gcc"

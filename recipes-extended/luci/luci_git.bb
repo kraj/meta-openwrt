@@ -9,20 +9,33 @@ SECTION = "base"
 DEPENDS = "json-c libubox libnl lua5.1 iwinfo openssl virtual/crypt"
 RDEPENDS_${PN} = "lua5.1"
 
-SRCREV = "ff21f2f0a38dbac7411118377d3300a668db7146"
+SRCREV = "8674e2a004c4407b3a454cf819f4d0308e0c02df"
 
-SRC_URI = "git://github.com/openwrt/luci.git;branch=lede-17.01"
-SRC_URI += "file://cmake.patch"
+SRC_URI = "git://github.com/openwrt/luci.git;branch=openwrt-19.07 \
+           file://cmake.patch \
+           file://plural_formula.c \
+           file://plural_formula.h \
+           "
 
 inherit cmake openwrt pkgconfig
+
+DEPENDS += " rpcd"
+
+RDEPENDS_${PN} += " liblucihttp"
+
+INSANE_SKIP_${PN} = "already-stripped"
 
 prefix=""
 includedir="/usr/include"
 bindir="/usr/bin"
-libdir="/usr/lib"
+libdir="/usr/${baselib}"
 
 OECMAKE_C_FLAGS += "-I${STAGING_INCDIR}/libnl3 -DDESTDIR=${D}"
 
-FILES_${PN} += "/www /lib /usr/share/acl.d ${bindir} ${libdir}"
+S = "${WORKDIR}/git"
 
-S = "${WORKDIR}/git/"
+do_configure_prepend() {
+    cp ${WORKDIR}/plural_formula.* ${S}/modules/luci-base/src/
+}
+
+FILES_${PN} += "/www ${base_libdir} /usr/share /usr/libexec"

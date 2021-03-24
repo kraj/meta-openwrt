@@ -1,0 +1,63 @@
+From f8de933c25f5be0cb6fbf810bee1dc849ea8d971 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Tomasz=20=C5=BByjewski?= <tomasz.zyjewski@3mdeb.com>
+Date: Wed, 17 Feb 2021 13:39:03 +0100
+Subject: [PATCH] redir
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Tomasz Żyjewski <tomasz.zyjewski@3mdeb.com>
+---
+ src/redir.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/src/redir.c b/src/redir.c
+index f3a419159ba2..19c0e9fc6c1b 100644
+--- a/src/redir.c
++++ b/src/redir.c
+@@ -3358,15 +3358,17 @@ int redir_main(struct redir_t *redir,
+   }
+ 
+ #define redir_memcopy(msgtype)                                          \
++  do {                                                                  \
+   redir_challenge(challenge);                                           \
+   redir_chartohex(challenge, hexchal, REDIR_MD5LEN);                    \
+   msg.mtype = msgtype;                                                  \
+   memcpy(conn.s_state.redir.uamchal, challenge, REDIR_MD5LEN);          \
+-  if (_options.debug)							\
+-    syslog(LOG_DEBUG, "%s(%d): ---->>> resetting challenge: %s", __FUNCTION__, __LINE__, hexchal)
++  if (_options.debug) syslog(LOG_DEBUG, "%s(%d): ---->>> resetting challenge: %s", __FUNCTION__, __LINE__, hexchal); \
++  } while (0)
+ 
+ #ifdef USING_IPC_UNIX
+ #define redir_msg_send(msgopt)                                          \
++  do {                                                                  \
+   msg.mdata.opt = msgopt;                                               \
+   memcpy(&msg.mdata.address, address, sizeof(msg.mdata.address));       \
+   memcpy(&msg.mdata.baddress, baddress, sizeof(msg.mdata.baddress));    \
+@@ -3376,9 +3378,11 @@ int redir_main(struct redir_t *redir,
+     syslog(LOG_ERR, "%s: write() failed! msgfd=%d type=%ld len=%d",     \
+            strerror(errno), redir->msgfd, msg.mtype, (int)sizeof(msg.mdata)); \
+     return redir_main_exit(&socket, forked, rreq);                      \
+-  }
++  }                                                                     \
++  } while (0)
+ #else
+ #define redir_msg_send(msgopt)                                          \
++  do {                                                                  \
+   msg.mdata.opt = msgopt;                                               \
+   memcpy(&msg.mdata.address, address, sizeof(msg.mdata.address));       \
+   memcpy(&msg.mdata.baddress, baddress, sizeof(msg.mdata.baddress));    \
+@@ -3388,7 +3392,8 @@ int redir_main(struct redir_t *redir,
+     syslog(LOG_ERR, "%s: msgsnd() failed! msgid=%d type=%ld len=%d",    \
+            strerror(errno), redir->msgid, msg.mtype, (int)sizeof(msg.mdata)); \
+     return redir_main_exit(&socket, forked, rreq);                      \
+-  }
++  }                                                                     \
++  } while (0)
+ #endif
+ 
+   /*
+-- 
+2.17.1
+

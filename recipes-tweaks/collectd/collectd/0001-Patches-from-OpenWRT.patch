@@ -1,0 +1,1043 @@
+From 31cb0ce06c59d8c01e2028ada4c7a0e49e0242ff Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Tomasz=20=C5=BByjewski?= <tomasz.zyjewski@3mdeb.com>
+Date: Tue, 16 Feb 2021 09:45:58 +0100
+Subject: [PATCH] Patches from OpenWRT
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Tomasz Żyjewski <tomasz.zyjewski@3mdeb.com>
+---
+ Makefile.am                     |  28 ++++++
+ README                          |   7 ++
+ configure.ac                    |  25 ++++--
+ fake-am_path_libgcrypt.m4       |   1 +
+ src/collectd.conf.in            |  19 ++++
+ src/collectd.conf.pod           |  21 +++++
+ src/daemon/collectd.c           |   9 +-
+ src/daemon/configfile.c         |   2 +-
+ src/daemon/plugin.c             |   7 +-
+ src/dhcpleases.c                |  83 ++++++++++++++++++
+ src/ipstatistics.c              | 104 ++++++++++++++++++++++
+ src/iwinfo.c                    | 150 ++++++++++++++++++++++++++++++++
+ src/modbus.c                    |   2 +-
+ src/olsrd.c                     |   2 +-
+ src/rrdtool.c                   |   9 ++
+ src/snmp6.c                     | 135 ++++++++++++++++++++++++++++
+ src/types.db                    |  15 ++++
+ src/utils/rrdcreate/rrdcreate.c |   3 +
+ src/utils/rrdcreate/rrdcreate.h |   2 +
+ 19 files changed, 608 insertions(+), 16 deletions(-)
+ create mode 100644 fake-am_path_libgcrypt.m4
+ create mode 100644 src/dhcpleases.c
+ create mode 100644 src/ipstatistics.c
+ create mode 100644 src/iwinfo.c
+ create mode 100644 src/snmp6.c
+
+diff --git a/Makefile.am b/Makefile.am
+index 591ac7ca8bdd..13b6e0d141f0 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -961,6 +961,12 @@ df_la_LDFLAGS = $(PLUGIN_LDFLAGS)
+ df_la_LIBADD = libignorelist.la libmount.la
+ endif
+ 
++if BUILD_PLUGIN_DHCPLEASES
++pkglib_LTLIBRARIES += dhcpleases.la
++dhcpleases_la_SOURCES = src/dhcpleases.c
++dhcpleases_la_LDFLAGS = $(PLUGIN_LDFLAGS)
++endif
++
+ if BUILD_PLUGIN_DISK
+ pkglib_LTLIBRARIES += disk.la
+ disk_la_SOURCES = src/disk.c
+@@ -1224,6 +1230,12 @@ ipstats_la_SOURCES = src/ipstats.c
+ ipstats_la_LDFLAGS = $(PLUGIN_LDFLAGS)
+ endif
+ 
++if BUILD_PLUGIN_IPSTATISTICS
++pkglib_LTLIBRARIES += ipstatistics.la
++ipstatistics_la_SOURCES = src/ipstatistics.c
++ipstatistics_la_LDFLAGS = $(PLUGIN_LDFLAGS)
++endif
++
+ if BUILD_PLUGIN_IPVS
+ pkglib_LTLIBRARIES += ipvs.la
+ ipvs_la_SOURCES = src/ipvs.c
+@@ -1237,6 +1249,14 @@ irq_la_LDFLAGS = $(PLUGIN_LDFLAGS)
+ irq_la_LIBADD = libignorelist.la
+ endif
+ 
++if BUILD_PLUGIN_IWINFO
++pkglib_LTLIBRARIES += iwinfo.la
++iwinfo_la_SOURCES = src/iwinfo.c
++#iwinfo_la_LDFLAGS = -module -avoid-version
++iwinfo_la_LDFLAGS = $(PLUGIN_LDFLAGS)
++iwinfo_la_LIBADD = -liwinfo libignorelist.la
++endif
++
+ if BUILD_PLUGIN_JAVA
+ pkglib_LTLIBRARIES += java.la
+ java_la_SOURCES = src/java.c
+@@ -1903,6 +1923,14 @@ TESTS += test_plugin_snmp_agent
+ 
+ endif
+ 
++if BUILD_PLUGIN_SNMP6
++pkglib_LTLIBRARIES += snmp6.la
++snmp6_la_SOURCES = src/snmp6.c
++snmp6_la_CFLAGS = $(AM_CFLAGS)
++snmp6_la_LDFLAGS = $(PLUGIN_LDFLAGS)
++snmp6_la_LIBADD = libignorelist.la
++endif # BUILD_PLUGIN_SNMP6
++
+ if BUILD_PLUGIN_STATSD
+ pkglib_LTLIBRARIES += statsd.la
+ statsd_la_SOURCES = src/statsd.c
+diff --git a/README b/README
+index b13192f1bde4..82725b2f127c 100644
+--- a/README
++++ b/README
+@@ -106,6 +106,9 @@ Features
+       Disk utilization: Sectors read/written, number of read/write actions,
+       average time an IO-operation took to complete.
+ 
++    - dhcpleases
++      Collect number of current dhcp leases.
++
+     - dns
+       DNS traffic: Query types, response codes, opcodes and traffic/octets
+       transferred.
+@@ -416,6 +419,10 @@ Features
+       network devices such as switches, routers, thermometers, rack monitoring
+       servers, etc. See collectd-snmp(5).
+ 
++    - snmp6
++      Read values from SNMP6 (Simple Network Management Protocol). Supports pure
++      IPv6 interface statistics.
++
+     - statsd
+       Acts as a StatsD server, reading values sent over the network from StatsD
+       clients and calculating rates and other aggregates out of these values.
+diff --git a/configure.ac b/configure.ac
+index 2a3152c4c65e..b8a8b38f4e9e 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -532,11 +532,7 @@ if test "x$ac_system" = "xLinux"; then
+     [have_cpuid_h="no (cpuid.h not found)"]
+   )
+ 
+-  AC_CHECK_HEADERS([sys/capability.h],
+-    [have_capability="yes"],
+-    [have_capability="no (<sys/capability.h> not found)"]
+-  )
+-
++  have_capability="no"
+   if test "x$have_capability" = "xyes"; then
+     AC_CHECK_LIB([cap], [cap_get_proc],
+       [have_capability="yes"],
+@@ -716,6 +712,11 @@ AC_CACHE_CHECK([whether clock_boottime and clock_monotonic are supported],
+   ]
+ )
+ 
++# For the iwinfo plugin
++AC_CHECK_LIB([iwinfo], [iwinfo_backend],
++    [with_iwinfo="yes"],
++    [with_iwinfo="no (libiwinfo not found)"]
++)
+ 
+ #
+ # Checks for typedefs, structures, and compiler characteristics.
+@@ -3384,9 +3385,9 @@ if test "x$with_libmodbus" = "xyes"; then
+   SAVE_CPPFLAGS="$CPPFLAGS"
+   CPPFLAGS="$CPPFLAGS $with_libmodbus_cflags"
+ 
+-  AC_CHECK_HEADERS([modbus.h],
++  AC_CHECK_HEADERS([modbus/modbus.h],
+     [with_libmodbus="yes"],
+-    [with_libmodbus="no (modbus.h not found)"]
++    [with_libmodbus="no (modbus/modbus.h not found)"]
+   )
+ 
+   CPPFLAGS="$SAVE_CPPFLAGS"
+@@ -6590,6 +6591,7 @@ plugin_ipmi="no"
+ plugin_ipstats="no"
+ plugin_ipvs="no"
+ plugin_irq="no"
++plugin_iwinfo="no"
+ plugin_load="no"
+ plugin_log_logstash="no"
+ plugin_mcelog="no"
+@@ -7023,6 +7025,7 @@ AC_PLUGIN([curl_xml],            [$plugin_curl_xml],          [CURL generic xml
+ AC_PLUGIN([dbi],                 [$with_libdbi],              [General database statistics])
+ AC_PLUGIN([dcpmm],               [$with_libpmwapi],           [Intel(R) Optane(TM) DC Persistent Memory performance and health statistics])
+ AC_PLUGIN([df],                  [$plugin_df],                [Filesystem usage statistics])
++AC_PLUGIN([dhcpleases],          [yes],                       [DHCP Leases])
+ AC_PLUGIN([disk],                [$plugin_disk],              [Disk usage statistics])
+ AC_PLUGIN([dns],                 [$with_libpcap],             [DNS traffic analysis])
+ AC_PLUGIN([dpdkevents],          [$plugin_dpdkevents],        [Events from DPDK])
+@@ -7049,8 +7052,10 @@ AC_PLUGIN([ipc],                 [$plugin_ipc],               [IPC statistics])
+ AC_PLUGIN([ipmi],                [$plugin_ipmi],              [IPMI sensor statistics])
+ AC_PLUGIN([iptables],            [$with_libiptc],             [IPTables rule counters])
+ AC_PLUGIN([ipstats],             [$plugin_ipstats],           [IP packet statistics])
++AC_PLUGIN([ipstatistics],        [yes],                       [IP4 and IP6 statistics])
+ AC_PLUGIN([ipvs],                [$plugin_ipvs],              [IPVS connection statistics])
+ AC_PLUGIN([irq],                 [$plugin_irq],               [IRQ statistics])
++AC_PLUGIN([iwinfo],              [$with_iwinfo],              [Common iwinfo wireless statistics])
+ AC_PLUGIN([java],                [$with_java],                [Embed the Java Virtual Machine])
+ AC_PLUGIN([load],                [$plugin_load],              [System load])
+ AC_PLUGIN([log_logstash],        [$plugin_log_logstash],      [Logstash json_event compatible logging])
+@@ -7117,6 +7122,7 @@ AC_PLUGIN([slurm],               [$with_libslurm],            [SLURM jobs and no
+ AC_PLUGIN([smart],               [$plugin_smart],             [SMART statistics])
+ AC_PLUGIN([snmp],                [$with_libnetsnmp],          [SNMP querying plugin])
+ AC_PLUGIN([snmp_agent],          [$with_libnetsnmpagent],     [SNMP agent plugin])
++AC_PLUGIN([snmp6],               [yes],                       [IPv6 Interface traffic statistics via snmp6])
+ AC_PLUGIN([statsd],              [yes],                       [StatsD plugin])
+ AC_PLUGIN([swap],                [$plugin_swap],              [Swap usage statistics])
+ AC_PLUGIN([synproxy],            [$plugin_synproxy],          [Synproxy stats plugin])
+@@ -7428,6 +7434,7 @@ AC_MSG_RESULT([    libyajl . . . . . . . $with_libyajl])
+ AC_MSG_RESULT([    oracle  . . . . . . . $with_oracle])
+ AC_MSG_RESULT([    protobuf-c  . . . . . $have_protoc_c])
+ AC_MSG_RESULT([    protoc 3  . . . . . . $have_protoc3])
++AC_MSG_RESULT([    iwinfo  . . . . . . . $with_iwinfo])
+ AC_MSG_RESULT()
+ AC_MSG_RESULT([  Features:])
+ AC_MSG_RESULT([    daemon mode . . . . . $enable_daemon])
+@@ -7467,6 +7474,7 @@ AC_MSG_RESULT([    curl_xml  . . . . . . $enable_curl_xml])
+ AC_MSG_RESULT([    dbi . . . . . . . . . $enable_dbi])
+ AC_MSG_RESULT([    dcpmm  . . . . . .  . $enable_dcpmm])
+ AC_MSG_RESULT([    df  . . . . . . . . . $enable_df])
++AC_MSG_RESULT([    dhcpleases. . . . . . $enable_dhcpleases])
+ AC_MSG_RESULT([    disk  . . . . . . . . $enable_disk])
+ AC_MSG_RESULT([    dns . . . . . . . . . $enable_dns])
+ AC_MSG_RESULT([    dpdkevents. . . . . . $enable_dpdkevents])
+@@ -7493,8 +7501,10 @@ AC_MSG_RESULT([    ipc . . . . . . . . . $enable_ipc])
+ AC_MSG_RESULT([    ipmi  . . . . . . . . $enable_ipmi])
+ AC_MSG_RESULT([    iptables  . . . . . . $enable_iptables])
+ AC_MSG_RESULT([    ipstats . . . . . . . $enable_ipstats])
++AC_MSG_RESULT([    ipstatistics  . . . . $enable_ipstatistics])
+ AC_MSG_RESULT([    ipvs  . . . . . . . . $enable_ipvs])
+ AC_MSG_RESULT([    irq . . . . . . . . . $enable_irq])
++AC_MSG_RESULT([    iwinfo  . . . . . . . $enable_iwinfo])
+ AC_MSG_RESULT([    java  . . . . . . . . $enable_java])
+ AC_MSG_RESULT([    load  . . . . . . . . $enable_load])
+ AC_MSG_RESULT([    logfile . . . . . . . $enable_logfile])
+@@ -7560,6 +7570,7 @@ AC_MSG_RESULT([    slurm . . . . . . . . $enable_slurm])
+ AC_MSG_RESULT([    smart . . . . . . . . $enable_smart])
+ AC_MSG_RESULT([    snmp  . . . . . . . . $enable_snmp])
+ AC_MSG_RESULT([    snmp_agent  . . . . . $enable_snmp_agent])
++AC_MSG_RESULT([    snmp6 . . . . . . . . $enable_snmp6])
+ AC_MSG_RESULT([    statsd  . . . . . . . $enable_statsd])
+ AC_MSG_RESULT([    swap  . . . . . . . . $enable_swap])
+ AC_MSG_RESULT([    synproxy  . . . . . . $enable_synproxy])
+diff --git a/fake-am_path_libgcrypt.m4 b/fake-am_path_libgcrypt.m4
+new file mode 100644
+index 000000000000..03d8d76339b1
+--- /dev/null
++++ b/fake-am_path_libgcrypt.m4
+@@ -0,0 +1 @@
++AC_DEFUN([AM_PATH_LIBGCRYPT],[:])
+diff --git a/src/collectd.conf.in b/src/collectd.conf.in
+index e335f9c6cd25..fd7d06aec517 100644
+--- a/src/collectd.conf.in
++++ b/src/collectd.conf.in
+@@ -118,6 +118,7 @@
+ #@BUILD_PLUGIN_DBI_TRUE@LoadPlugin dbi
+ #@BUILD_PLUGIN_DCPMM_TRUE@LoadPlugin dcpmm
+ #@BUILD_PLUGIN_DF_TRUE@LoadPlugin df
++#@BUILD_PLUGIN_DHCPLEASES_TRUE@LoadPlugin dhcpleases
+ #@BUILD_PLUGIN_DISK_TRUE@LoadPlugin disk
+ #@BUILD_PLUGIN_DNS_TRUE@LoadPlugin dns
+ #@BUILD_PLUGIN_DPDKEVENTS_TRUE@LoadPlugin dpdkevents
+@@ -142,9 +143,11 @@
+ #@BUILD_PLUGIN_IPC_TRUE@LoadPlugin ipc
+ #@BUILD_PLUGIN_IPMI_TRUE@LoadPlugin ipmi
+ #@BUILD_PLUGIN_IPSTATS_TRUE@LoadPlugin ipstats
++#@BUILD_PLUGIN_IPSTATISTICS_TRUE@LoadPlugin ipstatistics
+ #@BUILD_PLUGIN_IPTABLES_TRUE@LoadPlugin iptables
+ #@BUILD_PLUGIN_IPVS_TRUE@LoadPlugin ipvs
+ #@BUILD_PLUGIN_IRQ_TRUE@LoadPlugin irq
++#@BUILD_PLUGIN_IWINFO_TRUE@LoadPlugin iwinfo
+ #@BUILD_PLUGIN_JAVA_TRUE@LoadPlugin java
+ @BUILD_PLUGIN_LOAD_TRUE@@BUILD_PLUGIN_LOAD_TRUE@LoadPlugin load
+ #@BUILD_PLUGIN_LPAR_TRUE@LoadPlugin lpar
+@@ -202,6 +205,7 @@
+ #@BUILD_PLUGIN_SMART_TRUE@LoadPlugin smart
+ #@BUILD_PLUGIN_SNMP_TRUE@LoadPlugin snmp
+ #@BUILD_PLUGIN_SNMP_AGENT_TRUE@LoadPlugin snmp_agent
++#@BUILD_PLUGIN_SNMP6_TRUE@LoadPlugin snmp6
+ #@BUILD_PLUGIN_STATSD_TRUE@LoadPlugin statsd
+ #@BUILD_PLUGIN_SWAP_TRUE@LoadPlugin swap
+ #@BUILD_PLUGIN_SYSEVENT_TRUE@LoadPlugin sysevent
+@@ -605,6 +609,10 @@
+ #	SelectNumericQueryTypes true
+ #</Plugin>
+ 
++#<Plugin dhcpleases>
++#	Path "/tmp/dhcp.leases"
++#</Plugin>
++
+ #<Plugin "dpdkevents">
+ #  <EAL>
+ #    Coremask "0x1"
+@@ -813,6 +821,12 @@
+ #	IgnoreSelected true
+ #</Plugin>
+ 
++#<Plugin iwinfo>
++#   Interface "ath0"
++#   Interface "ra0"
++#   Interface "wlan0"
++#</Plugin>
++
+ #<Plugin java>
+ #	JVMArg "-verbose:jni"
+ #	JVMArg "-Djava.class.path=@prefix@/share/collectd/java/collectd-api.jar"
+@@ -1598,6 +1612,11 @@
+ #  </Table>
+ #</Plugin>
+ 
++#<Plugin snmp6>
++#	Interface "eth0"
++#	IgnoreSelected false
++#</Plugin>
++
+ #<Plugin statsd>
+ #  Host "::"
+ #  Port "8125"
+diff --git a/src/collectd.conf.pod b/src/collectd.conf.pod
+index cb9e40f76d13..545f86c60821 100644
+--- a/src/collectd.conf.pod
++++ b/src/collectd.conf.pod
+@@ -4164,6 +4164,27 @@ and all other interrupts are collected.
+ 
+ =back
+ 
++=head2 Plugin C<iwinfo>
++
++=over 4
++
++=item B<Interface> I<Interface>
++
++Select this interface. By default all detected wireless interfaces will be
++collected. For a more detailed description see B<IgnoreSelected> below.
++
++=item B<IgnoreSelected> I<true>|I<false>
++
++If no configuration if given, the B<iwinfo>-plugin will collect data from all
++detected wireless interfaces. You can use the B<Interface>-option to pick the
++interfaces you're interested in. Sometimes, however, it's easier/preferred to
++collect all interfaces I<except> a few ones. This option enables you to do
++that: By setting B<IgnoreSelected> to I<true> the effect of B<Interface> is
++inverted: All selected interfaces are ignored and all other interfaces are
++collected.
++
++=back
++
+ =head2 Plugin C<java>
+ 
+ The I<Java> plugin makes it possible to write extensions for collectd in Java.
+diff --git a/src/daemon/collectd.c b/src/daemon/collectd.c
+index 78d410cadb82..b284145c317e 100644
+--- a/src/daemon/collectd.c
++++ b/src/daemon/collectd.c
+@@ -274,20 +274,23 @@ static int do_loop(void) {
+     update_kstat();
+ #endif
+ 
++    DEBUG("do_loop before plugin_read_all: now = %.3f", CDTIME_T_TO_DOUBLE(cdtime()));
+     /* Issue all plugins */
+     plugin_read_all();
+ 
+     cdtime_t now = cdtime();
++    DEBUG("do_loop after plugin_read_all: now = %.3f, wait_until= %.3f", CDTIME_T_TO_DOUBLE(now), CDTIME_T_TO_DOUBLE(wait_until));
+     if (now >= wait_until) {
+-      WARNING("Not sleeping because the next interval is "
++      WARNING("Sleeping only 2s because the next interval is "
+               "%.3f seconds in the past!",
+               CDTIME_T_TO_DOUBLE(now - wait_until));
+-      wait_until = now + interval;
+-      continue;
++      wait_until = now + DOUBLE_TO_CDTIME_T(2);
++      DEBUG("do_loop: wait_until adjusted to now+2 = %.3f", CDTIME_T_TO_DOUBLE(wait_until));
+     }
+ 
+     struct timespec ts_wait = CDTIME_T_TO_TIMESPEC(wait_until - now);
+     wait_until = wait_until + interval;
++    DEBUG("do_loop ends: wait_until set to %.3f", CDTIME_T_TO_DOUBLE(wait_until));
+ 
+     while ((loop == 0) && (nanosleep(&ts_wait, &ts_wait) != 0)) {
+       if (errno != EINTR) {
+diff --git a/src/daemon/configfile.c b/src/daemon/configfile.c
+index 61fa9013fd57..e23903134590 100644
+--- a/src/daemon/configfile.c
++++ b/src/daemon/configfile.c
+@@ -104,7 +104,7 @@ static cf_global_option_t cf_global_options[] = {
+     {"BaseDir", NULL, 0, PKGLOCALSTATEDIR},
+     {"PIDFile", NULL, 0, PIDFILE},
+     {"Hostname", NULL, 0, NULL},
+-    {"FQDNLookup", NULL, 0, "true"},
++    {"FQDNLookup", NULL, 0, "false"},
+     {"Interval", NULL, 0, NULL},
+     {"ReadThreads", NULL, 0, "5"},
+     {"WriteThreads", NULL, 0, "5"},
+diff --git a/src/daemon/plugin.c b/src/daemon/plugin.c
+index 12255f13a27a..4320a10f5c1b 100644
+--- a/src/daemon/plugin.c
++++ b/src/daemon/plugin.c
+@@ -585,10 +585,11 @@ static void *plugin_read_thread(void __attribute__((unused)) * args) {
+ 
+     /* Check, if `rf_next_read' is in the past. */
+     if (rf->rf_next_read < now) {
+-      /* `rf_next_read' is in the past. Insert `now'
++      /* `rf_next_read' is in the past. Insert `now'+2s
+        * so this value doesn't trail off into the
+        * past too much. */
+-      rf->rf_next_read = now;
++      rf->rf_next_read = now + DOUBLE_TO_CDTIME_T(2);
++      DEBUG("plugin_read_thread: Next read is in the past. Adjusted to now+2s");
+     }
+ 
+     DEBUG("plugin_read_thread: Next read of the `%s' plugin at %.3f.",
+@@ -1092,7 +1093,7 @@ static int plugin_insert_read(read_func_t *rf) {
+   int status;
+   llentry_t *le;
+ 
+-  rf->rf_next_read = cdtime();
++  rf->rf_next_read = cdtime() + (cdtime_t) 1073741824; //delay first read 1s
+   rf->rf_effective_interval = rf->rf_interval;
+ 
+   pthread_mutex_lock(&read_lock);
+diff --git a/src/dhcpleases.c b/src/dhcpleases.c
+new file mode 100644
+index 000000000000..f43d62bf4b0c
+--- /dev/null
++++ b/src/dhcpleases.c
+@@ -0,0 +1,83 @@
++#include <errno.h>
++#include <stdio.h>
++
++#include "utils/common/common.h"
++
++#include "configfile.h"
++#include "plugin.h"
++
++static char *dhcp_lease_file;
++
++static const char *config_keys[] = {
++    "Path",
++};
++static int config_keys_num = STATIC_ARRAY_SIZE(config_keys);
++
++/* copied from ping.c plugin */
++static int config_set_string(const char *name, /* {{{ */
++                             char **var, const char *value) {
++  char *tmp;
++
++  tmp = strdup(value);
++  if (tmp == NULL) {
++    ERROR("dhcpleases plugin: Setting `%s' to `%s' failed: strdup failed: %s", name,
++          value, STRERRNO);
++    return 1;
++  }
++
++  if (*var != NULL)
++    free(*var);
++  *var = tmp;
++  return 0;
++} /* }}} int config_set_string */
++
++static int dhcpleases_config(const char *key, const char *value) {
++  if (strcasecmp(key, "Path") == 0) {
++    int status = config_set_string(key, &dhcp_lease_file, value);
++    if (status != 0)
++      return status;
++  }
++  return 0;
++}
++
++static void dhcpleases_submit(gauge_t counter) {
++  value_list_t vl = VALUE_LIST_INIT;
++  value_t values[] = {
++      {.gauge = counter},
++  };
++
++  vl.values = values;
++  vl.values_len = STATIC_ARRAY_SIZE(values);
++
++  sstrncpy(vl.plugin, "dhcpleases", sizeof(vl.plugin));
++  sstrncpy(vl.type, "count", sizeof(vl.type));
++
++  plugin_dispatch_values(&vl);
++}
++
++static int dhcp_leases_read(void) {
++
++  FILE *fh;
++  char buffer[1024];
++  gauge_t count = 0;
++
++  if ((fh = fopen(dhcp_lease_file, "r")) == NULL) {
++    WARNING("interface plugin: fopen: %s", STRERRNO);
++    return -1;
++  }
++
++  while (fgets(buffer, 1024, fh) != NULL) {
++    count++;
++  }
++  fclose(fh);
++
++  dhcpleases_submit(count);
++
++  return 0;
++}
++
++void module_register(void) {
++  plugin_register_config("dhcpleases", dhcpleases_config, config_keys,
++                         config_keys_num);
++  plugin_register_read("dhcpleases", dhcp_leases_read);
++}
+diff --git a/src/ipstatistics.c b/src/ipstatistics.c
+new file mode 100644
+index 000000000000..a89bab006c53
+--- /dev/null
++++ b/src/ipstatistics.c
+@@ -0,0 +1,104 @@
++/*
++  This Plugin is based opn the interface.c Plugin.
++*/
++#include <errno.h>
++#include <stdbool.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
++#include <ifaddrs.h>
++#include <net/if.h>
++#include <sys/types.h>
++
++#include "plugin.h"
++#include "utils/cmds/putval.h"
++#include "utils/common/common.h"
++
++/* Copied from interface.c */
++static void ipstatistics_submit(const char *type, derive_t ip4rx,
++                         derive_t ip4tx, derive_t ip6rx, derive_t ip6tx) {
++  value_list_t vl = VALUE_LIST_INIT;
++  value_t values[] = {
++      {.derive = ip4rx},
++      {.derive = ip4tx},
++      {.derive = ip6rx},
++      {.derive = ip6tx}
++  };
++
++  vl.values = values;
++  vl.values_len = STATIC_ARRAY_SIZE(values);
++  sstrncpy(vl.plugin, "ipstatistics", sizeof(vl.plugin));
++  sstrncpy(vl.plugin_instance, "all", sizeof(vl.plugin_instance));
++  sstrncpy(vl.type, type, sizeof(vl.type));
++
++  plugin_dispatch_values(&vl);
++} /* void if_submit */
++
++int ipstatistics_read() {
++  FILE *fh;
++  char buffer[1024];
++  char *fields[19];
++  int numfields;
++
++  derive_t ip4_in = 0;
++  derive_t ip4_out = 0;
++  derive_t ip6_in = 0;
++  derive_t ip6_out = 0;
++
++  if ((fh = fopen("/proc/net/snmp6", "r")) == NULL) {
++    WARNING("ipstatistics plugin: try opening %s : fopen: %s", "/proc/net/snmp6",
++            STRERRNO);
++    return -1;
++  }
++
++  while (fgets(buffer, 1024, fh) != NULL) {
++    numfields = strsplit(buffer, fields, 2);
++
++    if (numfields < 2)
++      return -1;
++
++    if (strcasecmp(fields[0], "Ip6OutOctets") == 0) {
++      ip6_out = atoll(fields[1]);
++    }
++
++    if (strcasecmp(fields[0], "Ip6InOctets") == 0) {
++      ip6_in = atoll(fields[1]);
++    }
++  }
++
++  fclose(fh);
++
++  if ((fh = fopen("/proc/net/netstat", "r")) == NULL) {
++    WARNING("ipstatistics plugin: try opening %s : fopen: %s", "/proc/net/netstat",
++            STRERRNO);
++    return -1;
++  }
++
++  int count_ipext = 0;
++  while (fgets(buffer, 1024, fh) != NULL) {
++    numfields = strsplit(buffer, fields, 19);
++
++    if (numfields < 8)
++      return -1;
++
++    if (strcasecmp(fields[0], "IpExt:") == 0) {
++      count_ipext++;
++      if (count_ipext == 2) {
++        ip4_in = atoll(fields[7]);
++        ip4_out = atoll(fields[8]);
++      }
++    }
++  }
++
++  fclose(fh);
++
++  ipstatistics_submit("ip_stats_octets", ip4_in, ip4_out, ip6_in, ip6_out);
++  return 0;
++}
++
++void module_register(void) {
++  plugin_register_read("ipstatistics", ipstatistics_read);
++} /* void module_register */
++
+diff --git a/src/iwinfo.c b/src/iwinfo.c
+new file mode 100644
+index 000000000000..e6c48c24bd90
+--- /dev/null
++++ b/src/iwinfo.c
+@@ -0,0 +1,150 @@
++/**
++ * collectd - src/iwinfo.c
++ * Copyright (C) 2011  Jo-Philipp Wich
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation; only version 2 of the License is applicable.
++ *
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, write to the Free Software Foundation, Inc.,
++ * 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
++ **/
++
++#include "collectd.h"
++#include "plugin.h"
++#include "utils/common/common.h"
++#include "utils/ignorelist/ignorelist.h"
++
++#include <stdint.h>
++#include <iwinfo.h>
++
++#define PROCNETDEV "/proc/net/dev"
++
++static const char *config_keys[] = {
++	"Interface",
++	"IgnoreSelected"
++};
++static int config_keys_num = STATIC_ARRAY_SIZE (config_keys);
++
++static ignorelist_t *ignorelist = NULL;
++
++static int iwinfo_config(const char *key, const char *value)
++{
++	if (ignorelist == NULL)
++		ignorelist = ignorelist_create(1);
++
++	if (ignorelist == NULL)
++		return 1;
++
++	if (strcasecmp(key, "Interface") == 0)
++		ignorelist_add(ignorelist, value);
++	else if (strcasecmp(key, "IgnoreSelected") == 0)
++		ignorelist_set_invert(ignorelist, IS_TRUE(value) ? 0 : 1);
++	else
++		return -1;
++
++	return 0;
++}
++
++static void iwinfo_submit(const char *ifname, const char *type, int value)
++{
++	value_t values[1];
++	value_list_t vl = VALUE_LIST_INIT;
++
++	values[0].gauge = value;
++
++	vl.values = values;
++	vl.values_len = 1;
++
++	sstrncpy(vl.host, hostname_g, sizeof(vl.host));
++	sstrncpy(vl.plugin, "iwinfo", sizeof(vl.plugin));
++	sstrncpy(vl.plugin_instance, ifname, sizeof(vl.plugin_instance));
++	sstrncpy(vl.type, type, sizeof(vl.type));
++	/*sstrncpy(vl.type_instance, "", sizeof(vl.type_instance));*/
++
++	plugin_dispatch_values(&vl);
++}
++
++static void iwinfo_process(const char *ifname)
++{
++	int val;
++	char buf[IWINFO_BUFSIZE];
++	const struct iwinfo_ops *iw = iwinfo_backend(ifname);
++
++	/* does appear to be a wifi iface */
++	if (iw)
++	{
++		if (iw->bitrate(ifname, &val))
++			val = 0;
++		iwinfo_submit(ifname, "bitrate", val * 1000);
++
++		if (iw->signal(ifname, &val))
++			val = 0;
++		iwinfo_submit(ifname, "signal_power", val);
++
++		if (iw->noise(ifname, &val))
++			val = 0;
++		iwinfo_submit(ifname, "signal_noise", val);
++
++		if (iw->quality(ifname, &val))
++			val = 0;
++		iwinfo_submit(ifname, "signal_quality", val);
++
++		if (iw->assoclist(ifname, buf, &val))
++			val = 0;
++		iwinfo_submit(ifname, "stations",
++		              val / sizeof(struct iwinfo_assoclist_entry));
++	}
++
++	iwinfo_finish();
++}
++
++static int iwinfo_read(void)
++{
++	char line[1024];
++	char ifname[128];
++	FILE *f;
++
++	f = fopen(PROCNETDEV, "r");
++	if (f == NULL)
++	{
++		char err[1024];
++		WARNING("iwinfo: Unable to open " PROCNETDEV ": %s",
++		        sstrerror(errno, err, sizeof(err)));
++		return -1;
++	}
++
++	while (fgets(line, sizeof(line), f))
++	{
++		if (!strchr(line, ':'))
++			continue;
++
++		if (!sscanf(line, " %127[^:]", ifname))
++			continue;
++
++		if (ignorelist_match(ignorelist, ifname))
++			continue;
++
++		if (strstr(ifname, "mon.") || strstr(ifname, ".sta") ||
++		    strstr(ifname, "tmp.") || strstr(ifname, "wifi"))
++			continue;
++
++		iwinfo_process(ifname);
++	}
++
++	fclose(f);
++
++	return 0;
++}
++
++void module_register(void)
++{
++	plugin_register_config("iwinfo", iwinfo_config, config_keys, config_keys_num);
++	plugin_register_read("iwinfo", iwinfo_read);
++}
+diff --git a/src/modbus.c b/src/modbus.c
+index e36f3daea5e0..4c007ea94308 100644
+--- a/src/modbus.c
++++ b/src/modbus.c
+@@ -26,7 +26,7 @@
+ #include "plugin.h"
+ #include "utils/common/common.h"
+ 
+-#include <modbus.h>
++#include <modbus/modbus.h>
+ #include <netdb.h>
+ #include <sys/socket.h>
+ 
+diff --git a/src/olsrd.c b/src/olsrd.c
+index c8b8b7a96e31..e8dfa84c3566 100644
+--- a/src/olsrd.c
++++ b/src/olsrd.c
+@@ -582,7 +582,7 @@ static int olsrd_read(void) /* {{{ */
+   if (fh == NULL)
+     return -1;
+ 
+-  fputs("\r\n", fh);
++  fputs("/all \r\n", fh);
+   fflush(fh);
+ 
+   while (fgets(buffer, sizeof(buffer), fh) != NULL) {
+diff --git a/src/rrdtool.c b/src/rrdtool.c
+index f188ac4ad008..522328f38f00 100644
+--- a/src/rrdtool.c
++++ b/src/rrdtool.c
+@@ -60,6 +60,7 @@ typedef struct rrd_queue_s rrd_queue_t;
+ static const char *config_keys[] = {
+     "CacheTimeout", "CacheFlush",      "CreateFilesAsync", "DataDir",
+     "StepSize",     "HeartBeat",       "RRARows",          "RRATimespan",
++    "RRASingle",
+     "XFF",          "WritesPerSecond", "RandomTimeout"};
+ static int config_keys_num = STATIC_ARRAY_SIZE(config_keys);
+ 
+@@ -77,6 +78,8 @@ static rrdcreate_config_t rrdcreate_config = {
+     /* timespans = */ NULL,
+     /* timespans_num = */ 0,
+ 
++    /* rrasingle = */ 0,
++
+     /* consolidation_functions = */ NULL,
+     /* consolidation_functions_num = */ 0,
+ 
+@@ -944,6 +947,12 @@ static int rrd_config(const char *key, const char *value) {
+           /* compar = */ rrd_compare_numeric);
+ 
+     free(value_copy);
++  } else if (strcasecmp ("RRASingle", key) == 0) {
++		if (IS_TRUE (value))
++		{
++			rrdcreate_config.rrasingle = 1;
++			NOTICE ("rrdtool plugin: RRASingle = true: creating only AVERAGE RRAs");
++		}
+   } else if (strcasecmp("XFF", key) == 0) {
+     double tmp = atof(value);
+     if ((tmp < 0.0) || (tmp >= 1.0)) {
+diff --git a/src/snmp6.c b/src/snmp6.c
+new file mode 100644
+index 000000000000..0e080a2bfc9b
+--- /dev/null
++++ b/src/snmp6.c
+@@ -0,0 +1,135 @@
++/*
++  This Plugin is based opn the interface.c Plugin.
++*/
++#include <stdint.h>
++#include <stdlib.h>
++#include <string.h>
++#include <errno.h>
++#include <stdbool.h>
++#include <stdio.h>
++
++#include <net/if.h>
++#include <sys/types.h>
++#include <ifaddrs.h>
++
++#include "plugin.h"
++#include "utils/cmds/putval.h"
++#include "utils/common/common.h"
++#include "utils/ignorelist/ignorelist.h"
++
++static const char *config_keys[] = {
++    "Interface",
++    "IgnoreSelected",
++};
++static int config_keys_num = STATIC_ARRAY_SIZE(config_keys);
++
++static ignorelist_t *ignorelist;
++
++static int snmp6_config(const char *key, const char *value) {
++  if (ignorelist == NULL)
++    ignorelist = ignorelist_create(/* invert = */ 1);
++
++  if (strcasecmp(key, "Interface") == 0) {
++    ignorelist_add(ignorelist, value);
++  } else if (strcasecmp(key, "IgnoreSelected") == 0) {
++    int invert = 1;
++    if (IS_TRUE(value))
++      invert = 0;
++    ignorelist_set_invert(ignorelist, invert);
++  }
++
++  return 0;
++}
++
++/* Copied from interface.c */
++static void snmp6_submit(const char *dev, const char *type, derive_t rx,
++                         derive_t tx) {
++  value_list_t vl = VALUE_LIST_INIT;
++  value_t values[] = {
++      {.derive = rx},
++      {.derive = tx},
++  };
++
++  vl.values = values;
++  vl.values_len = STATIC_ARRAY_SIZE(values);
++  sstrncpy(vl.plugin, "snmp6", sizeof(vl.plugin));
++  sstrncpy(vl.plugin_instance, dev, sizeof(vl.plugin_instance));
++  sstrncpy(vl.type, type, sizeof(vl.type));
++
++  plugin_dispatch_values(&vl);
++} /* void if_submit */
++
++int snmp_read(char *ifname) {
++  FILE *fh;
++  char buffer[1024];
++  char *fields[2];
++  int numfields;
++  int currline = 0;
++  derive_t data[76];
++  char procpath[1024];
++  int offset = 0;
++
++  if (ignorelist_match(ignorelist, ifname) != 0)
++    return 0;
++
++  if (strncmp("all", ifname, strlen("all")) == 0) {
++    snprintf(procpath, 1024, "/proc/net/snmp6");
++    offset = 1;
++  } else {
++    snprintf(procpath, 1024, "/proc/net/dev_snmp6/%s", ifname);
++  }
++
++  if ((fh = fopen(procpath, "r")) == NULL) {
++    WARNING("snmp6 plugin: try opening %s : fopen: %s", procpath, STRERRNO);
++    return -1;
++  }
++
++  while (fgets(buffer, 1024, fh) != NULL) {
++    numfields = strsplit(buffer, fields, 2);
++
++    if (numfields < 2)
++      return -1;
++
++    data[currline++] = atoll(fields[1]);
++  }
++
++  fclose(fh);
++
++  if (currline < 28) {
++    return -1;
++  }
++
++  snmp6_submit(ifname, "if_octets", data[23 - offset], data[24 - offset]);
++  snmp6_submit(ifname, "if_octets_mcast", data[25 - offset], data[26 - offset]);
++  snmp6_submit(ifname, "if_octets_bcast", data[27 - offset], data[28 - offset]);
++  return 0;
++}
++
++int read_all_interfaces(void) {
++#ifndef HAVE_IFADDRS_H
++  return -1;
++#else
++
++  // getifaddrs is not working all the time (e.g. wireguard interfaces)
++  // instead we use if_nameindex() syscall as suggested in:
++  // https://stackoverflow.com/a/45796495/8474618
++  struct if_nameindex *if_nidxs, *intf;
++
++  if_nidxs = if_nameindex();
++
++  if (if_nidxs != NULL) {
++    for (intf = if_nidxs; intf->if_index != 0 || intf->if_name != NULL; intf++) {
++      snmp_read(intf->if_name);
++    }
++    if_freenameindex(if_nidxs);
++  }
++
++  snmp_read("all");
++  return 0;
++#endif
++}
++
++void module_register(void) {
++  plugin_register_config("snmp6", snmp6_config, config_keys, config_keys_num);
++  plugin_register_read("snmp6", read_all_interfaces);
++} /* void module_register */
+diff --git a/src/types.db b/src/types.db
+index 28fa4176431f..b1e3d684bb6e 100644
+--- a/src/types.db
++++ b/src/types.db
+@@ -118,6 +118,8 @@ if_dropped              rx:DERIVE:0:U, tx:DERIVE:0:U
+ if_errors               rx:DERIVE:0:U, tx:DERIVE:0:U
+ if_multicast            value:DERIVE:0:U
+ if_octets               rx:DERIVE:0:U, tx:DERIVE:0:U
++if_octets_mcast         rx:DERIVE:0:U, tx:DERIVE:0:U
++if_octets_bcast         rx:DERIVE:0:U, tx:DERIVE:0:U
+ if_packets              rx:DERIVE:0:U, tx:DERIVE:0:U
+ if_rx_dropped           value:DERIVE:0:U
+ if_rx_errors            value:DERIVE:0:U
+@@ -132,6 +134,7 @@ invocations             value:DERIVE:0:U
+ io_octets               rx:DERIVE:0:U, tx:DERIVE:0:U
+ io_ops                  read:DERIVE:0:U, write:DERIVE:0:U
+ io_packets              rx:DERIVE:0:U, tx:DERIVE:0:U
++ip_stats_octets         ip4rx:DERIVE:0:U, ip4tx:DERIVE:0:U, ip6rx:DERIVE:0:U, ip6tx:DERIVE:0:U
+ ipc                     value:GAUGE:0:U
+ ipt_bytes               value:DERIVE:0:U
+ ipt_packets             value:DERIVE:0:U
+@@ -258,6 +261,7 @@ snr                     value:GAUGE:0:U
+ spam_check              value:GAUGE:0:U
+ spam_score              value:GAUGE:U:U
+ spl                     value:GAUGE:U:U
++stations                value:GAUGE:0:256
+ swap                    value:GAUGE:0:1099511627776
+ swap_io                 value:DERIVE:0:U
+ sysevent                value:GAUGE:0:1
+@@ -302,6 +306,17 @@ vs_memory               value:GAUGE:0:9223372036854775807
+ vs_processes            value:GAUGE:0:65535
+ vs_threads              value:GAUGE:0:65535
+ 
++qdisc_bytes             value:DERIVE:0:U
++qdisc_drops             value:DERIVE:0:U
++qdisc_backlog           value:GAUGE:0:U
++
++qdisct_bytes            value:DERIVE:0:U
++qdisct_thres            value:GAUGE:0:U
++qdisct_drops            drops:DERIVE:0:U, ecn:DERIVE:0:U, ack:DERIVE:0:U
++qdisct_backlog          value:GAUGE:0:U
++qdisct_latencyus	tg:GAUGE:0:U, pk:GAUGE:0:U, av:GAUGE:0:U, sp:GAUGE:0:U
++qdisct_flows		sp:GAUGE:0:U, bu:GAUGE:0:U, un:GAUGE:0:U
++
+ #
+ # Legacy types
+ # (required for the v5 upgrade target)
+diff --git a/src/utils/rrdcreate/rrdcreate.c b/src/utils/rrdcreate/rrdcreate.c
+index f543e11caf53..20302e9806cd 100644
+--- a/src/utils/rrdcreate/rrdcreate.c
++++ b/src/utils/rrdcreate/rrdcreate.c
+@@ -180,6 +180,9 @@ static int rra_get(char ***ret, const value_list_t *vl, /* {{{ */
+     rts_num = rra_timespans_num;
+   }
+ 
++  if (cfg->rrasingle)
++    rra_types_num = 1;
++
+   rra_max = rts_num * rra_types_num;
+   assert(rra_max > 0);
+ 
+diff --git a/src/utils/rrdcreate/rrdcreate.h b/src/utils/rrdcreate/rrdcreate.h
+index b2277e7598f9..50f29b218d8d 100644
+--- a/src/utils/rrdcreate/rrdcreate.h
++++ b/src/utils/rrdcreate/rrdcreate.h
+@@ -40,6 +40,8 @@ struct rrdcreate_config_s {
+   int *timespans;
+   size_t timespans_num;
+ 
++  int rrasingle;
++
+   char **consolidation_functions;
+   size_t consolidation_functions_num;
+ 
+-- 
+2.17.1
+

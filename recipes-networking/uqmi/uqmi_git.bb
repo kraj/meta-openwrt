@@ -10,7 +10,7 @@ DEPENDS = "libubox json-c"
 
 SRC_URI = "git://git.openwrt.org/project/uqmi.git \
           "
-SRCREV = "c61815319c1c0e76898048a19151f30844a6989c"
+SRCREV = "0a19b5b77140465c29e2afa7d611fe93abc9672f"
 
 S = "${WORKDIR}/git"
 

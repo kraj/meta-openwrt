@@ -8,7 +8,10 @@ XTLIBDIR = "${libdir}/iptables"
 
 EXTRA_OECONF += "--enable-shared --disable-static --with-xtlibdir=${XTLIBDIR}"
 
-SRC_URI += "file://601-shared-libext.patch"
+SRC_URI += "file://600-shared-libext.patch \
+            file://601-Fix-out-of-tree-build.patch \ 
+            file://200-configurable_builtin.patch \
+"
 
 LDFLAGS += "-fuse-ld=bfd"
 
@@ -27,5 +30,4 @@ do_install_append() {
 FILES_${PN} += "${libdir}/*.so"
 FILES_SOLIBSDEV = ""
 INSANE_SKIP_${PN} = "dev-so"
-
 
