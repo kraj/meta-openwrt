@@ -85,6 +85,5 @@ CONFFILES_${PN}_append = "\
 
 RDEPENDS_${PN} += "\
                   bridge-utils \
-                  kernel-module-bridge \
                   base-files-scripts-openwrt \
                   "
