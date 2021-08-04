@@ -44,7 +44,7 @@ do_install() {
     fi
 }
 
-pkg_postinst_ontarget_${PN} () {
+pkg_postinst_ontarget:${PN} () {
 # run this on the target
 if [ "x$D" = "x" ] && [ -e /proc/consoles ]; then
 	tmp="${SERIAL_CONSOLES_CHECK}"
@@ -69,15 +69,15 @@ fi
 }
 
 ALTERNATIVE_PRIORITY = "200"
-ALTERNATIVE_${PN} = "inittab"
+ALTERNATIVE:${PN} = "inittab"
 ALTERNATIVE_TARGET[inittab] = "${sysconfdir}/inittab"
 
 # USE_VT and SERIAL_CONSOLES are generally defined by the MACHINE .conf.
 # Set PACKAGE_ARCH appropriately.
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-FILES_${PN} = "${sysconfdir}/inittab*"
-CONFFILES_${PN} = "${sysconfdir}/inittab"
+FILES:${PN} = "${sysconfdir}/inittab*"
+CONFFILES:${PN} = "${sysconfdir}/inittab"
 
 USE_VT ?= "1"
 SYSVINIT_ENABLED_GETTYS ?= "1"

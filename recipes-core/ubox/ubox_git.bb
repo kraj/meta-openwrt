@@ -18,7 +18,7 @@ S = "${WORKDIR}/git"
 
 inherit cmake openwrt-services openwrt
 
-do_install_append () {
+do_install:append () {
         ${@bb.utils.contains('VIRTUAL-RUNTIME_syslog', 'ubox', 'install -Dm 0755 ${WORKDIR}/log.init ${D}/etc/init.d/log', '', d)}
         ${@bb.utils.contains('VIRTUAL-RUNTIME_kmod_manager', 'ubox', 'ln -s /sbin/kmodloader ${D}/usr/sbin/rmmod', '', d)}
         ${@bb.utils.contains('VIRTUAL-RUNTIME_kmod_manager', 'ubox', 'ln -s /sbin/kmodloader ${D}/usr/sbin/insmod', '', d)}
@@ -32,12 +32,12 @@ do_install_append () {
         ${@bb.utils.contains('VIRTUAL-RUNTIME_syslog', 'ubox', 'ln -s /usr/sbin/validate_data ${D}/sbin/validate_data', '', d)}
 }
 
-RDEPENDS_${PN} += "\
+RDEPENDS:${PN} += "\
                   ubus \
                   libubox \
                   "
 
-FILES_${PN} += "\
+FILES:${PN} += "\
                ${libdir} \
                ${base_sbindir} \
                "

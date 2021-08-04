@@ -16,6 +16,6 @@ S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig openwrt
 
-TARGET_CFLAGS_append = " -Wno-error=address-of-packed-member"
+TARGET_CFLAGS:append = " -Wno-error=address-of-packed-member"
 
-FILES_${PN}  += "${libdir}/*"
+FILES:${PN}  += "${libdir}/*"

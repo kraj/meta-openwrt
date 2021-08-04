@@ -30,11 +30,11 @@ PACKAGECONFIG ??= "extroot"
 
 PACKAGECONFIG[extroot] = "-DCMAKE_UBIFS_EXTROOT=ON,,libubox uci,"
 
-do_install_append() {
+do_install:append() {
 	install -dm 0755 ${D}/sbin
 	ln -s /usr/sbin/mount_root ${D}/sbin/mount_root
 	ln -s /usr/sbin/jffs2reset ${D}/sbin/jffs2reset
 }
 
-FILES_${PN}  += "${libdir}/*"
+FILES:${PN}  += "${libdir}/*"
 

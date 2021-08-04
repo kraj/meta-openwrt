@@ -3,7 +3,7 @@
 # It is released under the MIT license.  See COPYING.MIT
 # for the terms.
 
-ROOTFS_POSTUNINSTALL_COMMAND_append += ' openwrt_enable_initscripts_hook; '
+ROOTFS_POSTUNINSTALL_COMMAND:append = ' openwrt_enable_initscripts_hook; '
 
 openwrt_enable_initscripts_hook () {
     mkdir -p ${IMAGE_ROOTFS}/etc/rc.d

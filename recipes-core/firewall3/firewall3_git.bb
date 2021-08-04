@@ -22,7 +22,7 @@ SRCREV_openwrt = "${OPENWRT_SRCREV}"
 EXTRA_OECMAKE = "${@bb.utils.contains('DISTRO_FEATURES', 'ipv6', '-DDISABLE_IPV6=OFF', '-DDISABLE_IPV6=ON', d)}"
 
 CFLAGS += "-Wno-error=format-overflow"
-do_install_append() {
+do_install:append() {
     install -d ${D}${sysconfdir}
     install -d ${D}${sysconfdir}/config
     install -d ${D}${sysconfdir}/init.d
@@ -93,11 +93,11 @@ EOF
     install -Dm 0644 ${D}${sysconfdir}/modules.d/iptables-fw3 ${D}${sysconfdir}/modules-load.d/iptables-fw3.conf
 }
 
-FILES_${PN} += "${libdir}/*"
+FILES:${PN} += "${libdir}/*"
 
-RDEPENDS_${PN} = "ipset xtables-addons"
+RDEPENDS:${PN} = "ipset xtables-addons"
 
-RRECOMMENDS_${PN} = "\
+RRECOMMENDS:${PN} = "\
                     kernel-module-ip-tables \
                     kernel-module-xt-tcpudp \
                     kernel-module-iptable-filter \
@@ -132,7 +132,7 @@ RRECOMMENDS_${PN} = "\
                     kernel-module-nf-conntrack \
                     "
 
-RRECOMMENDS_${PN} += "\
+RRECOMMENDS:${PN} += "\
                      ${@bb.utils.contains('DISTRO_FEATURES', 'ipv6', '\
                      kernel-module-ip6table-filter \
                      kernel-module-ip6table-mangle \

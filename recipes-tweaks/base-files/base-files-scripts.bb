@@ -8,7 +8,7 @@ HOMEPAGE = "http://wiki.openwrt.org/"
 LICENSE = "GPL-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-scripts:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}-scripts:"
 
 SRC_URI += "git://github.com/openwrt/openwrt.git;protocol=git;branch=master \
            "
@@ -26,7 +26,7 @@ PACKAGES = "\
            ${PN}-sysupgrade \
            "
 
-do_install_append () {
+do_install:append () {
     mkdir -p ${D}${sysconfdir}/config
 
     install -Dm 0644 ${SC}/lib/functions.sh ${D}/lib/functions.sh
@@ -41,7 +41,7 @@ do_install_append () {
     cp -dR --preserve=mode,links ${SC}/lib/upgrade ${D}/lib
 }
 
-FILES_${PN}-openwrt = "\
+FILES:${PN}-openwrt = "\
                       /lib/functions.sh \
                       /lib/functions/uci-defaults.sh \
                       /lib/functions/system.sh \
@@ -49,18 +49,18 @@ FILES_${PN}-openwrt = "\
                       ${sysconfdir}/config \
                       "
 
-FILES_${PN}-sysupgrade = "\
+FILES:${PN}-sysupgrade = "\
                          /etc/sysupgrade.conf \
                          /sbin/sysupgrade \
                          /lib/upgrade/* \
                          /sbin/firstboot \
                          "
 
-CONFFILES_${PN}-openwrt += "\
+CONFFILES:${PN}-openwrt += "\
                            ${sysconfdir}/config \
                            "
 
-CONFFILES_${PN}-sysupgrade += "\
+CONFFILES:${PN}-sysupgrade += "\
                               ${sysconfdir]/sysupgrade.conf \
                               "
 

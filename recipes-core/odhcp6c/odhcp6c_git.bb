@@ -21,14 +21,14 @@ inherit cmake pkgconfig openwrt openwrt-services openwrt-base-files
 
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
-do_install_append() {
+do_install:append() {
     install -Dm 0755 ${OF}/dhcpv6.sh ${D}${base_libdir}/netifd/proto/dhcpv6.sh
     install -Dm 0755 ${OF}/dhcpv6.script ${D}${base_libdir}/netifd/dhcpv6.script
 }
 
-FILES_${PN} += "\
+FILES:${PN} += "\
                ${base_libdir}/netifd/proto/dhcpv6.sh \
                ${base_libdir}/netifd/dhcpv6.script \
                "
 
-RRECOMMENDS_${PN} += "netifd"
+RRECOMMENDS:${PN} += "netifd"

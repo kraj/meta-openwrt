@@ -3,7 +3,7 @@
 
 # Released under the MIT license (see COPYING.MIT for the terms)
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 PACKAGECONFIG ??= ""
 PACKAGECONFIG[oeoveropenwrt] = ""
@@ -14,6 +14,6 @@ SRC_URI += "\
     file://220-add_lock_util.patch \
 "
 
-do_install_append () {
+do_install:append () {
     rm -f ${D}/usr/share/udhcpc/default.script
 }

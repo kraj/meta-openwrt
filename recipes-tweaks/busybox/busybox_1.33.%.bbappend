@@ -2,6 +2,6 @@
 #
 # SPDX-License-Identifier: MIT
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-${PV}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}-${PV}:"
 
 SRC_URI += "file://z300-fix_off_t_misdetection_triggered_without_LFS.patch"

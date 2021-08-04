@@ -9,7 +9,7 @@ require recipes-core/images/openwrt-image-minimal.bb
 
 IMAGE_FEATURES += "package-management"
 
-IMAGE_INSTALL_append = "\
+IMAGE_INSTALL:append = "\
     juci \
     jucid \
     lighttpd \

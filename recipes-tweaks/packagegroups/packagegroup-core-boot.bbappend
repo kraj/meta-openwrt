@@ -8,6 +8,6 @@
 
 inherit openwrt
 
-RDEPENDS_${PN}_append = "\
+RDEPENDS:${PN}:append = "\
     ${VIRTUAL-RUNTIME_kmod_manager} \
     "

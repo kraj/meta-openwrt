@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=2b42edef8fa55315f34f2370b4715ca9"
 SECTION = "base"
 
 DEPENDS = "json-c libubox libnl lua5.1 iwinfo openssl virtual/crypt"
-RDEPENDS_${PN} = "lua5.1 lucihttp"
+RDEPENDS:${PN} = "lua5.1 lucihttp"
 
 SRCREV = "07d9006d239b29c9377fccb91b45eb2d0e447919"
 
@@ -26,4 +26,4 @@ OECMAKE_C_FLAGS += "-I${STAGING_INCDIR}/libnl3 -DDESTDIR=${D}"
 
 S = "${WORKDIR}/git"
 
-FILES_${PN} += "/www ${base_libdir} /usr/share /usr/libexec"
+FILES:${PN} += "/www ${base_libdir} /usr/share /usr/libexec"

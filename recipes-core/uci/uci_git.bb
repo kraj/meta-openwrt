@@ -22,7 +22,7 @@ SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 OECMAKE_C_FLAGS += "-I${STAGING_INCDIR}/lua5.1"
 
-do_install_append() {
+do_install:append() {
     install -Dm 0755 ${OR}/lib/config/uci.sh ${D}${base_libdir}/config/uci.sh
 
     mkdir -p ${D}/sbin
@@ -31,4 +31,4 @@ do_install_append() {
     ln -s /usr/bin/uci ${D}/sbin/uci
 }
 
-FILES_${PN} += "${base_libdir}"
+FILES:${PN} += "${base_libdir}"

@@ -17,4 +17,4 @@ S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig openwrt
 
-FILES_${PN}  += "${libdir}/*"
+FILES:${PN}  += "${libdir}/*"

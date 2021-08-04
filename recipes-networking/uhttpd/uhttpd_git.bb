@@ -24,7 +24,7 @@ CFLAGS += "-D_DEFAULT_SOURCE"
 
 EXTRA_OECMAKE = "-DTLS_SUPPORT=ON -DLUA_SUPPORT=ON -DUBUS_SUPPORT=ON"
 
-do_install_append() {
+do_install:append() {
     install -Dm 0755 ${S}/openwrt/package/network/services/uhttpd/files/uhttpd.init ${D}${sysconfdir}/init.d/uhttpd
     install -Dm 0644 ${S}/openwrt/package/network/services/uhttpd/files/uhttpd.config ${D}${sysconfdir}/config/uhttpd
     install -Dm 0644 ${S}/openwrt/package/network/services/uhttpd/files/ubus.default ${D}${sysconfdir}/uci-defaults/00_uhttpd_ubus
@@ -33,9 +33,9 @@ do_install_append() {
     install -dm 0755 ${D}/www
 }
 
-FILES_${PN}  += "${libdir}/* /www"
+FILES:${PN}  += "${libdir}/* /www"
 
-RDEPENDS_${PN} += "\
+RDEPENDS:${PN} += "\
                   openssl \
                   base-files-scripts-openwrt \
                   "
