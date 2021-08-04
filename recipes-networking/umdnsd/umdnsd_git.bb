@@ -16,6 +16,6 @@ S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig openwrt-services openwrt
 
-TARGET_CFLAGS_append = " -Wno-error=array-bounds"
+TARGET_CFLAGS:append = " -Wno-error=array-bounds"
 
-FILES_${PN}  += "${libdir}/*"
+FILES:${PN}  += "${libdir}/*"

@@ -17,7 +17,7 @@ S = "${WORKDIR}/git"
 B = "${S}"
 
 CFLAGS += "-I${S}/include -I${S}/libsparse/include"
-TARGET_CFLAGS_append = " -Wno-implicit-function-declaration"
+TARGET_CFLAGS:append = " -Wno-implicit-function-declaration"
 
 TARGET_CC_ARCH += "${LDFLAGS}"
 

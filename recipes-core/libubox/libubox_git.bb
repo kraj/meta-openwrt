@@ -12,9 +12,9 @@ PACKAGECONFIG[examples] = ""
 
 LICENSE = "BSD-1-Clause&BSD-3-Clause"
 LICENSE += "${@bb.utils.contains('PACKAGECONFIG', 'examples', '&GPL-2.0', '', d)}"
-LICENSE_${PN} = "BSD-1-Clause&BSD-3-Clause"
-LICENSE_${PN}-lua = "BSD-1-Clause&BSD-3-Clause"
-LICENSE_${PN}-examples = "GPL-2.0&BSD-1-Clause&BSD-3-Clause"
+LICENSE:${PN} = "BSD-1-Clause&BSD-3-Clause"
+LICENSE:${PN}-lua = "BSD-1-Clause&BSD-3-Clause"
+LICENSE:${PN}-examples = "GPL-2.0&BSD-1-Clause&BSD-3-Clause"
 
 LIC_FILES_CHKSUM = "\
                    file://avl.c;endline=39;md5=00810155fed3d604816ec5814523d60a \
@@ -54,7 +54,7 @@ EXTRA_OECMAKE += "\
 
 OECMAKE_C_FLAGS += "${@bb.utils.contains('PACKAGECONFIG', 'lua', '-I${STAGING_INCDIR}/lua5.1', '', d)}"
 
-do_install_append() {
+do_install:append() {
     install -d ${D}${bindir} ${D}${includedir}/libubox
     if [ "${@bb.utils.contains('PACKAGECONFIG', 'examples', 'ON', 'OFF', d)}" = "ON" ]; then
         install -m 0755 ${B}/examples/*-example ${D}${bindir}
@@ -75,9 +75,9 @@ PACKAGES =+ "\
             ${@bb.utils.contains('PACKAGECONFIG', 'lua', '${PN}-lua', '', d)} \
             "
 
-FILES_${PN} += "${datadir}/*"
-FILES_${PN}-lua += "${libdir}/lua/5.1/*"
-FILES_${PN}-examples += "${bindir}/*-example \
+FILES:${PN} += "${datadir}/*"
+FILES:${PN}-lua += "${libdir}/lua/5.1/*"
+FILES:${PN}-examples += "${bindir}/*-example \
                         ${bindir}/uloop-example.lua \
                         ${bindir}/uloop_pid_test.sh \
                         "

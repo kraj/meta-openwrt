@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://src/odhcpd.c;beginline=1;endline=13;md5=b5b1da01ca7e1
 SECTION = "base"
 DEPENDS = "libubox ubus libnl-tiny uci"
 
-FILESEXTRAPATHS_prepend = "${THIDIR}/${PN}:"
+FILESEXTRAPATHS:prepend = "${THIDIR}/${PN}:"
 
 SRC_URI = "\
     git://git.openwrt.org/project/odhcpd.git;name=odhcpd \
@@ -23,18 +23,18 @@ inherit cmake pkgconfig openwrt openwrt-services openwrt-base-files
 
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
-EXTRA_OECMAKE_append = " -DUBUS=1"
+EXTRA_OECMAKE:append = " -DUBUS=1"
 
-do_install_append() {
+do_install:append() {
     install -Dm 0644 ${OF}/odhcpd.defaults ${D}${sysconfdir}/uci-defaults/odhcpd
     install -Dm 0755 ${OF}/odhcpd.init ${D}${sysconfdir}/init.d/odhcpd
     install -Dm 0755 ${OF}/odhcpd-update ${D}${sbindir}/odhcpd-update
 }
 
-FILES_${PN} += "\
+FILES:${PN} += "\
                ${sysconfdir}/uci-defaults/odhcpd.defaults \
                ${sysconfdir}/init.d/odhcpd \
                ${sbindir}/odhcpd-update \
                "
 
-RDEPENDS_${PN} += "base-files-scripts-openwrt"
+RDEPENDS:${PN} += "base-files-scripts-openwrt"

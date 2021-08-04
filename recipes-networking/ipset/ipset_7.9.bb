@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=59530bdf33659b29e73d4adb9f9f6552"
 SECTION = "base"
 
 DEPENDS = "libtool libmnl"
-RDEPENDS_${PN} = "kernel-module-ip-set"
+RDEPENDS:${PN} = "kernel-module-ip-set"
 
 SRC_URI = "http://ftp.netfilter.org/pub/ipset/${BP}.tar.bz2"
 SRC_URI[sha256sum] = "b75c13689eddf1d95b396840a69dc04fd7ae4112b10b70594bc0405df7b9b30a"

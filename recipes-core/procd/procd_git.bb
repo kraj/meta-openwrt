@@ -18,7 +18,7 @@ SRC_URI = "git://git.openwrt.org/project/procd.git \
 	file://10_sysinfo \
 "
 
-SRCREV_pn-procd = "6acc48c7a2faac48c534b8a5516500c270550a9e"
+SRCREV:pn-procd = "6acc48c7a2faac48c534b8a5516500c270550a9e"
 
 S = "${WORKDIR}/git"
 PD = "${S}/openwrt/package/system/procd/files"
@@ -28,9 +28,9 @@ inherit cmake openwrt openwrt-services pkgconfig openwrt-base-files update-alter
 
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
-TARGET_CFLAGS_append = " -Wno-error=array-bounds -Wno-error=unused-result"
+TARGET_CFLAGS:append = " -Wno-error=array-bounds -Wno-error=unused-result"
 
-do_install_append() {
+do_install:append() {
     # Early init
     install -Dm 0755 ${BF}/etc/preinit ${D}${sysconfdir}/preinit
     install -Dm 0755 ${BF}/etc/diag.sh ${D}${sysconfdir}/diag.sh
@@ -86,15 +86,15 @@ do_install_append() {
     rmdir ${D}/usr/lib
 }
 
-RDEPENDS_${PN} += "\
+RDEPENDS:${PN} += "\
                   fstools \
                   base-files-scripts-openwrt \
                   ${PN}-inittab \
                   "
 
-FILES_${PN} = "/"
+FILES:${PN} = "/"
 
-ALTERNATIVE_${PN} = "init"
+ALTERNATIVE:${PN} = "init"
 
 ALTERNATIVE_PRIORITY = "40"
 ALTERNATIVE_TARGET[init] = "${base_sbindir}/init"

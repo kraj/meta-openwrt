@@ -2,7 +2,7 @@
 
 # Released under the MIT license (see COPYING.MIT for the terms)
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRC_URI += "\
 	file://modutils.init \
@@ -10,7 +10,7 @@ SRC_URI += "\
 
 inherit openwrt openwrt-services
 
-do_install_append() {
+do_install:append() {
 	install -dm 0755 ${D}/etc/init.d
 	install -Dm 0755 ${S}/modutils.init ${D}/etc/init.d/modutils
 }

@@ -6,7 +6,7 @@ DEPENDS = "virtual/kernel iptables"
 
 inherit autotools kernel-module-split module-base pkgconfig
 
-CFLAGS_append_toolchain-clang = " -Wno-error=implicit-function-declaration"
+CFLAGS:append:toolchain-clang = " -Wno-error=implicit-function-declaration"
 
 SRC_URI = " \
           https://inai.de/files/xtables-addons/${BP}.tar.xz \
@@ -30,6 +30,6 @@ MODULES_INSTALL_TARGET = "install"
 # kernel scripts
 do_make_scripts[depends] += "virtual/kernel:do_shared_workdir"
 
-FILES_${PN} += "${libexecdir}/xtables-addons ${sbindir}/iptaccount ${libdir}/libxt_ACCOUNT_cl.so.* ${libdir}/iptables"
+FILES:${PN} += "${libexecdir}/xtables-addons ${sbindir}/iptaccount ${libdir}/libxt_ACCOUNT_cl.so.* ${libdir}/iptables"
 
-RDEPENDS_${PN} += "perl"
+RDEPENDS:${PN} += "perl"

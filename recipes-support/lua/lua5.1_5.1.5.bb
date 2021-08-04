@@ -28,12 +28,12 @@ inherit pkgconfig binconfig
 S = "${WORKDIR}/lua-${PV}"
 
 UCLIBC_PATCHES += "file://uclibc-pthread.patch"
-SRC_URI_append_libc-uclibc = "${UCLIBC_PATCHES}"
+SRC_URI:append_libc-uclibc = "${UCLIBC_PATCHES}"
 
 TARGET_CC_ARCH += " -fPIC ${LDFLAGS}"
 EXTRA_OEMAKE = "'CC=${CC} -fPIC' 'MYCFLAGS=${CFLAGS} -DLUA_USE_LINUX -fPIC' MYLDFLAGS='${LDFLAGS}'"
 
-do_configure_prepend() {
+do_configure:prepend() {
     sed -i -e s:/usr/local:${prefix}:g src/luaconf.h
 }
 
@@ -60,7 +60,7 @@ do_install () {
 
 }
 
-FILES_${PN} += "${libdir}/lua ${libdir}/lua/${V}"
+FILES:${PN} += "${libdir}/lua ${libdir}/lua/${V}"
 
 BBCLASSEXTEND = "native"
 
@@ -68,7 +68,7 @@ inherit update-alternatives
 
 ALTERNATIVE_PRIORITY = "100"
 
-ALTERNATIVE_${PN} = "lua luac"
+ALTERNATIVE:${PN} = "lua luac"
 
 ALTERNATIVE_TARGET[lua] = "${bindir}/lua${V}"
 ALTERNATIVE_TARGET[luac] = "${bindir}/luac${V}"

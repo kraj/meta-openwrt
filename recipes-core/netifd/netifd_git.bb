@@ -26,12 +26,12 @@ SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 OECMAKE_C_FLAGS += "-I${STAGING_INCDIR}/libnl3 -Wno-error=cpp"
 
-do_configure_prepend () {
+do_configure:prepend () {
     # replace hardcoded '/lib/' with '${base_libdir}/'
     grep -rnl "/lib/" ${S}/openwrt/package/network/config/netifd/ | xargs sed -i "s:/lib/:${base_libdir}/:g"
 }
 
-do_install_append() {
+do_install:append() {
     install -d ${D}${base_libdir}/netifd/
     # cp because recursive
     cp -dR --preserve=mode,links ${S}/openwrt/package/network/config/netifd/files/* ${D}/
@@ -57,7 +57,7 @@ do_install_append() {
     echo "bridge" >${D}/etc/modules-load.d/bridge.conf
 }
 
-ALTERNATIVE_${PN} = "ifup ifdown default.script"
+ALTERNATIVE:${PN} = "ifup ifdown default.script"
 
 ALTERNATIVE_PRIORITY = "40"
 ALTERNATIVE_PRIORITY_pkg[default.script] = "60"
@@ -65,7 +65,7 @@ ALTERNATIVE_LINK_NAME[ifup] = "${base_sbindir}/ifup"
 ALTERNATIVE_LINK_NAME[ifdown] = "${base_sbindir}/ifdown"
 ALTERNATIVE_LINK_NAME[default.script] = "/usr/share/udhcpc/default.script"
 
-FILES_${PN} += "\
+FILES:${PN} += "\
                /usr/share/udhcpc/default.script* \
                ${base_libdir}/netifd/dhcp.script \
                ${base_libdir}/netifd/utils.sh \
@@ -78,12 +78,12 @@ FILES_${PN} += "\
                ${@bb.utils.contains('COMBINED_FEATURES', 'wifi', '/sbin/wifi', '', d)} \
                "
 
-CONFFILES_${PN}_append = "\
+CONFFILES:${PN}:append = "\
                          ${sysconfdir}/config/network \
                          ${sysconfdir}/config/wireless \
 	                 "
 
-RDEPENDS_${PN} += "\
+RDEPENDS:${PN} += "\
                   bridge-utils \
                   base-files-scripts-openwrt \
                   "

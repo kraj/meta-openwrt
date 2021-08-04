@@ -14,12 +14,12 @@ PACKAGES = "\
            packagegroup-openwrt-full-network \
            "
 
-RDEPENDS_${PN} = "\
+RDEPENDS:${PN} = "\
                  packagegroup-openwrt-base \
                  packagegroup-openwrt-full-network \
                  "
 
-RDEPENDS_${PN}-network = "\
+RDEPENDS:${PN}-network = "\
                          relayd \
                          tcpdump \
                          umbim \

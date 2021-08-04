@@ -17,13 +17,13 @@ PACKAGES = "\
 	   packagegroup-openwrt-base-luci \
 	   "
 
-RDEPENDS_${PN} = "\
+RDEPENDS:${PN} = "\
                  packagegroup-openwrt-minimal \
 	         packagegroup-openwrt-base-network \
 	         packagegroup-openwrt-base-luci \
 	         "
 
-RDEPENDS_${PN}-network = "\
+RDEPENDS:${PN}-network = "\
                          dnsmasq \
                          \
                          ${@bb.utils.contains('COMBINED_FEATURES', 'wifi', 'iwinfo', '',d)} \
@@ -31,7 +31,7 @@ RDEPENDS_${PN}-network = "\
                          umdnsd \
                          "
 
-RDEPENDS_${PN}-luci = "\
+RDEPENDS:${PN}-luci = "\
                       lua5.1 \
                       luci \
                       uhttpd \

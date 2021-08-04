@@ -18,4 +18,4 @@ inherit cmake pkgconfig openwrt
 
 B = "${S}"
 
-FILES_${PN}  += "${libdir}/*"
+FILES:${PN}  += "${libdir}/*"

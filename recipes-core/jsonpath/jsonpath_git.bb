@@ -21,6 +21,6 @@ inherit cmake pkgconfig
 S = "${WORKDIR}/git"
 B = "${S}"
 
-do_install_append() {
+do_install:append() {
     ln -s ${bindir}/jsonpath ${D}${bindir}/jsonfilter
 }

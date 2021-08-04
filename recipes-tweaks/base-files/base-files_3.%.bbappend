@@ -6,7 +6,7 @@
 SUMMARY = "Base files from openembedded and openwrt projects"
 HOMEPAGE = "http://wiki.openwrt.org/"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-openwrt:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}-openwrt:"
 
 SRC_URI += "\
         file://0001-use-sh-not-ash.patch \
@@ -31,7 +31,7 @@ PACKAGECONFIG[oeoveropenwrt] = ""
 
 BASEFILESISSUEINSTALL ?= "${@bb.utils.contains('PACKAGECONFIG', 'preferopenwrt', '', 'do_install_basefilesissue', d)}"
 
-do_install_append () {
+do_install:append () {
     if [ "${@bb.utils.contains('PACKAGECONFIG', 'includeopenwrt', 'true', 'false', d)}" = "true" ]; then
         # We need to munge openwrt base-files before copying
         # Some file come from regular OE base-files and others
@@ -149,18 +149,18 @@ do_install_append () {
     fi
 }
 
-FILES_${PN} = "/"
+FILES:${PN} = "/"
 
-RDEPENDS_${PN} += "\
+RDEPENDS:${PN} += "\
                   ${@bb.utils.contains('PACKAGECONFIG', 'includeopenwrt', '${PN}-scripts-openwrt', '', d)} \
                   "
 
-RSUGGESTS_${PN} += "\
+RSUGGESTS:${PN} += "\
                    ${@bb.utils.contains('PACKAGECONFIG', 'preferopenwrt', '${PN}-scripts-sysupgrade', '', d)} \
                    ${@bb.utils.contains('PACKAGECONFIG', 'oeoveropenwrt', '', 'procd ubox', d)} \
                    "
 
-CONFFILES_${PN} += "\
+CONFFILES:${PN} += "\
                    ${sysconfdir}/fstab \
                    ${@['', '${sysconfdir}/hostname'][(d.getVar('hostname', True) != '')]} \
                    ${sysconfdir}/shells \

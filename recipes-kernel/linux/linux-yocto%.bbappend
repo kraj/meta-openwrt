@@ -1,6 +1,6 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:${THISDIR}/files:"
 
-SRC_URI_append = "\
+SRC_URI:append = "\
     file://ipset.cfg \
     file://bridge.cfg \
 "

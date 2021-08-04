@@ -5,7 +5,7 @@
 
 do_rootfs[depends] += " virtual/kernel:do_shared_workdir"
 
-ROOTFS_POSTUNINSTALL_COMMAND_append = ' openwrt_flatten_modules_hook; '
+ROOTFS_POSTUNINSTALL_COMMAND:append = ' openwrt_flatten_modules_hook; '
 
 openwrt_flatten_modules_hook () {
     export KERNEL_VERSION="${@oe.utils.read_file('${STAGING_KERNEL_BUILDDIR}/kernel-abiversion')}"

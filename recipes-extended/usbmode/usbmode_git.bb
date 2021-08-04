@@ -16,5 +16,5 @@ S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig openwrt
 
-FILES_${PN}  += "${libdir}/*"
-FILES_${PN}-dbg  += "${libdir}/lua/5.*/.debug"
+FILES:${PN}  += "${libdir}/*"
+FILES:${PN}-dbg  += "${libdir}/lua/5.*/.debug"

@@ -2,11 +2,11 @@
 
 # Released under the MIT license (see COPYING.MIT for the terms)
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI += "file://udev.procd"
 
-do_install_append() {
+do_install:append() {
     install -d ${D}${sysconfdir}/init.d
 
     install -m 0755 ${WORKDIR}/udev.procd ${D}${sysconfdir}/init.d/udev

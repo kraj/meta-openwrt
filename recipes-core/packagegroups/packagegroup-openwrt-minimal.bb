@@ -12,12 +12,12 @@ PACKAGES = "\
 	   packagegroup-openwrt-minimal-network \
 	   "
 
-RDEPENDS_${PN} = "\
+RDEPENDS:${PN} = "\
 	         packagegroup-openwrt-minimal-base \
 	         packagegroup-openwrt-minimal-network \
 	         "
 
-RDEPENDS_${PN}-base = "\
+RDEPENDS:${PN}-base = "\
                       packagegroup-core-boot \
                       rpcd \
                       ubox \
@@ -25,7 +25,7 @@ RDEPENDS_${PN}-base = "\
                       uci \
                       "
 
-RDEPENDS_${PN}-network = "\
+RDEPENDS:${PN}-network = "\
                          dnsmasq \
                          \
                          firewall3 \

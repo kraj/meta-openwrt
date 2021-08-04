@@ -21,7 +21,7 @@ inherit cmake pkgconfig openwrt-services openwrt openwrt-base-files
 
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
-do_install_append() {
+do_install:append() {
     install -d ${D}${includedir}/rpcd
     install -m 0644 ${S}/include/rpcd/* ${D}${includedir}/rpcd/
     install -Dm 0755 ${OR}/rpcd.config ${D}${sysconfdir}/config/rpcd
@@ -31,6 +31,6 @@ do_install_append() {
     ln -s /usr/sbin/rpcd ${D}/sbin/rpcd
 }
 
-FILES_${PN}  += "${libdir}/*"
+FILES:${PN}  += "${libdir}/*"
 
-RDEPENDS_${PN} += "iwinfo"
+RDEPENDS:${PN} += "iwinfo"

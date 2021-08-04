@@ -3,7 +3,7 @@
 
 # Released under the MIT license (see COPYING.MIT for the terms)
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 OPENWRT_BASEPATH = "../git/openwrt"
 
@@ -13,7 +13,7 @@ SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 inherit openwrt openwrt-services useradd openwrt-base-files
 
-do_install_append() {
+do_install:append() {
     install -d ${D}${sysconfdir}
     install -d ${D}${sysconfdir}/config
     install -d ${D}${sysconfdir}/init.d
@@ -33,8 +33,8 @@ do_install_append() {
 
 USERADD_PACKAGES = "${PN}"
 
-USERADD_PARAM_${PN} = "--system -d /var/lib/dnsmasq --no-create-home \
+USERADD_PARAM:${PN} = "--system -d /var/lib/dnsmasq --no-create-home \
   --shell /bin/false --user-group dnsmasq"
 
-RDEPENDS_dnsmasq += "jsonpath"
+RDEPENDS:dnsmasq += "jsonpath"
 

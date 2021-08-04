@@ -16,7 +16,7 @@ S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig openwrt
 
-do_install_append () {
+do_install:append () {
     install -dm 0755 ${D}/sbin
     ln -s /usr/sbin/ubusd ${D}/sbin/ubusd
 }

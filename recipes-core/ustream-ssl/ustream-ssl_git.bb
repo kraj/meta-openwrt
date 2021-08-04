@@ -17,7 +17,7 @@ S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig openwrt
 
-do_install_append() {
+do_install:append() {
 	install -d ${D}${includedir}/libubox
 	install -m 0644 ${S}/*.h ${D}${includedir}/libubox
 
@@ -26,7 +26,7 @@ do_install_append() {
 	rmdir --ignore-fail-on-non-empty ${D}${libdir}
 }
 
-FILES_${PN}  += "${base_libdir}/*"
-FILES_${PN}-dbg  += "${libdir}/lua/5.*/.debug"
+FILES:${PN}  += "${base_libdir}/*"
+FILES:${PN}-dbg  += "${libdir}/lua/5.*/.debug"
 
-RDEPENDS_${PN} += "libcrypto libssl"
+RDEPENDS:${PN} += "libcrypto libssl"
