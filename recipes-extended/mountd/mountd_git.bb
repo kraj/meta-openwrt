@@ -23,7 +23,7 @@ SRCREV_openwrt = "${OPENWRT_SRCREV}"
 S = "${WORKDIR}/git"
 
 do_configure_prepend () {
-    sed -i "s:-Werror --std=gnu99:-Werror -Wno-format-truncation -Wno-format-overflow --std=gnu99:g" ${S}/CMakeLists.txt
+    sed -i "s:-Werror:-Werror -Wno-format-truncation -Wno-format-overflow " ${S}/CMakeLists.txt
 }
 
 do_install_append() {
