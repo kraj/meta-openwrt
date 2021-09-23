@@ -27,6 +27,9 @@ do_install:append() {
     install -Dm 0755 ${OR}/rpcd.config ${D}${sysconfdir}/config/rpcd
     install -Dm 0755 ${OR}/rpcd.init ${D}${sysconfdir}/init.d/rpcd
 
+    mkdir -p ${D}${datadir}/rpcd/acl.d/
+    install -Dm	0644 ${S}/unauthenticated.json ${D}${datadir}/rpcd/acl.d/
+
     mkdir -p ${D}/sbin
     ln -s /usr/sbin/rpcd ${D}/sbin/rpcd
 }
