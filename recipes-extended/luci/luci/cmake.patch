@@ -106,10 +106,10 @@
 +		   COMMAND cd ${PROJECT_SOURCE_DIR}/src && ${CMAKE_BINARY_DIR}/lemon -q T=${PROJECT_SOURCE_DIR}/src/contrib/lempar.c plural_formula.y && cd -
 +		   DEPENDS lemon)
 +add_custom_target(generate_plural_formula ALL
-+		   DEPENDS lemon plural_formula
-+)
++		   DEPENDS lemon plural_formula)
++set_source_files_properties(${PROJECT_SOURCE_DIR}/src/plural_formula.c PROPERTIES GENERATED TRUE)
 +
-+ADD_LIBRARY(parser SHARED src/template_parser.c src/template_utils.c src/template_lmo.c src/template_lualib.c)
++ADD_LIBRARY(parser SHARED src/plural_formula.c src/template_parser.c src/template_utils.c src/template_lmo.c src/template_lualib.c)
 +SET_TARGET_PROPERTIES(parser PROPERTIES PREFIX "")
 +
 +INSTALL(DIRECTORY luasrc/
