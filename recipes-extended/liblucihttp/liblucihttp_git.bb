@@ -13,6 +13,7 @@ SRC_URI = " \
 "
 
 DEPENDS = "lua5.1"
+LUAPATH = "/usr/lib/lua/5.1"
 
 # Modify these as desired
 PV = "1.0+git${SRCPV}"
@@ -22,7 +23,7 @@ S = "${WORKDIR}/git"
 
 # NOTE: unable to map the following pkg-config dependencies: (lua5.1 or lua-5.1 or lua)
 #       (this is based on recipes that have previously been built and packaged)
-inherit cmake pkgconfig
+inherit cmake pkgconfig openwrt-lua
 
 # Specify any options you want to pass to cmake using EXTRA_OECMAKE:
-EXTRA_OECMAKE = "-DBUILD_LUA=off -DBUILD_TESTS=off"
+EXTRA_OECMAKE = "-DLUAPATH=${LUAPATH} -DBUILD_LUA=on -DBUILD_TESTS=off"
