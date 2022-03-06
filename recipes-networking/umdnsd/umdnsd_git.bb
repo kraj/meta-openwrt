@@ -3,7 +3,7 @@
 
 DESCRIPTION = "OpenWrt MDNS daemon"
 HOMEPAGE = "http://git.openwrt.org/?p=project/mdnsd.git;a=summary"
-LICENSE = "GPL-2.0"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=12;md5=ce0be9da20a926574bf76c1285343bef"
 SECTION = "base"
 DEPENDS = "json-c libcap libubox ubus"

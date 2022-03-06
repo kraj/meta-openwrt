@@ -9,7 +9,7 @@
 
 OPENWRT_SRCREV = "dd3464023f1836ef4fa417509830aaf5618b9ae9"
 
-LICENSE:append = "& GPL-2.0+"
+LICENSE:append = "& GPL-2.0-or-later"
 
 OPENWRT_BASEPATH ?= "${S}/../git/openwrt"
 

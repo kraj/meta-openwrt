@@ -3,7 +3,7 @@
 
 DESCRIPTION = "Library for accessing wireless device drivers"
 HOMEPAGE = "http://git.openwrt.org/?p=project/iwinfo.git;a=summary"
-LICENSE = "GPL-2.0"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://COPYING;md5=751419260aa954499f7abaabaa882bbe"
 SECTION = "base"
 DEPENDS += "uci lua5.1 ubus"

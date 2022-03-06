@@ -11,7 +11,7 @@ PACKAGECONFIG[lua] = ""
 PACKAGECONFIG[examples] = ""
 
 LICENSE = "BSD-1-Clause&BSD-3-Clause"
-LICENSE += "${@bb.utils.contains('PACKAGECONFIG', 'examples', '&GPL-2.0', '', d)}"
+LICENSE += "${@bb.utils.contains('PACKAGECONFIG', 'examples', '&GPL-2.0-only', '', d)}"
 LICENSE:${PN} = "BSD-1-Clause&BSD-3-Clause"
 LICENSE:${PN}-lua = "BSD-1-Clause&BSD-3-Clause"
 LICENSE:${PN}-examples = "GPL-2.0&BSD-1-Clause&BSD-3-Clause"

@@ -6,7 +6,7 @@ HOMEPAGE = "https://git.openwrt.org/?p=project/fstools.git;a=summary"
 # libubi is under GPL
 # libblkid-tiny is PD
 # libfstools is LGPL
-LICENSE = "LGPL-2.1 & GPL-2.0 & PD"
+LICENSE = "LGPL-2.1-only & GPL-2.0-only & PD"
 LIC_FILES_CHKSUM = "file://ubi.c;beginline=1;endline=17;md5=8ccc371d64f0b3a8d91065b678dc7095"
 SECTION = "base"
 DEPENDS += "util-linux ubus"

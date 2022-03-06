@@ -3,7 +3,7 @@
 
 DESCRIPTION = "OpenWrt IPv4 pseudo-bridge routing daemon"
 HOMEPAGE = "http://git.openwrt.org/?p=project/relayd.git;a=summary"
-LICENSE = "GPL-2.0+"
+LICENSE = "GPL-2.0-or-later"
 LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=17;md5=86aad799085683e0a2e1c2684a20bab2"
 SECTION = "base"
 DEPENDS = "libubox"

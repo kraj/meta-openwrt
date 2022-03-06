@@ -3,7 +3,7 @@
 
 SUMMARY = "OpenWrt DHCPv6 client"
 HOMEPAGE = "http://git.openwrt.org/?p=project/odhcp63.git;a=summary"
-LICENSE = "GPL-2.0"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://src/odhcp6c.c;beginline=1;endline=13;md5=41d01a2c8e6a8ef58b8e5f18e68118a8"
 SECTION = "base"
 DEPENDS = "libubox"
