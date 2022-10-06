@@ -7,8 +7,8 @@ LICENSE = "LGPL-2.1-only"
 LIC_FILES_CHKSUM = "file://nl.c;startline=4;endline=7;md5=f16bd5d25e622bb3001bab76be1f9f91"
 SECTION = "libs"
 
-SRCREV = "c291088f631d1694f7ba0444b59677b194348da8"
-SRC_URI = "git://git.openwrt.org/project/libnl-tiny.git"
+SRCREV = "8e0555fb39f51a5d6436b4f1370850caa03611ea"
+SRC_URI = "git://git.openwrt.org/project/libnl-tiny.git;branch=master"
 
 inherit cmake pkgconfig
 S = "${WORKDIR}/git"
