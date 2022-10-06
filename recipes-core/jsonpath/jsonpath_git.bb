@@ -8,7 +8,8 @@ LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=15;md5=e1b007aed2273fc3ec1
 SECTION = "base"
 DEPENDS = "json-c libubox"
 
-SRC_URI = "git://git.openwrt.org/project/jsonpath.git;name=jsonpath; \
+SRCREV = "c7e938d6582a436dddc938539e72dd1320625c54"
+SRC_URI = "git://git.openwrt.org/project/jsonpath.git;branch=master;name=jsonpath; \
           file://0001-sync-lemon-parser.patch \
           file://0002-Declare-ParseTrace.patch \
           file://0100-break-lemon-dependency-cycle.patch \
