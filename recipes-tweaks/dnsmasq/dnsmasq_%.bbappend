@@ -12,7 +12,17 @@ SRC_URI += "file://99-dnsmasq.rules"
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
 inherit openwrt openwrt-services useradd openwrt-base-files
+DEPENDS = "ubus"
 
+EXTRA_OEMAKE = "\
+    'COPTS=${@bb.utils.contains('PACKAGECONFIG', 'dbus', '-DHAVE_DBUS', '', d)} \
+           ${@bb.utils.contains('PACKAGECONFIG', 'idn', '-DHAVE_IDN', '', d)} \
+           ${@bb.utils.contains('PACKAGECONFIG', 'conntrack', '-DHAVE_CONNTRACK', '', d)} \
+           ${@bb.utils.contains('PACKAGECONFIG', 'lua', '-DHAVE_LUASCRIPT', '', d)} \
+           -DHAVE_UBUS' \
+    'CFLAGS=${CFLAGS}' \
+    'LDFLAGS=${LDFLAGS}' \
+"
 do_install:append() {
     install -d ${D}${sysconfdir}
     install -d ${D}${sysconfdir}/config
@@ -37,4 +47,3 @@ USERADD_PARAM:${PN} = "--system -d /var/lib/dnsmasq --no-create-home \
   --shell /bin/false --user-group dnsmasq"
 
 RDEPENDS:dnsmasq += "jsonpath"
-
