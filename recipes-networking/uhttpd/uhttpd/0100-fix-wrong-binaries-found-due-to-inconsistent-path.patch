@@ -1,5 +1,7 @@
-Author: Daniel F. Dickinson <cshored@thecshore.com>
-Date:   Sat Jan 20 20:25:58 2018 -0500
+From a579f4da5079b6248fd3cefe0cfa3335c1159e04 Mon Sep 17 00:00:00 2001
+From: "Daniel F. Dickinson" <cshored@thecshore.com>
+Date: Sat, 20 Jan 2018 20:25:58 -0500
+Subject: [PATCH] uhttpd: Fix CGI finds wrong binaries due to inconsistent PATH
 
     uhttpd: Fix CGI finds wrong binaries due to inconsistent PATH
 
@@ -8,7 +10,7 @@ Date:   Sat Jan 20 20:25:58 2018 -0500
     initscripts, when there is more than one binary of the same name.
 --- a/main.c
 +++ b/main.c
-@@ -185,7 +185,7 @@ static void init_defaults_pre(void)
+@@ -190,7 +190,7 @@ static void init_defaults_pre(void)
  	conf.max_connections = 100;
  	conf.realm = "Protected Area";
  	conf.cgi_prefix = "/cgi-bin";
@@ -16,4 +18,4 @@ Date:   Sat Jan 20 20:25:58 2018 -0500
 +	conf.cgi_path = "/usr/sbin:/usr/bin:/sbin:/bin";
  	INIT_LIST_HEAD(&conf.cgi_alias);
  	INIT_LIST_HEAD(&conf.lua_prefix);
- }
+ #if HAVE_UCODE
