@@ -6,13 +6,13 @@ HOMEPAGE = "http://git.openwrt.org/?p=project/rpcd.git;a=summary"
 LICENSE = "BSD"
 LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=18;md5=da5faf55ed0618f0dde1c88e76a0fc74"
 SECTION = "base"
-DEPENDS = "json-c libubox ubus uci iwinfo virtual/crypt"
+DEPENDS = "json-c libubox ubus uci ucode iwinfo virtual/crypt"
 
 SRC_URI = "\
-	git://git.openwrt.org/project/rpcd.git;name=rpcd; \
+	git://git.openwrt.org/project/rpcd.git;branch=master;name=rpcd; \
 	"
 
-SRCREV_rpcd = "3fea6559817a22de1b8375b9b1f3d818e6534591"
+SRCREV_rpcd = "82904bd4f92e5928d047db6396cc14ca2b07d89f"
 
 S = "${WORKDIR}/git"
 OR = "${S}/openwrt/package/system/rpcd/files"
@@ -36,4 +36,4 @@ do_install:append() {
 
 FILES:${PN}  += "${libdir}/*"
 
-RDEPENDS:${PN} += "iwinfo"
+RDEPENDS:${PN} += "ucode iwinfo"
