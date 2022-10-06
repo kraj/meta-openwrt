@@ -11,11 +11,11 @@ LIC_FILES_CHKSUM = "file://ubi.c;beginline=1;endline=17;md5=8ccc371d64f0b3a8d910
 SECTION = "base"
 DEPENDS += "util-linux ubus"
 
-SRC_URI = "git://git.openwrt.org/project/fstools.git \
-	   file://0001-Define-GLOB_ONLYDIR-if-not-available.patch \
+SRC_URI = "git://git.openwrt.org/project/fstools.git;branch=master \
+           file://0001-Define-GLOB_ONLYDIR-if-not-available.patch \
           "
 
-SRCREV = "0c6fb90e8c6e255e2b5da2c840fe534c7bc8cd7a"
+SRCREV = "93369be040612c906bcbb1631f44a92fa4122d24"
 
 S = "${WORKDIR}/git"
 
@@ -37,4 +37,3 @@ do_install:append() {
 }
 
 FILES:${PN}  += "${libdir}/*"
-
