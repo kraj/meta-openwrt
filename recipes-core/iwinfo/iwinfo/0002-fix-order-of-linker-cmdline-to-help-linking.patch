@@ -1,0 +1,31 @@
+From 3db058a1d3a8a948c36f9faec2f9328149e6f46d Mon Sep 17 00:00:00 2001
+From: Kas User <kas@example.com>
+Date: Tue, 4 Oct 2022 22:43:34 +0300
+Subject: [PATCH] fix-order-of-linker-cmdline-to-help-linking
+
+---
+ Makefile | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index b52db6e..abe17b7 100644
+--- a/Makefile
++++ b/Makefile
+@@ -46,14 +46,12 @@ compile: clean $(IWINFO_LIB) $(IWINFO_LUA) $(IWINFO_CLI)
+ 	$(CC) $(IWINFO_CFLAGS) $(FPIC) -c -o $@ $<
+ 
+ $(IWINFO_LIB): $(IWINFO_LIB_OBJ)
+-	$(CC) $(IWINFO_LDFLAGS) $(IWINFO_LIB_LDFLAGS) -o $(IWINFO_LIB).$(IWINFO_SOVERSION) $(IWINFO_LIB_OBJ) && \
++	$(CC) $(IWINFO_LIB_OBJ) $(IWINFO_LDFLAGS) $(IWINFO_LIB_LDFLAGS) -o $(IWINFO_LIB).$(IWINFO_SOVERSION) && \
+ 	ln -sf $(IWINFO_LIB).$(IWINFO_SOVERSION) $(IWINFO_LIB)
+ 
+ $(IWINFO_LUA): $(IWINFO_LUA_OBJ)
+-	$(CC) $(IWINFO_LDFLAGS) $(IWINFO_LUA_LDFLAGS) -o $(IWINFO_LUA) $(IWINFO_LUA_OBJ)
+-
++	$(CC) $(IWINFO_LUA_OBJ) $(IWINFO_LDFLAGS) $(IWINFO_LUA_LDFLAGS) -o $(IWINFO_LUA) 
+ $(IWINFO_CLI): $(IWINFO_CLI_OBJ)
+-	$(CC) $(IWINFO_LDFLAGS) $(IWINFO_CLI_LDFLAGS) -o $(IWINFO_CLI) $(IWINFO_CLI_OBJ)
+-
++	$(CC) $(IWINFO_CLI_OBJ) $(IWINFO_LDFLAGS) $(IWINFO_CLI_LDFLAGS) -o $(IWINFO_CLI) 
+ clean:
+ 	rm -f *.o $(IWINFO_LIB) $(IWINFO_LUA) $(IWINFO_CLI)
