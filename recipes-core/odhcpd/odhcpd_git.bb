@@ -10,11 +10,10 @@ DEPENDS = "libubox ubus libnl-tiny uci"
 
 FILESEXTRAPATHS:prepend = "${THIDIR}/${PN}:"
 
-SRC_URI = "\
-    git://git.openwrt.org/project/odhcpd.git;name=odhcpd \
-"
+SRC_URI = "git://git.openwrt.org/project/odhcpd.git;branch=master;name=odhcpd \
+          "
 
-SRCREV_odhcpd = "8f27697b9b82420890cedd429622052c8b67cea1"
+SRCREV_odhcpd = "860ca900e41c5d0f98cc85e67b39977f6f2cb355"
 
 S = "${WORKDIR}/git"
 OF = "${S}/openwrt/package/network/services/odhcpd/files"
