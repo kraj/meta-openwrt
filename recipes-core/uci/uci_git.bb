@@ -8,10 +8,9 @@ LIC_FILES_CHKSUM = "file://uci.h;beginline=1;endline=13;md5=0ee862ed12171ee619c8
 SECTION = "base"
 DEPENDS = "libubox lua5.1"
 
-SRC_URI = "git://git.openwrt.org/project/uci.git;name=uci \
-          "
-
-SRCREV_uci = "52bbc99f69ea6f67b6fe264f424dac91bde5016c"
+SRCREV = "f84f49f00fb70364f58b4cce72f1796a7190d370"
+SRC_URI = "git://git.openwrt.org/project/uci.git;branch=master;name=uci \
+           "
 
 S = "${WORKDIR}/git"
 OR = "${S}/openwrt/package/system/uci/files"
