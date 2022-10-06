@@ -6,11 +6,11 @@ inherit openwrt openwrt-base-files
 DESCRIPTION = "Subpackages from base-files from OpenWrt core"
 HOMEPAGE = "http://wiki.openwrt.org/"
 LICENSE = "GPL-2.0-only"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=b234ee4d69f5fce4486a80fdaf4a4263"
+LIC_FILES_CHKSUM = "file://COPYING;md5=a8db84c7a073d2878849eee8eb0f5daa"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}-scripts:"
 
-SRC_URI += "git://github.com/openwrt/openwrt.git;protocol=git;branch=master \
+SRC_URI += "git://github.com/openwrt/openwrt.git;protocol=https;branch=openwrt-22.03 \
            "
 
 SRCREV = "${OPENWRT_SRCREV}"
