@@ -25,12 +25,15 @@
 +ADD_DEFINITIONS(${LUA_CFLAGS})
 +
 +ADD_SUBDIRECTORY(modules/luci-base)
-+ADD_SUBDIRECTORY(modules/luci-mod-admin-full)
++ADD_SUBDIRECTORY(modules/luci-mod-system)
++ADD_SUBDIRECTORY(modules/luci-mod-status)
++ADD_SUBDIRECTORY(modules/luci-mod-rpc)
 +ADD_SUBDIRECTORY(libs/luci-lib-base)
 +ADD_SUBDIRECTORY(libs/luci-lib-nixio)
 +ADD_SUBDIRECTORY(libs/luci-lib-ip)
 +ADD_SUBDIRECTORY(libs/luci-lib-jsonc)
 +ADD_SUBDIRECTORY(themes/luci-theme-bootstrap)
++ADD_SUBDIRECTORY(themes/luci-theme-material)
 +ADD_SUBDIRECTORY(applications/luci-app-firewall)
 +
 --- /dev/null
@@ -42,6 +45,16 @@
 +
 +INSTALL(DIRECTORY luasrc/
 +	DESTINATION "${LUAPATH}/luci"
++	USE_SOURCE_PERMISSIONS
++)
++
++INSTALL(DIRECTORY root/
++	DESTINATION "${CMAKE_INSTALL_PREFIX}/"
++	USE_SOURCE_PERMISSIONS
++)
++
++INSTALL(DIRECTORY htdocs/
++	DESTINATION "${CMAKE_INSTALL_PREFIX}/www"
 +	USE_SOURCE_PERMISSIONS
 +)
 +
@@ -161,6 +174,28 @@
 +)
 +
 --- /dev/null
++++ b/themes/luci-theme-material/CMakeLists.txt
+@@ -0,0 +1,19 @@
++cmake_minimum_required(VERSION 3.0)
++
++PROJECT(luci-theme-material C)
++
++INSTALL(DIRECTORY luasrc/
++	DESTINATION "${LUAPATH}/luci"
++	USE_SOURCE_PERMISSIONS
++)
++
++INSTALL(DIRECTORY root/
++	DESTINATION "${CMAKE_INSTALL_PREFIX}/"
++	USE_SOURCE_PERMISSIONS
++)
++
++INSTALL(DIRECTORY htdocs/
++	DESTINATION "${CMAKE_INSTALL_PREFIX}/www"
++	USE_SOURCE_PERMISSIONS
++)
++
+--- /dev/null
 +++ b/applications/luci-app-firewall/CMakeLists.txt
 @@ -0,0 +1,13 @@
 +cmake_minimum_required(VERSION 3.0)
@@ -222,6 +257,19 @@
 +	DESTINATION "${CMAKE_INSTALL_PREFIX}/www"
 +	USE_SOURCE_PERMISSIONS
 +)
++
+--- /dev/null
++++ b/modules/luci-mod-rpc/CMakeLists.txt
+@@ -0,0 +1,9 @@
++cmake_minimum_required(VERSION 3.0)
++
++PROJECT(luci-mod-rpc C)
++
++INSTALL(DIRECTORY luasrc/
++	DESTINATION "${LUAPATH}/luci"
++	USE_SOURCE_PERMISSIONS
++)
++
 --- /dev/null
 +++ b/modules/luci-mod-system/CMakeLists.txt
 @@ -0,0 +1,19 @@
