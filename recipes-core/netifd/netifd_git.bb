@@ -10,10 +10,10 @@ SECTION = "base"
 DEPENDS = "json-c libubox ubus libnl uci"
 
 SRC_URI = "\
-          git://git.openwrt.org/project/netifd.git;name=netifd \
+          git://git.openwrt.org/project/netifd.git;name=netifd;branch=master;protocol=https \
           file://100-Fix-IFF_LOWER_UP-define.patch \
           file://network.config \
-	  file://0001-resolv.conf.auto-Use-run-instead-of-tmp.patch \
+	      file://0001-resolv.conf.auto-Use-run-instead-of-tmp.patch \
           "
 
 SRCREV_netifd = "42c48866f1c1fce068f41536baa8dd2e80fc08d7"
@@ -24,7 +24,7 @@ inherit cmake pkgconfig openwrt openwrt-services update-alternatives openwrt-bas
 
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
-OECMAKE_C_FLAGS += "-I${STAGING_INCDIR}/libnl3 -Wno-error=cpp"
+OECMAKE_C_FLAGS += "-I${STAGING_INCDIR}/libnl3 -Wno-error=cpp -Wimplicit-fallthrough"
 
 do_configure:prepend () {
     # replace hardcoded '/lib/' with '${base_libdir}/'
