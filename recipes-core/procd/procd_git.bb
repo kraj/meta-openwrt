@@ -12,13 +12,13 @@ LIC_FILES_CHKSUM = "file://procd.c;beginline=1;endline=13;md5=61e3657604f131a859
 SECTION = "base"
 DEPENDS = "libubox ubus json-c"
 
-SRC_URI = "git://git.openwrt.org/project/procd.git \
-	file://00_preinit.conf \
-        file://banner.failsafe \
-	file://10_sysinfo \
-"
+SRC_URI = "git://git.openwrt.org/project/procd.git;branch=master \
+           file://00_preinit.conf \
+           file://banner.failsafe \
+           file://10_sysinfo \
+           "
 
-SRCREV:pn-procd = "6acc48c7a2faac48c534b8a5516500c270550a9e"
+SRCREV:pn-procd = "7a0096853594874d4c60266ec338ac23728017df"
 
 S = "${WORKDIR}/git"
 PD = "${S}/openwrt/package/system/procd/files"
@@ -103,4 +103,3 @@ python () {
     if not bb.utils.contains('DISTRO_FEATURES', 'procd', True, False, d):
         raise bb.parse.SkipPackage("'procd' not in DISTRO_FEATURES")
 }
-
