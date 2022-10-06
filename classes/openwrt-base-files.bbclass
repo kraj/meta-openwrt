@@ -5,17 +5,16 @@
 # for the terms.
 
 # Use this git SRCREV for all recipes that pull files out of openwrt repository
-# Equivalent to tag v17.01.4
+# Equivalent to tag v22.03
 
-OPENWRT_SRCREV = "dd3464023f1836ef4fa417509830aaf5618b9ae9"
+OPENWRT_SRCREV = "977f6f36a0121b213f9eee4a7deb7fdf073320e4"
 
 LICENSE:append = "& GPL-2.0-or-later"
 
 OPENWRT_BASEPATH ?= "${S}/../git/openwrt"
 
-LIC_FILES_CHKSUM:append = " file://${OPENWRT_BASEPATH}/LICENSE;md5=b234ee4d69f5fce4486a80fdaf4a4263 "
+LIC_FILES_CHKSUM:append = " file://${OPENWRT_BASEPATH}/COPYING;md5=a8db84c7a073d2878849eee8eb0f5daa"
 
 SRC_URI:append = "\
-	git://github.com/openwrt/openwrt.git;name=openwrt;destsuffix=git/openwrt \
+	git://github.com/openwrt/openwrt.git;branch=openwrt-22.03;protocol=https;name=openwrt;destsuffix=git/openwrt \
 	"
-
