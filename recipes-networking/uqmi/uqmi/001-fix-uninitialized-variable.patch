@@ -1,0 +1,13 @@
+diff --git a/commands-nas.c b/commands-nas.c
+index 476cd61..9c0a626 100644
+--- a/commands-nas.c
++++ b/commands-nas.c
+@@ -710,7 +710,7 @@ static void
+ cmd_nas_get_cell_location_info_cb(struct qmi_dev *qmi, struct qmi_request *req, struct qmi_msg *msg)
+ {
+ 	struct qmi_nas_get_cell_location_info_response res;
+-	void *c, *t, *cell, *freq;
++	void *c = NULL, *t, *cell, *freq;
+ 	int i, j;
+ 
+ 	qmi_parse_nas_get_cell_location_info_response(msg, &res);

@@ -8,14 +8,19 @@ LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=20;md5=3f7041e5710007661d7
 SECTION = "base"
 DEPENDS = "libubox json-c"
 
-SRC_URI = "git://git.openwrt.org/project/uqmi.git \
+SRC_URI = "git://git.openwrt.org/project/uqmi.git;branch=master \
+           file://001-fix-uninitialized-variable.patch \
           "
-SRCREV = "0a19b5b77140465c29e2afa7d611fe93abc9672f"
+SRCREV = "56cb2d4056fef132ccf78dfb6f3074ae5d109992"
 
 S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig openwrt
 
 B = "${S}"
+
+# temporary solution until upstream gets fixed
+# dev.c:217: error: storing the address of local variable 'complete' in '*req.complete'
+CFLAGS += "-Wno-error=dangling-pointer"
 
 FILES:${PN}  += "${libdir}/*"
