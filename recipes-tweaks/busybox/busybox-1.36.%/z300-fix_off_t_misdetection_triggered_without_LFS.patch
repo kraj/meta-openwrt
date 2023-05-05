@@ -11,7 +11,7 @@ Date:   Tue Jan 16 03:06:33 2018 -0500
     Signed-off-by: Daniel F. Dickinson <cshored@thecshore.com>
 --- a/include/libbb.h
 +++ b/include/libbb.h
-@@ -277,6 +277,14 @@ typedef unsigned long long uoff_t;
+@@ -303,6 +303,14 @@
  #  define STRTOOFF strtoull
  #  define OFF_FMT "ll"
  # endif
@@ -25,8 +25,8 @@ Date:   Tue Jan 16 03:06:33 2018 -0500
 +};
  #else
  /* CONFIG_LFS is off */
- # if UINT_MAX == 0xffffffff
-@@ -294,16 +302,8 @@ typedef unsigned long uoff_t;
+ /* sizeof(off_t) == sizeof(long).
+@@ -324,16 +332,8 @@
  #  define STRTOOFF strtol
  #  define OFF_FMT "l"
  # endif
