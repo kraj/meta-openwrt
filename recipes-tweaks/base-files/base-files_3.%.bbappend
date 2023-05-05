@@ -8,9 +8,6 @@ HOMEPAGE = "http://wiki.openwrt.org/"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}-openwrt:"
 
-SRC_URI += "\
-        file://0001-use-sh-not-ash.patch \
-	"
 SRCREV = "${OPENWRT_SRCREV}"
 
 S = "${WORKDIR}"
