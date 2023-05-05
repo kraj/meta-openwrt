@@ -11,7 +11,7 @@ SRC_URI += "file://99-dnsmasq.rules"
 
 SRCREV_openwrt = "${OPENWRT_SRCREV}"
 
-inherit openwrt openwrt-services useradd openwrt-base-files
+inherit openwrt openwrt-services useradd openwrt-base-files gettext
 DEPENDS = "ubus"
 
 EXTRA_OEMAKE = "\
