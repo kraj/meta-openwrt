@@ -13,6 +13,7 @@ SECTION = "base"
 DEPENDS = "libubox ubus json-c"
 
 SRC_URI = "git://git.openwrt.org/project/procd.git;branch=master \
+           file://0200-fix-build.patch \
            file://00_preinit.conf \
            file://banner.failsafe \
            file://10_sysinfo \

@@ -1,0 +1,13 @@
+diff --git a/signal.c b/signal.c
+index 9974153..d7cc8d2 100644
+--- a/signal.c
++++ b/signal.c
+@@ -33,7 +33,7 @@ static void do_reboot(void)
+ static void signal_shutdown(int signal, siginfo_t *siginfo, void *data)
+ {
+ 	int event = 0;
+-	char *msg = NULL;
++	char *msg = "none";
+ 
+ #ifndef DISABLE_INIT
+ 	switch(signal) {
