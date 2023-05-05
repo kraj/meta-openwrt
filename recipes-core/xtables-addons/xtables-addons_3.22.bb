@@ -18,11 +18,17 @@ SRC_URI = " \
           file://400-fix-IFF_LOWER_UP-musl.patch \
           file://0001-Unset-LDFLAGS-for-kernel-modules.patch \
           "
-SRC_URI[sha256sum] = "a77914a483ff381663f52120577e5e9355ca07cca73958b038e09d91247458d5"
+SRC_URI[sha256sum] = "faa16a27166275afbfe8df605f55c3a81ac693bf19da674d45ceded4137ae217"
 
 MODULES_MODULE_SYMVERS_LOCATION = "../${BP}/extensions"
 
 EXTRA_OECONF = "--with-kbuild=${STAGING_KERNEL_DIR}"
+
+do_compile:prepend () {
+    # install additional empty wrappers
+    touch ${S}/extensions/LUA/lua/include/stdarg.h
+    touch ${S}/extensions/LUA/lua/include/stddef.h
+}
 
 EXTRA_OEMAKE = "M=${S}/extentions DESTDIR=${D} V=1"
 MODULES_INSTALL_TARGET = "install"
