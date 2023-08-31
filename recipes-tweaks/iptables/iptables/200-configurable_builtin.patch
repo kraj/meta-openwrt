@@ -1,6 +1,8 @@
+diff --git a/extensions/GNUmakefile.in b/extensions/GNUmakefile.in
+index 76df58ec..2620e0ca 100644
 --- a/extensions/GNUmakefile.in
 +++ b/extensions/GNUmakefile.in
-@@ -50,11 +50,31 @@
+@@ -50,11 +50,31 @@ pfb_build_mod := $(filter-out @blacklist_modules@ @blacklist_b_modules@,${pfb_bu
  pfa_build_mod := $(filter-out @blacklist_modules@ @blacklist_a_modules@,${pfa_build_mod})
  pf4_build_mod := $(filter-out @blacklist_modules@ @blacklist_4_modules@,${pf4_build_mod})
  pf6_build_mod := $(filter-out @blacklist_modules@ @blacklist_6_modules@,${pf6_build_mod})
@@ -37,7 +39,7 @@
  pfx_solibs    := $(patsubst %,libxt_%.so,${pfx_build_mod})
  pfb_solibs    := $(patsubst %,libebt_%.so,${pfb_build_mod})
  pfa_solibs    := $(patsubst %,libarpt_%.so,${pfa_build_mod})
-@@ -68,14 +88,14 @@
+@@ -68,14 +88,14 @@ pfx_symlink_files := $(patsubst %,libxt_%.so,${pfx_symlinks})
  #
  targets := libiptext.so libiptext4.so libiptext6.so libiptext_ebt.so libiptext_arpt.so matches.man targets.man
  targets_install :=
@@ -60,7 +62,7 @@
  
  .SECONDARY:
  
-@@ -170,11 +190,11 @@
+@@ -161,11 +181,11 @@ libiptext4.so: initext4.o ${libext4_objs}
  libiptext6.so: initext6.o ${libext6_objs}
  	${AM_VERBOSE_CCLD} ${CCLD} ${AM_LDFLAGS} -shared ${LDFLAGS} -o $@ $^ -L${top_builddir}/libxtables/.libs -lxtables $(foreach obj,$^,${$(patsubst lib%.o,%,$(obj))_LIBADD});
  
@@ -75,5 +77,5 @@
 +initext4_func := $(addprefix ipt_,${pf4_build_static})
 +initext6_func := $(addprefix ip6t_,${pf6_build_static})
  
- initexts := ext exta extb ext4 ext6
- initext_depfiles = $(patsubst %,.init%.dd,${initexts})
+ .initext.dd: FORCE
+ 	@echo "${initext_func}" >$@.tmp; \

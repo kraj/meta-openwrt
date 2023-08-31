@@ -6,11 +6,11 @@ This layer provides OpenEmbedded metadata for [OpenWRT](http://www.openwrt.org/)
 # Getting Started
 
 ```shell
-git clone git://github.com/openembedded/openembedded-core.git
+git clone -b kirkstone git://github.com/openembedded/openembedded-core.git
 cd openembedded-core
-git clone git://github.com/openembedded/meta-openembedded.git
-git clone git://github.com/openembedded/bitbake.git
-git clone git://github.com/kraj/meta-openwrt.git
+git clone -b kirkstone git://github.com/openembedded/meta-openembedded.git
+git clone --depth 1 -b 2022-04.11-kirkstone git://github.com/openembedded/bitbake.git
+git clone -b kirkstone git://github.com/kraj/meta-openwrt.git
 
 $ . ./oe-init-build-env
 
