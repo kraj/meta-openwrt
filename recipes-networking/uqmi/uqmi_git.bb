@@ -19,8 +19,4 @@ inherit cmake pkgconfig openwrt
 
 B = "${S}"
 
-# temporary solution until upstream gets fixed
-# dev.c:217: error: storing the address of local variable 'complete' in '*req.complete'
-CFLAGS += "-Wno-error=dangling-pointer"
-
 FILES:${PN}  += "${libdir}/*"
