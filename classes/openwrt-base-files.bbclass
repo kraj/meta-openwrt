@@ -18,3 +18,5 @@ LIC_FILES_CHKSUM:append = " file://${OPENWRT_BASEPATH}/COPYING;md5=a8db84c7a073d
 SRC_URI:append = "\
 	git://github.com/openwrt/openwrt.git;branch=openwrt-22.03;protocol=https;name=openwrt;destsuffix=git/openwrt \
 	"
+
+SRCREV_FORMAT:prepend = "openwrt_"
