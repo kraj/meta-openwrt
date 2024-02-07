@@ -9,6 +9,9 @@ Date:   Tue Jan 16 03:06:33 2018 -0500
     patch should get upstremed.
 
     Signed-off-by: Daniel F. Dickinson <cshored@thecshore.com>
+
+Upstream-Status: Pending
+
 --- a/include/libbb.h
 +++ b/include/libbb.h
 @@ -303,6 +303,14 @@
@@ -41,6 +44,6 @@ Date:   Tue Jan 16 03:06:33 2018 -0500
 -struct BUG_off_t_size_is_misdetected {
 -	char BUG_off_t_size_is_misdetected[sizeof(off_t) == sizeof(uoff_t) ? 1 : -1];
 -};
- 
+
  /* Some useful definitions */
  #undef FALSE
