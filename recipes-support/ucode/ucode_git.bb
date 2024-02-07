@@ -1,4 +1,4 @@
-LICENSE = "ISC & Unknown"
+LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=b42eb47dc3802282b0d1be1bc8f5336c \
                     file://debian/copyright;md5=1675ccb2fa4c1fba3c778fd07a40b472"
 
