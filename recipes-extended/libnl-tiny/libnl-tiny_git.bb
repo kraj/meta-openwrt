@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://nl.c;startline=4;endline=7;md5=f16bd5d25e622bb3001bab
 SECTION = "libs"
 
 SRCREV = "8e0555fb39f51a5d6436b4f1370850caa03611ea"
-SRC_URI = "git://git.openwrt.org/project/libnl-tiny.git;branch=master"
+SRC_URI = "git://git.openwrt.org/project/libnl-tiny.git;protocol=https;branch=master"
 
 inherit cmake pkgconfig
 S = "${WORKDIR}/git"

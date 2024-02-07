@@ -7,7 +7,7 @@ LICENSE = "BSD"
 LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=17;md5=a51760fc5328fc7e0e27a5af562c6cfa"
 SECTION = "base"
 
-SRC_URI = "git://git.openwrt.org/project/usign.git \
+SRC_URI = "git://git.openwrt.org/project/usign.git;protocol=https;branch=master \
           "
 SRCREV = "f1f65026a94137c91b5466b149ef3ea3f20091e9"
 
@@ -23,4 +23,3 @@ DISABLE_STATIC = ""
 PACKAGECONFIG ??= "ubox"
 
 PACKAGECONFIG[ubox] = "-DUSE_LIBUBOX=ON,,libubox,"
-

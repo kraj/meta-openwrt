@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=17;md5=86aad799085683e0a2e
 SECTION = "base"
 DEPENDS = "libubox"
 
-SRC_URI = "git://git.openwrt.org/project/relayd.git \
+SRC_URI = "git://git.openwrt.org/project/relayd.git;protocol=https;branch=master \
            file://0001-Fix-ignoring-return-value-of-write-declared-with-att.patch \
           "
 

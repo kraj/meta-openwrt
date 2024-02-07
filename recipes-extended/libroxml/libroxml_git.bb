@@ -10,7 +10,7 @@ DEPENDS = ""
 
 PV = "3.0.2+git${SRCPV}"
 SRCREV = "34257124eefe0ca095ed54681c818381070ed549"
-SRC_URI = "git://github.com/blunderer/libroxml.git \
+SRC_URI = "git://github.com/blunderer/libroxml.git;protocol=https;branch=master \
          "
 
 inherit cmake pkgconfig

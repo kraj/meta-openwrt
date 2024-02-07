@@ -12,7 +12,7 @@ SRCREV = "4a43b0d40ba50a21de1d47e7bf0f759be9cf646a"
 
 inherit openwrt
 
-SRC_URI = "git://git.openwrt.org/project/iwinfo.git;branch=master \
+SRC_URI = "git://git.openwrt.org/project/iwinfo.git;protocol=https;branch=master \
            file://0001-Makefile-LDFLAGS-set-liblua5.1-for-lua-lib.patch \
            file://0002-fix-order-of-linker-cmdline-to-help-linking.patch \
            file://0003-Replace-typedef-loaL_reg-with-luaL_Reg.patch \

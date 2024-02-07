@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://ustream-ssl.h;beginline=1;endline=17;md5=f63310467742
 SECTION = "base"
 DEPENDS = "libubox openssl"
 
-SRC_URI = "git://git.openwrt.org/project/ustream-ssl.git;branch=master \
+SRC_URI = "git://git.openwrt.org/project/ustream-ssl.git;protocol=https;branch=master \
           "
 
 SRCREV = "868fd8812f477c110f9c6c5252c0bd172167b94c"

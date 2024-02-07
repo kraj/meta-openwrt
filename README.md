@@ -6,11 +6,11 @@ This layer provides OpenEmbedded metadata for [OpenWRT](http://www.openwrt.org/)
 # Getting Started
 
 ```shell
-git clone git://github.com/openembedded/openembedded-core.git
+git clone https://github.com/openembedded/openembedded-core.git
 cd openembedded-core
-git clone git://github.com/openembedded/meta-openembedded.git
-git clone git://github.com/openembedded/bitbake.git
-git clone git://github.com/kraj/meta-openwrt.git
+git clone https://github.com/openembedded/meta-openembedded.git
+git clone https://github.com/openembedded/bitbake.git
+git clone https://github.com/kraj/meta-openwrt.git
 
 $ . ./oe-init-build-env
 
@@ -59,23 +59,23 @@ to avoid typing it on commandline on any bitbake invocation
 # Dependencies
 
 ```
-URI: git://github.com/openembedded/openembedded-core.git
+URI: https://github.com/openembedded/openembedded-core.git
 branch: master
 revision: HEAD
 
-URI: git://github.com/openembedded/meta-openembedded.git
+URI: https://github.com/openembedded/meta-openembedded.git
 branch: master
 revision: HEAD
 
-URI: git://github.com/openembedded/bitbake.git
+URI: https://github.com/openembedded/bitbake.git
 branch: master
 revision: HEAD
 
-URI: git://github.com/imyller/meta-nodejs.git
+URI: https://github.com/imyller/meta-nodejs.git
 branch: master
 revision: HEAD
 
-URI: git://github.com/imyller/meta-nodejs-contrib.git
+URI: https://github.com/imyller/meta-nodejs-contrib.git
 branch: master
 revision: HEAD
 ```

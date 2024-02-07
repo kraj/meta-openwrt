@@ -10,7 +10,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=ab6706baf6d39a6b0fa2613a3b0831e7"
 
 DEPENDS += "lua5.1-native lua5.1"
 
-SRC_URI = "git://github.com/diegonehab/luasocket.git \
+SRC_URI = "git://github.com/diegonehab/luasocket.git;protocol=https;branch=master \
           "
 
 SRCREV = "5b18e475f38fcf28429b1cc4b17baee3b9793a62"

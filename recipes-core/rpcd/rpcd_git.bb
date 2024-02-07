@@ -9,7 +9,7 @@ SECTION = "base"
 DEPENDS = "json-c libubox ubus uci ucode iwinfo virtual/crypt"
 
 SRC_URI = "\
-	git://git.openwrt.org/project/rpcd.git;branch=master;name=rpcd; \
+	git://git.openwrt.org/project/rpcd.git;protocol=https;branch=master;name=rpcd; \
 	"
 
 SRCREV_rpcd = "82904bd4f92e5928d047db6396cc14ca2b07d89f"

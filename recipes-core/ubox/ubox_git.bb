@@ -7,7 +7,7 @@ SRCREV = "205defb597295a4a8966db3e618cfe41a29bed99"
 DEPENDS = "ubus libubox uci"
 
 SRC_URI = "\
-          git://git.openwrt.org/project/ubox.git;branch=master \
+          git://git.openwrt.org/project/ubox.git;protocol=https;branch=master \
           file://log.init \
           "
 

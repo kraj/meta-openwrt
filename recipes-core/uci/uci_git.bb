@@ -9,7 +9,7 @@ SECTION = "base"
 DEPENDS = "libubox lua5.1"
 
 SRCREV = "f84f49f00fb70364f58b4cce72f1796a7190d370"
-SRC_URI = "git://git.openwrt.org/project/uci.git;branch=master;name=uci \
+SRC_URI = "git://git.openwrt.org/project/uci.git;protocol=https;branch=master;name=uci \
            "
 
 S = "${WORKDIR}/git"

@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=17;md5=2bf63b09608cf97d9db
 SECTION = "base"
 DEPENDS = "libubox ubus"
 
-SRC_URI = "git://git.openwrt.org/project/ugps.git \
+SRC_URI = "git://git.openwrt.org/project/ugps.git;protocol=https;branch=master \
           "
 
 SRCREV = "511a5b3c84fa715ef0305cf26c98619c12a4867a"

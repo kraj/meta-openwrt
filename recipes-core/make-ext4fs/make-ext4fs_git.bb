@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://NOTICE;md5=bb2810bf31da2f6bb39e0bfa86091da3"
 SECTION = "tools"
 DEPENDS = "zlib"
 
-SRC_URI = "git://git.openwrt.org/project/make_ext4fs.git \
+SRC_URI = "git://git.openwrt.org/project/make_ext4fs.git;protocol=https;branch=master \
            file://0001-Add-missing-space-before-linker-option.patch \
 "
 SRCREV = "5c201be7d72aff735da27e17c29852e0cefe3e52"

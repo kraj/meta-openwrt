@@ -11,7 +11,7 @@ DEPENDS = "libubox"
 SRCREV_odhcp6c = "0ffa3a31f7146d320214f431291c1196070a010f"
 
 SRC_URI = "\
-          git://git.openwrt.org/project/odhcp6c.git;name=odhcp6c \
+          git://git.openwrt.org/project/odhcp6c.git;protocol=https;branch=master;name=odhcp6c \
           "
 
 S = "${WORKDIR}/git"

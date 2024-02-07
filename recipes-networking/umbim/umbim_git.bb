@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://mbim.h;beginline=1;endline=13;md5=8c7ce85ebfe23634010
 SECTION = "base"
 DEPENDS = "libubox"
 
-SRC_URI = "git://git.openwrt.org/project/umbim.git \
+SRC_URI = "git://git.openwrt.org/project/umbim.git;protocol=https;branch=master \
           "
 SRCREV = "184b707ddaa0acee84d02e0ffe599cb8b67782bd"
 
