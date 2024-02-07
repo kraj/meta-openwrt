@@ -18,7 +18,7 @@ SRC_URI = " \
           file://400-fix-IFF_LOWER_UP-musl.patch \
           file://0001-Unset-LDFLAGS-for-kernel-modules.patch \
           "
-SRC_URI[sha256sum] = "faa16a27166275afbfe8df605f55c3a81ac693bf19da674d45ceded4137ae217"
+SRC_URI[sha256sum] = "8c9f4c6a8e92eb7cfbf03f4ebcb1e1e793256c2efd0226d83312bfb0ffe14b84"
 
 MODULES_MODULE_SYMVERS_LOCATION = "../${BP}/extensions"
 
