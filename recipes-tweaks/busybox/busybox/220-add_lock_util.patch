@@ -1,3 +1,5 @@
+Upstream-Status: Pending
+
 Index: busybox-1.27.2/miscutils/lock.c
 ===================================================================
 --- /dev/null

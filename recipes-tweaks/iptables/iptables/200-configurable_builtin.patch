@@ -1,3 +1,5 @@
+Upstream-Status: Pending
+
 --- a/extensions/GNUmakefile.in
 +++ b/extensions/GNUmakefile.in
 @@ -50,11 +50,31 @@
@@ -57,13 +59,13 @@
 +targets += ${pfx_solibs} ${pfb_solibs} ${pf4_solibs} ${pf6_solibs} ${pfa_solibs} ${pfx_symlink_files}
 +targets_install := $(strip ${pfx_solibs} ${pfb_solibs} ${pf4_solibs} ${pf6_solibs} ${pfa_solibs})
 +symlinks_install := ${pfx_symlink_files}
- 
+
  .SECONDARY:
- 
+
 @@ -170,11 +190,11 @@
  libiptext6.so: initext6.o ${libext6_objs}
  	${AM_VERBOSE_CCLD} ${CCLD} ${AM_LDFLAGS} -shared ${LDFLAGS} -o $@ $^ -L${top_builddir}/libxtables/.libs -lxtables $(foreach obj,$^,${$(patsubst lib%.o,%,$(obj))_LIBADD});
- 
+
 -initext_func  := $(addprefix xt_,${pfx_build_mod})
 -initextb_func := $(addprefix ebt_,${pfb_build_mod})
 -initexta_func := $(addprefix arpt_,${pfa_build_mod})
@@ -74,6 +76,6 @@
 +initexta_func := $(addprefix arpt_,${pfa_build_static})
 +initext4_func := $(addprefix ipt_,${pf4_build_static})
 +initext6_func := $(addprefix ip6t_,${pf6_build_static})
- 
+
  initexts := ext exta extb ext4 ext6
  initext_depfiles = $(patsubst %,.init%.dd,${initexts})
