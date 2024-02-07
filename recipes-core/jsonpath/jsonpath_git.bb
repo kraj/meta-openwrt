@@ -9,7 +9,7 @@ SECTION = "base"
 DEPENDS = "json-c libubox"
 
 SRCREV = "c7e938d6582a436dddc938539e72dd1320625c54"
-SRC_URI = "git://git.openwrt.org/project/jsonpath.git;branch=master;name=jsonpath; \
+SRC_URI = "git://git.openwrt.org/project/jsonpath.git;protocol=https;branch=master;name=jsonpath; \
           file://0001-sync-lemon-parser.patch \
           file://0002-Declare-ParseTrace.patch \
           file://0100-break-lemon-dependency-cycle.patch \

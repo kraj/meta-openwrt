@@ -10,7 +10,7 @@ SECTION = "base"
 DEPENDS = "json-c libubox ubus libnl uci"
 
 SRC_URI = "\
-          git://git.openwrt.org/project/netifd.git;name=netifd;branch=master;protocol=https \
+          git://git.openwrt.org/project/netifd.git;protocol=https;branch=master;name=netifd \
           file://100-Fix-IFF_LOWER_UP-define.patch \
           file://network.config \
 	      file://0001-resolv.conf.auto-Use-run-instead-of-tmp.patch \

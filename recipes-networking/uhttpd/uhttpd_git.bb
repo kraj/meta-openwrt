@@ -9,7 +9,7 @@ SECTION = "base"
 DEPENDS = "libubox ubus ucode json-c ustream-ssl virtual/crypt"
 
 SRC_URI = "\
-          git://git.openwrt.org/project/uhttpd.git;branch=master \
+          git://git.openwrt.org/project/uhttpd.git;protocol=https;branch=master \
           file://0100-fix-wrong-binaries-found-due-to-inconsistent-path.patch \
 	  "
 

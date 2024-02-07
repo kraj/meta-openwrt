@@ -12,7 +12,7 @@
 LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = ""
 
-SRC_URI = "git://git.openwrt.org/project/cgi-io.git;branch=master"
+SRC_URI = "git://git.openwrt.org/project/cgi-io.git;protocol=https;branch=master"
 
 # Modify these as desired
 PV = "1.0+git${SRCPV}"

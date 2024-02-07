@@ -11,7 +11,7 @@ LIC_FILES_CHKSUM = "file://ubi.c;beginline=1;endline=17;md5=8ccc371d64f0b3a8d910
 SECTION = "base"
 DEPENDS += "util-linux ubus"
 
-SRC_URI = "git://git.openwrt.org/project/fstools.git;branch=master \
+SRC_URI = "git://git.openwrt.org/project/fstools.git;protocol=https;branch=master \
            file://0001-Define-GLOB_ONLYDIR-if-not-available.patch \
           "
 

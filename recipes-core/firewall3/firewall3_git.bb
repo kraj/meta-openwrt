@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://main.c;beginline=1;endline=17;md5=2a8ffaa9ef41014f236
 SECTION = "base"
 DEPENDS = "libubox uci ubus iptables"
 
-SRC_URI = "git://git.openwrt.org/project/firewall3.git \
+SRC_URI = "git://git.openwrt.org/project/firewall3.git;protocol=https;branch=master \
           "
 
 SRCREV = "12f6f143106257e0921c6ebbca2fe329cbeb3de6"

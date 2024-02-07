@@ -12,7 +12,7 @@ LIC_FILES_CHKSUM = "file://procd.c;beginline=1;endline=13;md5=61e3657604f131a859
 SECTION = "base"
 DEPENDS = "libubox ubus json-c"
 
-SRC_URI = "git://git.openwrt.org/project/procd.git;branch=master \
+SRC_URI = "git://git.openwrt.org/project/procd.git;protocol=https;branch=master \
            file://0200-fix-build.patch \
            file://00_preinit.conf \
            file://banner.failsafe \
