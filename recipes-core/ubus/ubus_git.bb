@@ -2,8 +2,8 @@
 # Released under the MIT license (see COPYING.MIT for the terms)
 
 DESCRIPTION = "OpenWrt system message/RPC bus"
-HOMEPAGE = "http://git.openwrt.org/?p=project/libubox.git;a=summary"
-LICENSE = "BSD"
+HOMEPAGE = "https://git.openwrt.org/?p=project/ubus.git;a=summary"
+LICENSE = "LGPL-2.1-only"
 LIC_FILES_CHKSUM = "file://ubusd.c;beginline=1;endline=12;md5=1b6a7aecd35bdd25de35da967668485d"
 SECTION = "base"
 DEPENDS = "json-c libubox"

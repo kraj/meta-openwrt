@@ -7,7 +7,7 @@ DESCRIPTION = "procd is both both VIRTUAL-RUNTIME-init_manager and \
               VIRTUAL_RUNTIME-dev_manager (like systemd/systemd-udev) \
               "
 HOMEPAGE = "http://wiki.openwrt.org/doc/techref/procd"
-LICENSE = "BSD"
+LICENSE = "LGPL-2.1-only"
 LIC_FILES_CHKSUM = "file://procd.c;beginline=1;endline=13;md5=61e3657604f131a859b57a40f27a9d8e"
 SECTION = "base"
 DEPENDS = "libubox ubus json-c"
