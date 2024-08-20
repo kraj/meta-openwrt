@@ -25,8 +25,11 @@ CFLAGS += "-fPIC"
 # iwinfo breaks with parallel make
 PARALLEL_MAKE = ""
 
+FILES:${PN}-dev += "${libdir}/libiwinfo.so"
+
 do_install() {
-	install -D -m 0755 ${B}/libiwinfo.so ${D}${libdir}/libiwinfo.so
+	install -D -m 0755 ${B}/libiwinfo.so.0 ${D}${libdir}/libiwinfo.so.0
+	ln -sf libiwinfo.so.0 ${D}${libdir}/libiwinfo.so
         install -D -m 0755 ${B}/iwinfo.so ${D}${libdir}/lua/5.1/iwinfo.so
         install -D -m 0755 ${B}/iwinfo ${D}${bindir}/iwinfo
 	install -D -m 0644 ${S}/include/iwinfo.h ${D}${includedir}/iwinfo.h
