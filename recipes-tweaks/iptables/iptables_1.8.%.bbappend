@@ -16,7 +16,7 @@ SRC_URI += "file://600-shared-libext.patch \
 LDFLAGS += "-fuse-ld=bfd"
 
 python populate_packages:prepend() {
-    modules = do_split_packages(d, '${XTLIBDIR}', 'lib(.*)\.so$', '${PN}-module-%s', '${PN} module %s', extra_depends='', prepend=True)
+    modules = do_split_packages(d, '${XTLIBDIR}', r'lib(.*)\.so$', '${PN}-module-%s', '${PN} module %s', extra_depends='', prepend=True)
     if modules:
         metapkg = d.getVar('PN') + '-modules'
         d.appendVar('RDEPENDS:' + metapkg, ' ' + ' '.join(modules))
