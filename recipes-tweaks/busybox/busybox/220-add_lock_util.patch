@@ -4,20 +4,12 @@ Index: busybox-1.27.2/miscutils/lock.c
 ===================================================================
 --- /dev/null
 +++ busybox-1.27.2/miscutils/lock.c
-@@ -0,0 +1,145 @@
+@@ -0,0 +1,155 @@
 +/*
 + * Copyright (C) 2006 Felix Fietkau <nbd@openwrt.org>
 + *
 + * This is free software, licensed under the GNU General Public License v2.
 + */
-+#include <sys/types.h>
-+#include <sys/file.h>
-+#include <sys/stat.h>
-+#include <signal.h>
-+#include <fcntl.h>
-+#include <unistd.h>
-+#include <stdio.h>
-+#include "busybox.h"
 +
 +//config:config LOCK
 +//config:       bool "lock"
@@ -32,19 +24,30 @@ Index: busybox-1.27.2/miscutils/lock.c
 +//usage:#define lock_trivial_usage NOUSAGE_STR
 +//usage:#define lock_full_usage ""
 +
++#include <sys/types.h>
++#include <sys/file.h>
++#include <sys/stat.h>
++#include <signal.h>
++#include <fcntl.h>
++#include <unistd.h>
++#include <stdio.h>
++#include "busybox.h"
++
 +static int unlock = 0;
 +static int shared = 0;
 +static int waitonly = 0;
++static int try_lock = 0;
 +static int fd;
 +static char *file;
 +
 +static void usage(char *name)
 +{
-+	fprintf(stderr, "Usage: %s [-suw] <filename>\n"
-+	                "	-s	Use shared locking\n"
-+	                "	-u	Unlock\n"
-+	                "	-w	Wait for the lock to become free, don't acquire lock\n"
-+					"\n", name);
++	fprintf(stderr, "Usage: %s [-sunw] <filename>\n"
++	                "\t-s\tUse shared locking\n"
++	                "\t-u\tUnlock\n"
++	                "\t-w\tWait for the lock to become free, don't acquire lock\n"
++	                "\t-n\tDon't wait for the lock to become free. Fail with exit code\n"
++	                "\n", name);
 +	exit(1);
 +}
 +
@@ -73,8 +76,9 @@ Index: busybox-1.27.2/miscutils/lock.c
 +
 +static int do_lock(void)
 +{
-+	int pid;
-+	char pidstr[8];
++	pid_t pid;
++	int flags;
++	char pidstr[12];
 +
 +	if ((fd = open(file, O_RDWR | O_CREAT | O_EXCL, 0700)) < 0) {
 +		if ((fd = open(file, O_RDWR)) < 0) {
@@ -83,7 +87,10 @@ Index: busybox-1.27.2/miscutils/lock.c
 +		}
 +	}
 +
-+	if (flock(fd, (shared ? LOCK_SH : LOCK_EX)) < 0) {
++	flags = shared ? LOCK_SH : LOCK_EX;
++	flags |= try_lock ? LOCK_NB : 0;
++
++	if (flock(fd, flags) < 0) {
 +		fprintf(stderr, "Can't lock %s\n", file);
 +		return 1;
 +	}
@@ -106,7 +113,7 @@ Index: busybox-1.27.2/miscutils/lock.c
 +		if (!waitonly) {
 +			lseek(fd, 0, SEEK_SET);
 +			ftruncate(fd, 0);
-+			sprintf(pidstr, "%d\n", pid);
++			snprintf(pidstr, sizeof(pidstr), "%d\n", pid);
 +			write(fd, pidstr, strlen(pidstr));
 +			close(fd);
 +		}
@@ -134,6 +141,9 @@ Index: busybox-1.27.2/miscutils/lock.c
 +					break;
 +				case 'u':
 +					unlock = 1;
++					break;
++				case 'n':
++					try_lock = 1;
 +					break;
 +			}
 +		}
